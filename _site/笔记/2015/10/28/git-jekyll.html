@@ -108,7 +108,7 @@
 通过命令安装ruby1.9.3:</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> sudo apt-get install ruby1.9.3</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> sudo apt-get install ruby1.9.3</code></pre></figure>
 
 <blockquote>
   <p>win用户就到网站上下载ruby安装包安装即可。安装目录不要有空格(以防 jekyll装不上),记得添加到环境变量里面。<a href="http://rubyinstaller.org/">下载地址</a></p>
@@ -119,7 +119,7 @@
   <p>ubuntu 命令：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> sudo apt-get install nodejs</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> sudo apt-get install nodejs</code></pre></figure>
 
 <blockquote>
   <p>win用户下载node.js自行安装即可。<a href="https://nodejs.org/en/">下载地址</a></p>
@@ -130,7 +130,7 @@
   <p>ubuntu 命令：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> sudo apt-get install python</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> sudo apt-get install python</code></pre></figure>
 
 <blockquote>
   <p>win用户下载python自行安装即可。<a href="https://www.python.org/downloads/">下载地址</a></p>
@@ -152,7 +152,7 @@ ubuntu 最多的问题就是安装的ruby版本太低 , 最好是 ruby1.9.3以�
 假如是数据源问题的话可以通过以下命令测试：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> gem sources -a http://rubygems.org   //-a 添加数据源  -r 删除数据源
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> gem sources -a http://rubygems.org   //-a 添加数据源  -r 删除数据源
  gem sources -a http://ruby.taobao.org</code></pre></figure>
 
 <blockquote>
@@ -162,20 +162,20 @@ git最好安装bash版的。
 通过命令[git clone] 将远程项目克隆到本地。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> git clone https://github.com/{用户名}/{仓库名}.git</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> git clone https://github.com/<span class="o">{</span>用户名<span class="o">}</span>/<span class="o">{</span>仓库名<span class="o">}</span>.git</code></pre></figure>
 
 <blockquote>
   <h3 id="section-3">最后</h3>
   <p>进入项目目录 运行<em>jekyll serve</em> , 就可以通过 [127.0.0.1:4000/{仓库名}/] 进行访问了。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> jekyll serve</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> jekyll serve</code></pre></figure>
 
 <blockquote>
   <p>如果没有成功，那就在根目录下新加一个文件：[ _config.yml ], 里面写上：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-cm" data-lang="cm"> baseurl:/blog    //blog ,或者其他的，自己定义 。 访问的时候改一下即可：127.0.0.1:4000/blog/</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> baseurl:/blog    //blog ,或者其他的，自己定义 。 访问的时候改一下即可：127.0.0.1:4000/blog/</code></pre></figure>
 
 </div>
 						</div>

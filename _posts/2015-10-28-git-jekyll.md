@@ -50,7 +50,7 @@ tags: [github , gem , jekyll]
 >说起来真坑，本来一直想在ubuntu12.04里面弄的，结果就是因为ruby版本太低的原因搞的 gem install jekyll 上不去，当时就泪奔了。一看ubuntu12.04默认安装ruby1.8.7 < 1.9.3
 >自己想安装ruby1.9.3，但问题也是多多。最后还是算了，反正是虚拟机装个ubuntu14.04（因为在公司我就是装的ubuntu14.04）的吧。
 >通过命令安装ruby1.9.3:
-{% highlight cm %}
+{% highlight sh %}
  sudo apt-get install ruby1.9.3
 {% endhighlight %}
 >win用户就到网站上下载ruby安装包安装即可。安装目录不要有空格(以防 jekyll装不上),记得添加到环境变量里面。[下载地址][rubyinstaller]
@@ -59,7 +59,7 @@ tags: [github , gem , jekyll]
 
 >### 4.Node.js ###
 >ubuntu 命令：
-{% highlight cm %}
+{% highlight sh %}
  sudo apt-get install nodejs
 {% endhighlight %}
 >win用户下载node.js自行安装即可。[下载地址][nodejs]
@@ -68,7 +68,7 @@ tags: [github , gem , jekyll]
 
 >### 5.python ###
 >ubuntu 命令：
-{% highlight cm %}
+{% highlight sh %}
  sudo apt-get install python
 {% endhighlight %}
 >win用户下载python自行安装即可。[下载地址][python]
@@ -85,7 +85,7 @@ tags: [github , gem , jekyll]
 
 >window 最多的就是gem install jekyll 时的数据源问题。
 >假如是数据源问题的话可以通过以下命令测试：
-{% highlight cm %}
+{% highlight sh %}
  gem sources -a http://rubygems.org   //-a 添加数据源  -r 删除数据源
  gem sources -a http://ruby.taobao.org
 {% endhighlight %}
@@ -96,19 +96,19 @@ tags: [github , gem , jekyll]
 >加入你有幸没掉坑里，那么你现在就可以安装git来clone你的项目到本地来了。
 >git最好安装bash版的。
 >通过命令[git clone] 将远程项目克隆到本地。
-{% highlight cm %}
+{% highlight sh %}
  git clone https://github.com/{用户名}/{仓库名}.git
 {% endhighlight %}
 
 
 >### 最后 ###
 >进入项目目录 运行*jekyll serve* , 就可以通过 [127.0.0.1:4000/{仓库名}/] 进行访问了。
-{% highlight cm %}
+{% highlight sh %}
  jekyll serve
 {% endhighlight %}
 
 >如果没有成功，那就在根目录下新加一个文件：[ _config.yml ], 里面写上：
-{% highlight cm %}
+{% highlight sh %}
  baseurl:/blog    //blog ,或者其他的，自己定义 。 访问的时候改一下即可：127.0.0.1:4000/blog/
 {% endhighlight %}
 
