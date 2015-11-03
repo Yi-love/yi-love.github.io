@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="test the category">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>test the category</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/html/css/2015/10/31/test-the-category.html">test the category</a></h2>
+						<p class="j-i-time">31 Oct 2015</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">html</span>
+							
+							<span class="j-i-tag">css</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><h1 id="my-blog-is-ok">my blog is ok</h1>
+
+<p>上面代码可以看到，首先从site中取出所有categories的信息，分别输出。categories的元素为一个两个元素的数组，第一个元素为category的名字，第二个元素则为一个数组，保存有该分类下文章的列表</p>
+
+<p>于是乎就很简单了：
+* 使用输出分类的名称
+* 使用0输出该分类下文章的数目
+* 遍历category.last输出所有文章的信息，构建到该文章的索引</p>
+
+<p>这样就完成了在一个页面上输出所有分类，及其所有文章索引的方法了。但是需要注意的是，这种方式只能获取所有分类，而不能获取某个单一分类下的文章。毕竟jekyll编译完成后是静态页面，没有办法动态生成（除非为每一个分类都创建一个html文件，并在首页上创建一大堆通向这些html文件的a标签）。事实上，这个问题有一个解决方法是使用jekyll插件去解决。但是github不支持三方jekyll插件。所以必须绕个弯子来实现这种方式
+输出单个分类下的所有文章</p>
+
+<p>我们可以轻松获得所有分类下的所有文章，但是没有办法只输出一个分类下的文章。</p>
+
+<p>首先可以想到的解决方法方法：首先把所有分类和所有文章的html生成好，然后全部隐藏。把需要显示的分类的名称放在url中，使用javascript读取名称出来后根据名称显示该分类。这样做有一个坏处：如果文章数较多，而每个文章都有很多分类，那么就会出现html文件很大，加载很慢的情况。</p>
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(2)</span></a>
+		
+		<a href="/blog/category.html?category=html">html <span class="j-class-i-num">(1)</span></a>
+		
+		<a href="/blog/category.html?category=css">css <span class="j-class-i-num">(1)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>

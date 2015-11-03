@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	{% include base.html %}
+</head>
+<body>
+	{% include header.html %}
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="{{site.baseurl}}{{page.url}}">{{page.title}}</a></h2>
+						<p class="j-i-time">{{page.date | date_to_string}}</p>
+						<p class="j-i-tags">
+							{%for tag in page.tags %}
+							<span class="j-i-tag">{{tag}}</span>
+							{% endfor %}
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt">{{content}}</div>
+						</div>
+				</div>
+			</div>
+			{% include side.html %}
+		</div>
+	</div>
+	{% include footer.html %}
+</body>
+</html>
