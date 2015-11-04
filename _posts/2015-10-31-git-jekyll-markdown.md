@@ -153,7 +153,7 @@ tags: [git , jekyll , markdown]
 {% endhighlight %}
 
 >引用方法：
-{% highlight txt %}
+{% highlight markdown %}
  	---
 	layout: default  // 引用的模版名称
 	title: Github-我的第一篇博客   //文章标题
@@ -173,7 +173,7 @@ tags: [git , jekyll , markdown]
 >
 >因为我是按markdown语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
 >不管你用什么语法，到最后jekyll会编译回html文件存放在 _site 目录下。
-{% highlight txt %}
+{% highlight markdown %}
  	---
 	layout: page
 	title: Github-我的第一篇博客
