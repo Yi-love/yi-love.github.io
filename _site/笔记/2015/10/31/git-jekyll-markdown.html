@@ -55,6 +55,163 @@
 虽然很简陋但是也算是简洁大方的表现吧。</p>
 </blockquote>
 
+<blockquote>
+  <h3 id="jekyll">1.jekyll</h3>
+  <p>先来说说<em>jekyll</em>吧。整个个人博客都是按照jekyll的格式搭建的，这是必须的。如果你想搭建更好的也可以直接点击<a href="http://jekyllrb.com/docs/home/">jekyll</a>。
+先来看看最终的效果图：</p>
+</blockquote>
+
+<p><img src="/blog/images/yi_06.jpg" alt="jekyll目录" /></p>
+
+<blockquote>
+  <h4 id="includes-">1.1._includes 目录</h4>
+  <p>这个目录下面存放的是一些基本固定不变的html文件，以及一些页面的公共部分。这些页面可以提供给<em>_layouts</em>目录下面的html使用。</p>
+</blockquote>
+
+<blockquote>
+  <p>这个目录下我添加了以下4个文件：</p>
+
+  <ol>
+    <li>基本设置</li>
+    <li>头部导航</li>
+    <li>页面底部</li>
+    <li>右侧信息</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-1">1.1.1基本设置</h4>
+  <p>比如：html文本的编码设置，固定的样式外链，基本的js已入。等这一些都可以放到里面。</p>
+
+  <p>我为了让网站在pc和移动端都可以比较完美的展示，添加了一下<em>meta</em>参数，还引入了一个base.css。</p>
+</blockquote>
+
+<blockquote>
+  <p>这是一个如同bootstrap一样的响应式框架。不过很多组件都没有。
+但对付pc和移动端是够了。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- base.html --&gt;</span>
+ 	<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-title"</span> <span class="na">content=</span><span class="s">"{ {page.title}}"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-capable"</span> <span class="na">content=</span><span class="s">"yes"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-touch-fullscreen"</span> <span class="na">content=</span><span class="s">"yes"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Cache-Control"</span> <span class="na">content=</span><span class="s">"no-siteapp"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-status-bar-style"</span> <span class="na">content=</span><span class="s">"black-translucent"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"format-detection"</span> <span class="na">content=</span><span class="s">"telephone=no"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"format-detection"</span> <span class="na">content=</span><span class="s">"email=no"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"</span> <span class="na">name=</span><span class="s">"viewport"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/normalize.css"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/base.css"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/syntax.css"</span><span class="nt">&gt;</span>
+	<span class="c">&lt;!-- 没有去空格 --&gt;</span>
+	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{ {site.baseurl}}/javascripts/base.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+	<span class="c">&lt;!-- 去空格 --&gt;</span>
+	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/blog/javascripts/base.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+	<span class="nt">&lt;title&gt;</span>{ {page.title}}<span class="nt">&lt;/title&gt;</span></code></pre></figure>
+
+<blockquote>
+  <p>可能你不明白 { {site.baseurl}}这个是什么意思。其实这个就是_config.yml 里面定义的baseurl的值，看上面的js引入就明白了。这一篇我就不说jekyll的语法了，想了解 点击<a href="http://jekyllrb.com/docs/home/">jekyll</a>。</p>
+</blockquote>
+
+<blockquote>
+  <p><em>注意使用时 { { 之间不要有空格，我这里为了防止被解析了才打空格。</em></p>
+</blockquote>
+
+<h4 id="section-2">1.1.2头部导航</h4>
+<blockquote>
+  <p>因为简洁，所以导航没有什么内容。非常简单。但必须配上base.css才会有效果。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- header.html --&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container-fluid j-header"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"j-row j-nav"</span><span class="nt">&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/"</span><span class="nt">&gt;</span>首页<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/list.html"</span><span class="nt">&gt;</span>归档<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://github.com/Yi-love"</span><span class="nt">&gt;</span>Github<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/me.html"</span><span class="nt">&gt;</span>Me<span class="nt">&lt;/a&gt;</span>
+				<span class="nt">&lt;/nav&gt;</span>
+			<span class="nt">&lt;/div&gt;</span>
+		<span class="nt">&lt;/div&gt;</span>
+	<span class="nt">&lt;/div&gt;</span></code></pre></figure>
+
+<h4 id="section-3">1.1.3底部信息</h4>
+<blockquote>
+  <p>因为看了《大话西游》,感觉经典对白实在太好。于是想来一句。感觉很多都太长，所以就选了这一句短的来充当底部咯。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- footer.html --&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container-fluid j-footer"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"j-footer-say"</span><span class="nt">&gt;</span>喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……<span class="nt">&lt;/p&gt;</span>
+			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"j-footer-say j-tlgr"</span><span class="nt">&gt;</span>——周星驰 《大话西游》<span class="nt">&lt;/p&gt;</span>
+		<span class="nt">&lt;/div&gt;</span>
+	<span class="nt">&lt;/div&gt;</span></code></pre></figure>
+
+<h4 id="section-4">1.1.4右侧信息</h4>
+<blockquote>
+  <p>博客一般都会在右边放置一下辅助信息。比如文章分类。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- side.html --&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-col-xs-12 j-col-sm-12 j-col-md-3"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user-thumb"</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"{ {site.baseurl}}/images/user.jpg"</span> <span class="na">alt=</span><span class="s">""</span> <span class="nt">/&gt;&lt;/a&gt;</span>
+			<span class="nt">&lt;/div&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user-info"</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>微信<span class="nt">&lt;/a&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>微博<span class="nt">&lt;/a&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>QQ<span class="nt">&lt;/a&gt;</span>
+			<span class="nt">&lt;/div&gt;</span>
+		<span class="nt">&lt;/div&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-class-list"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>分类<span class="nt">&lt;/h3&gt;</span>
+			
+			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/category.html?category={ { category|first}}"</span><span class="nt">&gt;</span>
+				{ {category | first}} 
+				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"j-class-i-num"</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
+			<span class="nt">&lt;/a&gt;</span>
+			
+		<span class="nt">&lt;/div&gt;</span>
+	<span class="nt">&lt;/div&gt;</span></code></pre></figure>
+
+<blockquote>
+  <p>分类这里现在不好解释，等到下一篇说jekyll基本语法的时候，一起讨论。因为这个文章分类需要配合js才能实现。</p>
+</blockquote>
+
+<h3 id="layouts">1.2_layouts目录</h3>
+<blockquote>
+  <p>这个目录是存放模板文件的。也就是说，你每个网页都可以使用其中的一个作为模版输出。这样就可以节省很多的不必要重复的代码。</p>
+
+  <p>1.2.1.   默认模板</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- default.html --&gt;</span>
+ 	<span class="cp">&lt;!DOCTYPE html&gt;</span>
+	<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cmn-Hans"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;head&gt;</span>
+		{ % include base.html %}
+	<span class="nt">&lt;/head&gt;</span>
+	<span class="nt">&lt;body&gt;</span>
+		{ % include header.html %}
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-col-xs-12 j-col-sm-12 j-col-md-9"</span><span class="nt">&gt;</span>
+					{ {content}}
+				<span class="nt">&lt;/div&gt;</span>
+				{ % include side.html %}
+			<span class="nt">&lt;/div&gt;</span>
+		<span class="nt">&lt;/div&gt;</span>
+		{ % include footer.html %}
+	<span class="nt">&lt;/body&gt;</span>
+	<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+<blockquote>
+  <p>未完待续….</p>
+</blockquote>
 </div>
 						</div>
 				</div>
