@@ -1,8 +1,8 @@
 ---
 layout: page
-title: git+jekyll+markdown搭建博客框架
+title: git+jekyll+html搭建博客框架
 categories: [笔记]
-tags: [git , jekyll , markdown]
+tags: [git , jekyll , html]
 ---
 
 >### 前言 ###
@@ -153,7 +153,7 @@ tags: [git , jekyll , markdown]
 {% endhighlight %}
 
 >引用方法：
-{% highlight markdown %}
+{% highlight html %}
  	---
 	layout: default  // 引用的模版名称
 	title: Github-我的第一篇博客   //文章标题
@@ -171,9 +171,9 @@ tags: [git , jekyll , markdown]
 >
 >以我的第一篇博客为例：2015-1027-first-blog.md
 >
->因为我是按markdown语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
+>因为我是按html语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
 >不管你用什么语法，到最后jekyll会编译回html文件存放在 _site 目录下。
-{% highlight markdown %}
+{% highlight html %}
  	---
 	layout: page
 	title: Github-我的第一篇博客

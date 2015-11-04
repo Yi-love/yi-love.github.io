@@ -2,7 +2,7 @@
 <html lang="zh-cmn-Hans">
 <head>
 	<meta charset="UTF-8">
-<meta name="apple-mobile-web-app-title" content="git+jekyll+markdown搭建博客框架">
+<meta name="apple-mobile-web-app-title" content="git+jekyll+html搭建博客框架">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-touch-fullscreen" content="yes">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="/blog/stylesheets/base.css">
 <link rel="stylesheet" href="/blog/stylesheets/syntax.css">
 <script src="/blog/javascripts/base.js"></script>
-<title>git+jekyll+markdown搭建博客框架</title>
+<title>git+jekyll+html搭建博客框架</title>
 </head>
 <body>
 	<div class="j-container-fluid j-header">
@@ -33,7 +33,7 @@
 		<div class="j-row">
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
 				<div class="j-container j-content">
-					<h2 class="j-i-title"><a href="/blog/%E7%AC%94%E8%AE%B0/2015/10/31/git-jekyll-markdown.html">git+jekyll+markdown搭建博客框架</a></h2>
+					<h2 class="j-i-title"><a href="/blog/%E7%AC%94%E8%AE%B0/2015/10/31/git-jekyll-markdown.html">git+jekyll+html搭建博客框架</a></h2>
 						<p class="j-i-time">31 Oct 2015</p>
 						<p class="j-i-tags">
 							
@@ -41,7 +41,7 @@
 							
 							<span class="j-i-tag">jekyll</span>
 							
-							<span class="j-i-tag">markdown</span>
+							<span class="j-i-tag">html</span>
 							
 						</p>
 						<div class="j-container">
@@ -217,13 +217,13 @@
   <p>引用方法：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-markdown" data-lang="markdown"><span class="p"> 	---</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	---
 	layout: default  // 引用的模版名称
 	title: Github-我的第一篇博客   //文章标题
-	categories:  <span class="p">[</span><span class="nv">笔记</span><span class="p">]</span>      //文章分类 array
-	tags: <span class="p">[</span><span class="nv">记事</span><span class="p">]</span>             //文章标签 array
-<span class="p">	---
-	</span>
+	categories:  [笔记]      //文章分类 array
+	tags: [记事]             //文章标签 array
+	---
+	
 	这是内容                //内容</code></pre></figure>
 
 <blockquote>
@@ -236,27 +236,27 @@
 
   <p>以我的第一篇博客为例：2015-1027-first-blog.md</p>
 
-  <p>因为我是按markdown语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
+  <p>因为我是按html语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
 不管你用什么语法，到最后jekyll会编译回html文件存放在 _site 目录下。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-markdown" data-lang="markdown"><span class="p"> 	---</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	---
 	layout: page
 	title: Github-我的第一篇博客
-	categories:  <span class="p">[</span><span class="nv">笔记</span><span class="p">]</span>
-	tags: <span class="p">[</span><span class="nv">记事</span><span class="p">]</span>
-<span class="p">	---</span>
+	categories:  [笔记]
+	tags: [记事]
+	---
 	## 前言 ##
-<span class="gt">	&gt;真正的入职前端已有半年多，加上自己的实习经验已差不多快一年了。感受颇多，</span>
-<span class="gt">	&gt;但又感觉自己没有积累到什么东西。所以就想起了写起博客来了。</span>
-<span class="gt">	&gt;虽然以前自己在*CSDN*上有自己的博客，也写了有30篇左右的文章，</span>
-<span class="gt">	&gt;但大多都是自己原来的一些代码而已，说明性的内容比较少，就想起了自己搭建一个</span>
-<span class="gt">	&gt;博客系统。但发觉要自己去买服务器的话，感觉有点奢侈。</span>
-<span class="gt">	&gt;后面偶然发现了*Github*居然可以搭建博客，而且免费。</span>
-<span class="gt">	&gt;兴起之下在下班之后就自己捣鼓用Github来</span>
-<span class="gt">	&gt;搭建自己的博客。</span>
-<span class="gt">	
-	&gt;经过一个星期的晚上奋战，终于搭建好了。</span></code></pre></figure>
+	&gt;真正的入职前端已有半年多，加上自己的实习经验已差不多快一年了。感受颇多，
+	&gt;但又感觉自己没有积累到什么东西。所以就想起了写起博客来了。
+	&gt;虽然以前自己在*CSDN*上有自己的博客，也写了有30篇左右的文章，
+	&gt;但大多都是自己原来的一些代码而已，说明性的内容比较少，就想起了自己搭建一个
+	&gt;博客系统。但发觉要自己去买服务器的话，感觉有点奢侈。
+	&gt;后面偶然发现了*Github*居然可以搭建博客，而且免费。
+	&gt;兴起之下在下班之后就自己捣鼓用Github来
+	&gt;搭建自己的博客。
+	
+	&gt;经过一个星期的晚上奋战，终于搭建好了。</code></pre></figure>
 
 <h4 id="images--javascript-stylesheets">1.4 images , javascript ,stylesheets</h4>
 <blockquote>
