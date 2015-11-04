@@ -126,7 +126,10 @@ tags: [git , jekyll , markdown]
 ### 1.2_layouts目录 ####
 >这个目录是存放模板文件的。也就是说，你每个网页都可以使用其中的一个作为模版输出。这样就可以节省很多的不必要重复的代码。
 >
->1.2.1.   默认模板
+>模版文件的引入是通过 { % include 文件  %} 完成的。
+ 
+>例如：我的默认模板，引入了 base.html , header.html , side.html , footer.html, 其中还有一个 { { content}} 那么这个就是 引用了该模板的页面的内容所填充的部分。
+
 {% highlight html %}
  	<!-- default.html -->
  	<!DOCTYPE html>
@@ -149,5 +152,93 @@ tags: [git , jekyll , markdown]
 	</html>
 {% endhighlight %}
 
+>引用方法：
+{% highlight md %}
+ 	---
+	layout: default  // 引用的模版名称
+	title: Github-我的第一篇博客   //文章标题
+	categories:  [笔记]      //文章分类 array
+	tags: [记事]             //文章标签 array
+	---
+	
+	这是内容                //内容
+{% endhighlight %}
+>以上就是引用模版文件的语法。如果不用就删掉layout即可。[*- - -*] 这三根横杆一定要置顶不能有空格和空行。
 
->未完待续....
+
+>#### 1.3_posts目录 ####
+>这个目录是整个博客系统所用文章存放的目录，所有的文章都必须按照   *YYYY-MM-DD-name.textile* 的格式命名
+>
+>以我的第一篇博客为例：2015-1027-first-blog.md
+>
+>因为我是按markdown语法写的所以后缀是.md , 你也可以按html来写，那后缀改为.html即可。
+>不管你用什么语法，到最后jekyll会编译回html文件存放在 _site 目录下。
+{% highlight md %}
+ 	---
+	layout: page
+	title: Github-我的第一篇博客
+	categories:  [笔记]
+	tags: [记事]
+	---
+	## 前言 ##
+	>真正的入职前端已有半年多，加上自己的实习经验已差不多快一年了。感受颇多，
+	>但又感觉自己没有积累到什么东西。所以就想起了写起博客来了。
+	>虽然以前自己在*CSDN*上有自己的博客，也写了有30篇左右的文章，
+	>但大多都是自己原来的一些代码而已，说明性的内容比较少，就想起了自己搭建一个
+	>博客系统。但发觉要自己去买服务器的话，感觉有点奢侈。
+	>后面偶然发现了*Github*居然可以搭建博客，而且免费。
+	>兴起之下在下班之后就自己捣鼓用Github来
+	>搭建自己的博客。
+	
+	>经过一个星期的晚上奋战，终于搭建好了。
+
+{% endhighlight %}
+
+
+#### 1.4 images , javascript ,stylesheets ####
+>这个分别对应的文件就不言而喻了吧。分别对应：图片目录，js目录，css目录。
+
+> 最后剩余的就只有：
+
+>1.   _config.yml (配置文件)
+>2.   index.html  (博客首页)
+>3.   category.html (文章分类页)
+>4.   list.html  (文章归档页)
+>5.   me.html   (个人介绍页)
+
+
+#### 最后给个调用流程图 ####
+>只要明白：
+
+>1.   _includes  公共文件目录
+>2.   _layouts  模版文件目录
+>3.   _posts    文章目录
+
+>只有知道这几个目录是干什么就可以了。
+>其他的简单了吧。
+
+>![调用流程图]({{site.baseurl}}/images/yi_07.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
