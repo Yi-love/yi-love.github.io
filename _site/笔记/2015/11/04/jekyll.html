@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="Jekyll在github博客中的应用">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>Jekyll在github博客中的应用</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/%E7%AC%94%E8%AE%B0/2015/11/04/jekyll.html">Jekyll在github博客中的应用</a></h2>
+						<p class="j-i-time">04 Nov 2015</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">git</span>
+							
+							<span class="j-i-tag">jekyll</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <p>我们来继续讨论jekyll的实际应用中所遇到的问题以及解决之道。
+jekyll的内容有很多,你如果想学深入理解jekyll那么你来错地方了。如果你是遇到了以下问题，那么希望以下内容的对你解决问题有所帮助。</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="section">问题</h3>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>输出全部文章</li>
+    <li>文章分类</li>
+    <li>文章添加标签</li>
+    <li>文章显示</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <h4 id="jekyll--4">jekyll 的全局变量有 4个</h4>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-tex" data-lang="tex"> 	site: 整个站点的信息
+ 	page: 当前页面的所有信息
+ 	content: 所有布局文件被渲染之后的内容(In layout files, the rendered content of the Post or Page being wrapped. )
+ 	paginator:这个配置是要配置的</code></pre></figure>
+
+<blockquote>
+  <p>site 的参数有很多。下面我就列举一下常用的几个。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-tex" data-lang="tex"> 	site.time  : 运行jekyll命令的时间
+ 	site.pages : 所有页面，注意是页面
+ 	site.posts ：所有文章
+ 	site.static<span class="p">_</span>files : 静态文件，或者是没有被修改的文件
+ 	site.html<span class="p">_</span>pages ： 所有html页面
+ 	site.html<span class="p">_</span>files ： 所有静态的html页面,就是不用jekyll处理的页面
+ 	site.collections : 列表信息
+ 	site.data ： <span class="p">_</span>data目录下的信息
+ 	site.documents : 所有页面的domcument，说白了就是html页面
+ 	site.categories ： 所有分类 的文章
+ 	site.categories.CATEGORY : CATEGORY分类下的文章
+ 	site.tags.TAG : 获取 TAG 标签下的所有文章</code></pre></figure>
+
+<h5 id="section-1">1.输出全部文章</h5>
+
+<blockquote>
+  <p>site 是整个站点的根一样，这个参数下有很多的小的参数。可以通过 { {site.name}} 来获取信息。
+比如要获取站点的全部文章就可以通过 { {site.posts}}来获取所有在  _posts目录下的所有文章。
+通过for循环来遍历输出所有的文章。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- exampole --&gt;</span>
+ 	{ % for post in site.posts %}
+	<span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"j-row j-list-i"</span><span class="nt">&gt;</span>
+		{ {post}}  //输出文章
+	<span class="nt">&lt;/li&gt;</span>
+	{ % endfor %}</code></pre></figure>
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
