@@ -345,6 +345,10 @@ body{
 	height: 120px;
 	background: #0288D1;
 }
+.j-logo{
+	height: 40px;
+	float: left;
+}
 .j-nav{
 	float: right;
 	margin-top: 1rem;
@@ -370,6 +374,10 @@ body{
 @media  only screen and (max-width: 640px ) {
 	.j-header{
 		height: auto;
+	}
+	.j-header .j-logo img{
+		height: 40px;
+		width: auto;
 	}
 	.j-header .j-nav{
 		margin-top: 0;
