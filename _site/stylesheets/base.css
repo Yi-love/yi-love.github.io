@@ -376,8 +376,9 @@ body{
 		height: auto;
 	}
 	.j-header .j-logo img{
-		height: 40px;
+		height: 34px;
 		width: auto;
+		margin-top: 2px;
 	}
 	.j-header .j-nav{
 		margin-top: 0;
