@@ -14,7 +14,7 @@ tags: [git , jekyll , markdown]
 >先来说说*jekyll*吧。整个个人博客都是按照jekyll的格式搭建的，这是必须的。如果你想搭建更好的也可以直接点击[jekyll]。
 >先来看看最终的效果图：
 
-![jekyll目录]({{site.baseurl}}/images/yi_06.jpg)
+![jekyll目录]({{site.baseurl}}/images/2015/1031_01.jpg)
 
 [jekyll]:http://jekyllrb.com/docs/home/
 
@@ -216,7 +216,7 @@ tags: [git , jekyll , markdown]
 >只有知道这几个目录是干什么就可以了。
 >其他的简单了吧。
 
->![调用流程图]({{site.baseurl}}/images/yi_07.jpg)
+>![调用流程图]({{site.baseurl}}/images/2015/1031_02.jpg)
 
 
 
