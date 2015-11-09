@@ -193,7 +193,68 @@
   </ol>
 </blockquote>
 
-<p>未完待续…</p>
+<blockquote>
+  <p>不管是哪一种情况，对字符串进行前后多余空格删除是必须的。</p>
+</blockquote>
+
+<blockquote>
+  <h5 id="html">2.1传入的是html</h5>
+</blockquote>
+
+<blockquote>
+  <p>e.g: $(‘&lt;div&gt;传人html&lt;/div&gt;’)</p>
+</blockquote>
+
+<blockquote>
+  <p>zepto会认为这样做的目的是生成dom元素。那么这样的操作其实等价于：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$('&lt;div&gt;传人html&lt;/div&gt;')</span>
+	<span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">)</span>
+	<span class="nx">div</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"传人html"</span>
+	<span class="k">return</span> <span class="nx">div</span></code></pre></figure>
+
+<blockquote>
+  <p>这只是一个最简单的列子，如果要作为一个灵活的功能模块的话，还需要进一步的优化和扩展，比如如何判断传人的是html标签.
+我们知道html标签就只有两种情况
+&lt;tag/&gt;  或  &lt;tag&gt;&lt;/tag&gt;，那么传人的html可能就是这两种情况的互相嵌套。</p>
+</blockquote>
+
+<blockquote>
+  <p>那么就可以通过正则表达式匹配出入的是否符合html标签标准</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">// html标签判断</span>
+    <span class="nx">fragmentRE</span> <span class="o">=</span> <span class="sr">/^</span><span class="se">\s</span><span class="sr">*&lt;</span><span class="se">(\w</span><span class="sr">+|!</span><span class="se">)[^</span><span class="sr">&gt;</span><span class="se">]</span><span class="sr">*&gt;/</span></code></pre></figure>
+
+<blockquote>
+  <p>上面这个正则表达式的意思是：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">// html标签判断</span>
+    <span class="o">^</span><span class="err">\</span><span class="nx">s</span><span class="o">*</span>  <span class="err">:</span> <span class="err">表示从行首匹配</span> <span class="mi">0</span><span class="o">-</span><span class="nx">n</span><span class="err">次的空白符</span>
+    <span class="o">&lt;</span><span class="p">(</span><span class="err">\</span><span class="nx">w</span><span class="o">+|!</span><span class="p">)[</span><span class="o">^&gt;</span><span class="p">]</span><span class="o">*&gt;</span> <span class="err">:</span> <span class="err">表示匹配以</span> <span class="o">&lt;</span> <span class="err">开头和</span><span class="o">&gt;</span><span class="err">结尾的字符串，并且必须匹配一个可以组成单词的字符或</span><span class="o">!</span><span class="err">开头，不匹配</span><span class="o">&gt;</span> <span class="mi">0</span><span class="o">-</span><span class="nx">n</span><span class="err">次</span></code></pre></figure>
+
+<blockquote>
+  <p>你可能会发现为什么没有匹配&lt;/tag&gt;,其实没有必要了,因为只要匹配出它是标签即可创建了。而且zepto也只匹配了最外层的tag，并没有匹配所有的这是为什么。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">// html标签判断</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">selector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'&lt;'</span> <span class="o">&amp;&amp;</span> <span class="sr">/^</span><span class="se">\s</span><span class="sr">*&lt;</span><span class="se">(\w</span><span class="sr">+|!</span><span class="se">)[^</span><span class="sr">&gt;</span><span class="se">]</span><span class="sr">*&gt;/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">)){</span>
+		<span class="nx">dom</span> <span class="o">=</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">fragment</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nb">RegExp</span><span class="p">.</span><span class="nx">$1</span><span class="p">,</span> <span class="nx">context</span><span class="p">),</span> <span class="nx">selector</span> <span class="o">=</span> <span class="kc">null</span>
+	<span class="p">}</span>
+    <span class="c1">// RegExp.$1  等价于  匹配到的tag  </span>
+    <span class="c1">// e.g: $('&lt;img&gt;')   --&gt; RegExp.$1 == img </span></code></pre></figure>
+
+<blockquote>
+  <p>zepto交给了zepto.fragment()去处理，也就是说上面的js只要保证最少有一个&lt;tag&gt;即可。
+<img src="/blog/images/2015/1107_04.jpg" alt="zepto.fragment函数" /></p>
+</blockquote>
+
+<blockquote>
+  <p>函数的注释也说得很明白：根据html字符串和标签名生成dom节点数组并返回。
+这个函数也是可以被重写的，并且这个函数不完全兼容浏览器。</p>
+</blockquote>
 
 </div>
 						</div>
