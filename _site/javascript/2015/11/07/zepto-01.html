@@ -296,10 +296,90 @@ $.find()函数写的非常的简洁：
 </blockquote>
 
 <blockquote>
-  <p>我们看到的上面4中情况可能就是第2中情况比较难以理解，其实不然。</p>
+  <p>我们看到的上面4中情况可能就是第2中情况比较难以理解，其实不然。
+第二种情况是传人的参数都是dom对象数组——判断selector数组对象是不是有属于context数组对象的子元素。
+现在我们来分析一下他是如何实现过滤获取到最后符合条件的结果的。</p>
 </blockquote>
 
-<p>未完待续……</p>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//过滤不符合条件的dom节点</span>
+	<span class="c1">//e.g : dom = dom.find(selector);</span>
+	<span class="c1">// $this = dom</span>
+	<span class="nx">result</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="c1">//过滤</span>
+      	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span>
+      	<span class="k">return</span> <span class="nx">emptyArray</span><span class="p">.</span><span class="nx">some</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">$this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">){</span>
+        	<span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
+      	<span class="p">})</span>
+    <span class="p">})</span></code></pre></figure>
+
+<p>这里面牵涉到3个函数,filter,some,contains。现在我们分别来看这3个函数。</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//filter函数</span>
+	<span class="nl">filter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">filter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span>
+      <span class="p">}))</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>我们来看看some函数的定义：只要有数组元素满足f的要求就返回true，否则返回false。</p>
+</blockquote>
+
+<p><img src="/blog/images/2015/1107_07.jpg" alt="array.some函数" /></p>
+
+<blockquote>
+  <p>那么我们就可以推断出 $.contains函数就是判断 selector 是否是 dom的子节点。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$.contains函数  通过它可以判断某个节点是不是另一个节点的后代</span>
+	<span class="nx">$</span><span class="p">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">contains</span> <span class="p">?</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      	<span class="k">return</span> <span class="nx">parent</span> <span class="o">!==</span> <span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+    <span class="p">}</span> <span class="p">:</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      	<span class="k">while</span> <span class="p">(</span><span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">))</span>
+        	<span class="k">if</span> <span class="p">(</span><span class="nx">node</span> <span class="o">===</span> <span class="nx">parent</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span>
+     	<span class="k">return</span> <span class="kc">false</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>那么你可能会发现，我为什么没有先讨论filter,而是先讨论的some函数和contains函数。
+因为filter函数里面嵌套这这两个函数，从运算来说必须先得这两个函数执行完了，filter函数才会返回。
+其实真正的filter函数他是如何完成筛选的我们还不知道，我们只知道了[].some()函数返回了true | false.
+filter 真正是什么函数还得看它内部的实现。</p>
+</blockquote>
+
+<blockquote>
+  <p>上面我已经给出了filter函数的源码。就两种情况：1:传人的是函数,2：不是函数。这里我们只讨论传人函数的情况。
+也就是直接嵌套调用了2次$.not()函数。 从not函数的字面来看就是 <em>不是</em>的意思，那两次不是就是是的意思。
+和数学里面 负负得正类似。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$.not 函数</span>
+	<span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+     	<span class="kd">var</span> <span class="nx">nodes</span><span class="o">=</span><span class="p">[]</span>
+      	<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">call</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span>
+          	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">selector</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="nx">idx</span><span class="p">))</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+        <span class="p">})</span>
+      	<span class="k">else</span> <span class="p">{</span>
+        	<span class="kd">var</span> <span class="nx">excludes</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">'string'</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span>
+          	<span class="p">(</span><span class="nx">likeArray</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">.</span><span class="nx">item</span><span class="p">))</span> <span class="p">?</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span>
+        	<span class="k">this</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">){</span>
+          		<span class="k">if</span> <span class="p">(</span><span class="nx">excludes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span>
+        	<span class="p">})</span>
+      	<span class="p">}</span>
+      	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>因为传人的是函数所以not函数会执行if分支。
+现在整个流程基本跑通。那现在我们就是要把整个流程在理清楚就可以了。</p>
+</blockquote>
+
+<blockquote>
+  <p>未完待续……</p>
+</blockquote>
 
 </div>
 						</div>
