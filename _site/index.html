@@ -36,7 +36,45 @@
 				<ul class="j-container">
 	 
 	<li class="j-row j-list-i">
-		<h2 class="j-i-title"><a href="/blog/javascript/2015/11/07/zepto-01.html">zepto.jsv1.0 源码解读-01</a></h2>
+		<h2 class="j-i-title"><a href="/blog/javascript/2015/11/12/zepto-02.html">zepto.js.v1.0 源码解读-02</a></h2>
+		<p class="j-i-time">12 Nov 2015</p>
+		<p class="j-i-tags">
+			
+			<span class="j-i-tag">前端开发</span>
+			
+			<span class="j-i-tag">zepto</span>
+			
+			<span class="j-i-tag">源码</span>
+			
+			<span class="j-i-tag">ajax</span>
+			
+		</p>
+		<div class="j-container">
+			<div class="j-row j-artclie-txt"><blockquote>
+  <p>第一篇zepto源码我已经对zepto的核心选择器分析了一番，这一篇主要的解读一下ajax模块。看zepto是怎么实现ajax这个基本的模块的。
+我们知道不管是zepto还是jquery都可以通过下面的方式获取到服务器的数据或者向服务器发送数据。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> 	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+ 		<span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+		<span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+		<span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+		<span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">},</span>
+		<span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+		<span class="p">}</span>
+ 	<span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <p>这里我也写了一段很简单的js模拟ajax功能。</p>
+</blockquote>
+
+</div>
+		</div>
+	</li>
+	
+	<li class="j-row j-list-i">
+		<h2 class="j-i-title"><a href="/blog/javascript/2015/11/07/zepto-01.html">zepto.js.v1.0 源码解读-01</a></h2>
 		<p class="j-i-time">07 Nov 2015</p>
 		<p class="j-i-tags">
 			
@@ -174,7 +212,7 @@ jekyll的内容有很多,你如果想学深入理解jekyll那么你来错地方�
 		
 		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
 		
-		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(1)</span></a>
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(2)</span></a>
 		
 	</div>
 </div>

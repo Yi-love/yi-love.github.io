@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="zepto.js.v1.0 源码解读-02">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>zepto.js.v1.0 源码解读-02</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/javascript/2015/11/12/zepto-02.html">zepto.js.v1.0 源码解读-02</a></h2>
+						<p class="j-i-time">12 Nov 2015</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">前端开发</span>
+							
+							<span class="j-i-tag">zepto</span>
+							
+							<span class="j-i-tag">源码</span>
+							
+							<span class="j-i-tag">ajax</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <p>第一篇zepto源码我已经对zepto的核心选择器分析了一番，这一篇主要的解读一下ajax模块。看zepto是怎么实现ajax这个基本的模块的。
+我们知道不管是zepto还是jquery都可以通过下面的方式获取到服务器的数据或者向服务器发送数据。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> 	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+ 		<span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+		<span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+		<span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+		<span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">},</span>
+		<span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+		<span class="p">}</span>
+ 	<span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <p>这里我也写了一段很简单的js模拟ajax功能。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> 	<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="na">ajax</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+			<span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
+			<span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">type</span> <span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">url</span> <span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">async</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span> <span class="nx">options</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">'POST'</span><span class="p">)</span>
+				<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">"Content-type"</span><span class="p">,</span><span class="s2">"application/x-www-form-urlencoded"</span><span class="p">)</span>			
+			<span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+				<span class="k">if</span> <span class="p">(</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span> <span class="o">||</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">304</span> <span class="p">)</span> <span class="p">{</span>
+						<span class="nx">options</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">)</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="p">?</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="p">:</span> <span class="kc">null</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+		<span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+		<span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+		<span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+		<span class="na">data</span> <span class="p">:</span> <span class="s1">'ajax=true'</span><span class="p">,</span>
+		<span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <p>上面的这段代码是不完善的，要真正的使用的话必须进行加工，也就是处理各种有可能出现的情况。</p>
+</blockquote>
+
+<blockquote>
+  <p>未完待续…..</p>
+</blockquote>
+
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(2)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
