@@ -141,7 +141,7 @@
 </blockquote>
 
 <blockquote>
-  <h4 id="section-1">1.1 合并参数</h4>
+  <h4 id="section-1">1. 合并参数</h4>
   <p>合并参数大家都看得懂，extend 是继承的意思.函数传人2个参数，意思就是第1个参数继承第2个参数,这里因为 第1个参数为空，所以等价于:</p>
 </blockquote>
 
@@ -200,7 +200,73 @@
 </blockquote>
 
 <blockquote>
-  <p>未完待续……</p>
+  <h4 id="url">4.url合法化</h4>
+  <p>$.ajax对应url进行了2次的判断，第一次判断是否为空，是则使用当前页面url，否则不修改。
+第2次进行锚点删除，即删除 url‘#’后面的字符，只保留前半部分。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">settings</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span><span class="c1">//为空</span>
+        <span class="nx">setting</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
+    <span class="c1">//截取'#'前半部分</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nx">hashIndex</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">'#'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span>
+        <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">setting</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">hashIndex</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-3">5.序列化数据</h4>
+  <p>我觉得还是先来看看  $.ajaxSettings 的基本参数吧。不然一头雾水呵呵，下面列举的参数不是全部只是一部分，有的可以用户自己传人。
+最后的时候我会列举出全部的属性.看看zepto.ajax可以设置多少参数。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">$</span><span class="p">.</span><span class="nx">ajaxSettings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">//请求类型</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+    <span class="c1">// 发送请求前执行的函数 , 默认 空</span>
+    <span class="na">beforeSend</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">// 成功请求后的回调</span>
+    <span class="na">success</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">//错误回调</span>
+    <span class="na">error</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">// 不管xhr成功还是失败，只有状态为complete就执行</span>
+    <span class="na">complete</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">//在指定内容中执行回调</span>
+    <span class="na">context</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="c1">//ajax触发事件为全局</span>
+    <span class="na">global</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="c1">// xhr</span>
+    <span class="na">xhr</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="c1">//接受的数据类型</span>
+    <span class="nx">accepts</span><span class="err">:</span> <span class="p">{</span>
+      <span class="nl">script</span><span class="p">:</span> <span class="s1">'text/javascript, application/javascript, application/x-javascript'</span><span class="p">,</span>
+      <span class="nx">json</span><span class="err">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
+      <span class="nx">xml</span><span class="err">:</span>    <span class="s1">'application/xml, text/xml'</span><span class="p">,</span>
+      <span class="nx">html</span><span class="err">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
+      <span class="nx">text</span><span class="err">:</span>   <span class="s1">'text/plain'</span>
+    <span class="p">},</span>
+    <span class="c1">//是否跨域</span>
+    <span class="nx">crossDomain</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="c1">//超时设置  默认不超时</span>
+    <span class="nx">timeout</span><span class="err">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1">//数据需要被序列化</span>
+    <span class="nx">processData</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="c1">//对get请求数据进行缓存</span>
+    <span class="nx">cache</span><span class="err">:</span> <span class="kc">true</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>序列化数据是对data参数进行的，因为大部分传进来的参数都是Object类型，而xhr接收参数的方式是字符串，所以必须把
+Object对象转化成String每个参数用’&amp;’隔开,和get传参类似。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="na">a</span><span class="p">:</span><span class="s1">'0'</span> <span class="p">,</span> <span class="na">b</span><span class="p">:</span><span class="s1">'1'</span><span class="p">}</span>
+    <span class="c1">//转换成</span>
+    <span class="nx">str</span> <span class="o">=</span> <span class="s1">'a=0&amp;b=1'</span></code></pre></figure>
+
+<blockquote>
+  <p>那么就有processData参数来设置data参数是否需要序列化。如果用户传人的类型已经是序列化的，那么就可以设置processData参数为false.
+需要序列化的话就会调用$.param函数。
+<img src="/blog/images/2015/1112_08.jpg" alt="$.param" /></p>
 </blockquote>
 
 </div>
