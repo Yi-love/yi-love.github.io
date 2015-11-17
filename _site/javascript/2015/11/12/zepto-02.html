@@ -380,6 +380,82 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
         <span class="nx">func</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'jsonp'</span><span class="p">]</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">func</span><span class="o">+</span><span class="s1">'('</span><span class="o">+</span><span class="nx">data</span><span class="o">+</span><span class="s1">')'</span><span class="p">)</span></code></pre></figure>
 
+<blockquote>
+  <p>下面来看看ajaxJSONP的源码
+<img src="/blog/images/2015/1112_10.jpg" alt="$.ajaxJSONP" />
+<img src="/blog/images/2015/1112_11.jpg" alt="$.ajaxJSONP" /></p>
+</blockquote>
+
+<blockquote>
+  <p>最后给一张settings的参数表咯</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">//请求类型</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+    <span class="c1">// 发送请求前执行的函数 , 默认 空</span>
+    <span class="na">beforeSend</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">// 成功请求后的回调</span>
+    <span class="na">success</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">//错误回调</span>
+    <span class="na">error</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">// 不管xhr成功还是失败，只有状态为complete就执行</span>
+    <span class="na">complete</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="c1">//在指定内容中执行回调</span>
+    <span class="na">context</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="c1">//ajax触发事件为全局</span>
+    <span class="na">global</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="c1">// xhr</span>
+    <span class="na">xhr</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="c1">//接受的数据类型</span>
+    <span class="nx">accepts</span><span class="err">:</span> <span class="p">{</span>
+      <span class="nl">script</span><span class="p">:</span> <span class="s1">'text/javascript, application/javascript, application/x-javascript'</span><span class="p">,</span>
+      <span class="nx">json</span><span class="err">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
+      <span class="nx">xml</span><span class="err">:</span>    <span class="s1">'application/xml, text/xml'</span><span class="p">,</span>
+      <span class="nx">html</span><span class="err">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
+      <span class="nx">text</span><span class="err">:</span>   <span class="s1">'text/plain'</span>
+    <span class="p">},</span>
+    <span class="c1">//是否跨域</span>
+    <span class="nx">crossDomain</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="c1">//超时设置  默认不超时</span>
+    <span class="nx">timeout</span><span class="err">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1">//数据需要被序列化</span>
+    <span class="nx">processData</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="c1">//对get请求数据进行缓存</span>
+    <span class="nx">cache</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
+    
+    <span class="c1">//其他的</span>
+    <span class="nx">context</span> <span class="c1">//内容</span>
+    <span class="nx">dataType</span> <span class="c1">//数据类型</span>
+    <span class="nx">jsonp</span> <span class="c1">//是不是jsonp请求</span>
+    <span class="nx">mimeType</span> <span class="c1">//上传文件类型</span>
+    <span class="nx">headers</span> <span class="c1">//请求头设置</span>
+    <span class="nx">contentType</span> <span class="c1">//内容类型</span>
+    <span class="nx">xhrFields</span> <span class="c1">//它可以添加到原生xhr对象上的key/value对</span>
+    <span class="nx">async</span> <span class="c1">//请求是否异步</span>
+    <span class="nx">username</span> <span class="c1">//http 1.1</span>
+    <span class="nx">password</span> 
+    <span class="nx">traditional</span> <span class="c1">//解析数据是否以传统方式</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>可能你还是有问题，比如Deferred函数.这个我自己现在还没有去研究，自己也值知道他大概的运作方式。如果要在ajax中使用它。
+我到可以举个例子</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+        <span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+        <span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+        <span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">}</span>
+	<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'success'</span><span class="p">)</span>
+	<span class="p">},</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'error'</span><span class="p">)</span>
+	<span class="p">})</span></code></pre></figure>
+
 </div>
 						</div>
 				</div>
