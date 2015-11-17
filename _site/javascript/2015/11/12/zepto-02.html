@@ -269,6 +269,117 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 <img src="/blog/images/2015/1112_08.jpg" alt="$.param" /></p>
 </blockquote>
 
+<blockquote>
+  <p>看起来可能有点不清楚，我把功能弱化一下。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//params.add 函数  </span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">key</span> <span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="err">等价于</span> <span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span><span class="s1">'='</span><span class="o">+</span> <span class="nx">value</span><span class="p">()</span> <span class="o">||</span> <span class="s1">''</span> <span class="o">||</span> <span class="nx">value</span>
+    <span class="cm">/**
+	* 序列化
+	* @param {Object} params [] 最后生成的参数数组
+	* @param {Object} obj       需要序列化的对象
+	* @param {Object} traditional  表示是否以传统的方式拼接数据
+	* @param {Object} scope   表示范围
+	*/</span>
+	<span class="c1">//serialize弱化</span>
+    <span class="nx">serialize</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="nx">obj</span><span class="p">,</span> <span class="nx">traditional</span> <span class="p">,</span> <span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">o</span> <span class="k">in</span> <span class="nx">obj</span> <span class="p">){</span>
+	    <span class="k">if</span> <span class="p">(</span> <span class="nx">scope</span> <span class="p">){</span>
+	    	<span class="nx">traditional</span> <span class="p">?</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">scope</span> <span class="p">:</span> <span class="nx">scope</span><span class="p">[]</span>
+	    <span class="p">}</span>
+	    <span class="c1">//3个分支,每次循环只会进入一个</span>
+	    <span class="c1">//e.g : [{"name":"username","value":"foo"}]</span>
+	    <span class="mi">1</span><span class="p">.</span> <span class="o">!</span><span class="nx">scope</span> <span class="o">&amp;&amp;</span> <span class="nx">array</span> <span class="o">&amp;&amp;</span> <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">].</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">].</span><span class="nx">value</span><span class="p">)</span>
+	    <span class="c1">//obj[o] == array || obj[o] == object &amp;&amp; traditional</span>
+	    <span class="c1">//递归序列化</span>
+	    <span class="mi">2</span><span class="p">.</span> <span class="nx">serialize</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">],</span> <span class="nx">traditional</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span>
+	    <span class="c1">//直接添加</span>
+	    <span class="mi">3</span><span class="p">.</span> <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">])</span>
+	<span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>最后params得到的是一个数组，里面的每一项都是以’a=b’的形式储存的。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//e.g : $.param({a:1,b:{c:0,d:22},d:[1,2,3] , e:[{name:'username',value:'jin'}]})</span>
+    <span class="nx">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"a=1"</span><span class="p">,</span><span class="s2">"b[c]=0"</span><span class="p">,</span><span class="s2">"b[d]=22"</span><span class="p">,</span><span class="s2">"d[]=1"</span><span class="p">,</span><span class="s2">"d[]=2"</span><span class="p">,</span><span class="s2">"d[]=3"</span><span class="p">,</span><span class="s2">"e[0][name]=username"</span><span class="p">,</span><span class="s2">"e[0][value]=jin"</span><span class="p">]</span>
+    <span class="c1">//通过'&amp;'将数组连接成字符串,改空格为'+'</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'&amp;'</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%20/g</span><span class="p">,</span> <span class="s1">'+'</span><span class="p">)</span>
+    <span class="nx">data</span> <span class="o">=</span> <span class="s2">"a=1&amp;b%5Bc%5D=0&amp;b%5Bd%5D=22&amp;d%5B%5D=1&amp;d%5B%5D=2&amp;d%5B%5D=3&amp;e%5B0%5D%5Bname%5D=username&amp;e%5B0%5D%5Bvalue%5D=jin"</span></code></pre></figure>
+
+<blockquote>
+  <p>数据是序列化了，可是get和post的传送数据的方式是不一样的，所以必须在序列化外层在套上一层判断，
+如果是get那么就将参数添加到url上，post是将数据通过xhr.send(data,null)传过去的。
+<img src="/blog/images/2015/1112_09.jpg" alt="$.param" /></p>
+</blockquote>
+
+<blockquote>
+  <p>appendQuery 函数 ——即 将数据添加到url。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">function</span> <span class="nx">appendQuery</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">query</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="k">return</span> <span class="nx">url</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">'&amp;'</span> <span class="o">+</span> <span class="nx">query</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">//可能看不明白的就是最后的正则</span>
+    <span class="c1">// ? == ?</span>
+    <span class="s1">'url?a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span> <span class="c1">//"url?a=b&amp;c=d"</span>
+    <span class="c1">// ?&amp; = ?</span>
+    <span class="s1">'url?&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
+    <span class="c1">// &amp;? = ?</span>
+    <span class="s1">'url&amp;?a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
+    <span class="c1">// &amp;?&amp; = ?&amp;</span>
+    <span class="s1">'url&amp;?&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?&amp;a=b&amp;c=d"</span>
+    <span class="c1">// &amp;&amp; = ?</span>
+    <span class="s1">'url&amp;&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
+    <span class="c1">// ?? = ?</span>
+    <span class="s1">'url??a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span></code></pre></figure>
+
+<blockquote>
+  <p>现在就可以看出 replace(/[&amp;?]{1,2}/, ‘?’)这个正则就是对 ? , ?? , &amp; , &amp;&amp; , ?&amp; , &amp;? 的匹配，并转换为 ?。</p>
+</blockquote>
+
+<blockquote>
+  <p>后续的问题就是将参数设置完全即可，没什么大的问题。不过要注意。post请求必须添加</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//内容类型  </span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">!==</span> <span class="kc">false</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">data</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'GET'</span><span class="p">))</span> <span class="c1">//不是get请求则添加请求头</span>
+      <span class="nx">setHeader</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="s1">'application/x-www-form-urlencoded'</span><span class="p">)</span><span class="c1">//post必须添加</span></code></pre></figure>
+
+<blockquote>
+  <p>你可能发现我是不是不想说了，是的。因为后面的参数设置没有多大问题了。看代码就能懂。
+不过我要说另外的一样东西jsonp</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="jsonp">JSONP</h4>
+  <p>举个例子</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">jp</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">)</span>
+    <span class="nx">jp</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="o">+</span><span class="s1">'&amp;jsonp=callback'</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">head</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">jp</span><span class="p">)</span>
+    <span class="kd">function</span> <span class="nx">callback</span><span class="p">(</span> <span class="nx">res</span> <span class="p">){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>这就是jsonp,这是个简单的例子。jsonp其实就是用script标签去请求服务器，jsonp是服务器接收的参数，callback是你定义的回调函数。
+不是什么数据都是可以通过jsonp获取到，因为服务器不一定都获取了jsonp参数，不一定执行了 callback.</p>
+</blockquote>
+
+<blockquote>
+  <p>服务器怎么写才能返回数据呢。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="na">code</span><span class="p">:</span><span class="s1">'success'</span><span class="p">},</span>
+        <span class="nx">func</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'jsonp'</span><span class="p">]</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">func</span><span class="o">+</span><span class="s1">'('</span><span class="o">+</span><span class="nx">data</span><span class="o">+</span><span class="s1">')'</span><span class="p">)</span></code></pre></figure>
+
 </div>
 						</div>
 				</div>
