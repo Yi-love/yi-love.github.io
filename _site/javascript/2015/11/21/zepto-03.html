@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="zepto.js.v1.0 源码解读-event.js-03">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>zepto.js.v1.0 源码解读-event.js-03</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/javascript/2015/11/21/zepto-03.html">zepto.js.v1.0 源码解读-event.js-03</a></h2>
+						<p class="j-i-time">21 Nov 2015</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">前端开发</span>
+							
+							<span class="j-i-tag">zepto</span>
+							
+							<span class="j-i-tag">源码</span>
+							
+							<span class="j-i-tag">event</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <p>接着上一篇文章，再来解读zepto的event.js模块。事件在前端看来不是什么新鲜事，从你打开一个页面，到页面的关闭，事件是无处不在的。
+但事件可能也是我们最容易忽略和难以琢磨的。日常的鼠标点击，键盘的输入，页面的滚动，都是事件存在的有力证明。
+今天，就来看看zepto.event是怎么为dom元素添加事件和删除事件的。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section">概述</h4>
+  <p>添加事件我们一般都会使用:</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//为div下 为有 calssName == three 添加click事件</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.three'</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'添加事件'</span> <span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <p>以上的方式来添加事件，那么就从on函数入手，解读event是如何添加到元素上面的。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-1">事件添加流程图</h4>
+  <p><img src="/blog/images/2015/1121_01.jpg" alt="$.event" />
+<img src="/blog/images/2015/1121_02.jpg" alt="$.event" /></p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-2">添加流程处理问题分析</h4>
+</blockquote>
+
+<blockquote>
+  <p>event.on() 函数需要处理的问题</p>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>传入数据的个数</li>
+    <li>监听事件执行的次数</li>
+    <li>是否需要代理事件</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <p>$.add() 函数需要处理的问题</p>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>分配唯一id 和 句柄数组</li>
+    <li>事件句柄设置</li>
+    <li>添加事件</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <p>你是不是发现好像也不是很难啊。其实最主要的就是事件句柄的设置，事件的核心就是句柄，句柄里包含了整个事件的信息。</p>
+</blockquote>
+
+<blockquote>
+  <p>下面就开始对事件添加函数的解剖吧。</p>
+</blockquote>
+
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(3)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
