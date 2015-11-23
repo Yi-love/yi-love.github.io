@@ -105,11 +105,247 @@
 </blockquote>
 
 <blockquote>
-  <p>你是不是发现好像也不是很难啊。其实最主要的就是事件句柄的设置，事件的核心就是句柄，句柄里包含了整个事件的信息。</p>
+  <p>你是不是发现好像也不是很难啊。其实最主要的就是事件句柄的设置，事件的核心就是句柄，句柄里包含了整个事件的信息。
+页面所有的事件句柄都是放在handlers对象里面的，所以可想而知，如果事件过多会出现的状况。</p>
 </blockquote>
 
 <blockquote>
   <p>下面就开始对事件添加函数的解剖吧。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="on">on函数</h4>
+  <p>on函数主要的工作就是对添加事件的基本数据的处理，将处理好的数据交给真正的add函数去添加事件。这也好比ajax对数据的序列化过程。</p>
+</blockquote>
+
+<blockquote>
+  <p>上代码:
+<img src="/blog/images/2015/1121_03.jpg" alt="$.on" /></p>
+</blockquote>
+
+<blockquote>
+  <p>1.event参数</p>
+</blockquote>
+
+<blockquote>
+  <p>现在来看看event接收的参数类型,大家所知道的就是传入String类型的字符串，要添加多个事件就以空格隔开。其实zepto还有其他的方式，那就是传人
+一个Object对象。Object每个事件名称对应一个处理的方法，这个方法就是所说的回调函数。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//event参数类型</span>
+    <span class="c1">//1.普通 字符串类型</span>
+    <span class="s1">'click'</span>  <span class="o">|</span> <span class="s1">'click mouseover'</span>
+    <span class="c1">//2.Object 对象</span>
+    <span class="p">{</span>
+    	<span class="nl">click</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is click event callback.'</span><span class="p">);</span>
+    	<span class="p">},</span>
+    	<span class="nx">mouseover</span><span class="err">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'tis is mouseover event callback.'</span><span class="p">);</span>
+    	<span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>这也就是为什么on函数会在最顶部会有一个判断event不是String类型的情况。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//传人事件 object类型</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">event</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isString</span><span class="p">(</span><span class="nx">event</span><span class="p">))</span> <span class="p">{</span> 
+      <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">fn</span><span class="p">){</span><span class="c1">//遍历object对象</span>
+        <span class="nx">$this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span><span class="p">,</span> <span class="nx">one</span><span class="p">)</span><span class="c1">//递归调用on函数</span>
+      <span class="p">})</span>
+      <span class="k">return</span> <span class="nx">$this</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>这样的化，你是不是想说我是不是可以把Object对象写成这样,把click 改写成 ‘click mouseout’:</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//2.Object 对象</span>
+    <span class="p">{</span>
+    	<span class="s1">'click mouseout'</span> <span class="err">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is click&amp;mouseout event callback.'</span><span class="p">);</span>
+    	<span class="p">},</span>
+    	<span class="nx">mouseover</span><span class="err">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'tis is mouseover event callback.'</span><span class="p">);</span>
+    	<span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>确实，这是没有问题的。因为 ‘click mouseout’ 会被递归调用重新传人on函数，而on函数是接受String类型的。</p>
+</blockquote>
+
+<blockquote>
+  <p>2.传人的参数个数</p>
+</blockquote>
+
+<blockquote>
+  <p>为dom元素添加事件，并不是每个参数的需要传人的。在平常的应用中，我们最多就传人3个参数，很少有全部传人的。
+但这里就有一个问题了，zepto是怎么知道我们要传人的是什么参数。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">   <span class="c1">//on函数传人参数判断以及重新赋值</span>
+   <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">one</span><span class="p">){</span>
+    <span class="p">...</span>
+    <span class="c1">// selector没有传人  但传人了 data ， callback 所以必须重新赋值</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isString</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">callback</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">selector</span> <span class="o">=</span> <span class="kc">undefined</span>
+    <span class="c1">//data也没传人  只传人了callback</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">data</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=</span> <span class="kc">undefined</span>
+	<span class="c1">//callback也没有 默认为空</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="nx">callback</span> <span class="o">=</span> <span class="nx">returnFalse</span> <span class="c1">//空</span>
+    <span class="p">...</span>
+   <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>可能光看代码有点不好理解，那么现在我对应的写几个例子对应一下，就应该明白了。这里有3个if语句，所以会产生 8中结果 ——2^3 = 8。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//现在我用  1代表进入if  0 代表 不进入</span>
+    <span class="c1">//8中情况大概就是下面这样:</span>
+    <span class="cm">/**
+        1.   0 0 0
+        2.   1 0 0
+        3.   0 1 0
+        4.   0 0 1
+        5.   1 1 0
+        6.   1 0 1
+        7.   0 1 1
+        8.   1 1 1
+     */</span>
+    <span class="c1">//1.全部不进入</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="p">[,</span> <span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">]</span> <span class="p">);</span>
+    <span class="c1">//2. selector没有传人</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="p">[,</span> <span class="kc">true</span><span class="p">]</span> <span class="p">);</span>
+    <span class="c1">//3. 结合实际环境  callback === undefined 才会只进入第2个if</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">undefined</span> <span class="p">[,</span> <span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">]</span> <span class="p">);</span>
+    <span class="c1">//4.callback 没有传人 one = false</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="c1">//5.selector 和 data 都没有传人</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="c1">//6. selector没有传人 callback = false</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="c1">//7. 这个就好比没有添加 return false</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="c1">//8.就传了event</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">);</span></code></pre></figure>
+
+<blockquote>
+  <p>我们使用最多的就是上面的 1,2,5这3中情况。其实也不用特意的去记。只要明白根据类型判断传人的参数来识别用户到底要传人的真正参数就可以了。</p>
+</blockquote>
+
+<blockquote>
+  <p>3.是否需要代理事件</p>
+</blockquote>
+
+<blockquote>
+  <p>事件代理并不是什么新鲜的事了 ，可是有时候使用事件代理可以处理单页监听事件过多的问题。比如有一个ul里面有10个li， 每个li他有一个事件就是当用户点击li的时候展开li。
+你可能会觉得这个时候把事件添加到li上是没什么问题的，但假如有200个li呢。那么这时候你的事件句柄对象就会有点大了，所以可以考虑将li的事件全部代理到ul上面,那么
+你的事件句柄就会从200个缩减到了1个，这就是代理事件的好处。</p>
+</blockquote>
+
+<blockquote>
+  <p>判断是否要代理:</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="k">if</span> <span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+    <span class="nx">delegator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span> 
+      <span class="kd">var</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">element</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="c1">//查找匹配</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">match</span> <span class="o">&amp;&amp;</span> <span class="nx">match</span> <span class="o">!==</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//捕获事件元素 != 事件触发元素 才进行代理</span>
+        <span class="nx">evt</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">createProxy</span><span class="p">(</span><span class="nx">e</span><span class="p">),</span> <span class="p">{</span><span class="na">currentTarget</span><span class="p">:</span> <span class="nx">match</span><span class="p">,</span> <span class="na">liveFired</span><span class="p">:</span> <span class="nx">element</span><span class="p">})</span> <span class="c1">//代理</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">autoRemove</span> <span class="o">||</span> <span class="nx">callback</span><span class="p">).</span><span class="nx">apply</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="p">[</span><span class="nx">evt</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>这里引入了2个新的函数，第一个的功能是判断element下面是否有$(e.target) ,第二个就是创建代理对象了。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//获取代理对象</span>
+  <span class="nl">closest</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">){</span>
+  	<span class="c1">//node ： 事件源 ， selector：需要代理的目标对象  , context : 代理事件对象</span>
+	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">collection</span> <span class="o">=</span> <span class="kc">false</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">'object'</span><span class="p">)</span> 
+		<span class="nx">collection</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span><span class="c1">//获取需要代理元素的集合</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">node</span> <span class="o">&amp;&amp;</span> 
+	<span class="c1">//集合里面匹配node</span>
+	<span class="o">!</span><span class="p">(</span><span class="nx">collection</span> <span class="p">?</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)))</span>
+	   <span class="c1">//向上查找元素，直到找到context 或者根元素为止</span>
+	   <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span> <span class="o">!==</span> <span class="nx">context</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isDocument</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span>
+	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>extend函数都不会陌生，它的作用就是将<em>{currentTarget: match, liveFired: element}</em>代理对象添加到原来的 <em>event</em>事件对象上
+createProxy函数应该就是返回event事件对象。对与否,我们拭目以待。
+<img src="/blog/images/2015/1121_04.jpg" alt="createproxy" /></p>
+</blockquote>
+
+<blockquote>
+  <p>createProxy函数返回的是compatible函数 , 最后返回的正是所说的event对象,然后通过extend函数把<em>{currentTarget: match, liveFired: element}</em> 这
+两个对象往event对象上面添加就形成了最后的代理事件对象。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="add-">add 函数</h4>
+  <p>add函数才是真正添加事件的核心，主要的工作就是将事件句柄添加到handlers全局对象中，并为元素注册事件。
+<img src="/blog/images/2015/1121_05.jpg" alt="$.add" /></p>
+</blockquote>
+
+<blockquote>
+  <p>1.分配id</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**
+   * [zid 获取唯一id]
+   * @param  {[type]} element [description]
+   * @return {[type]}         [description]
+   */</span>
+  <span class="kd">function</span> <span class="nx">zid</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">_zid</span> <span class="o">||</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">_zid</span> <span class="o">=</span> <span class="nx">_zid</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>2.事件句柄设置
+这个就是赋值，将事件的状态都保存到handler里面.</p>
+</blockquote>
+
+<blockquote>
+  <p>3.添加事件
+这个就是用 <em>addEventListener</em>监听事件。</p>
+</blockquote>
+
+<blockquote>
+  <p>add函数就相当于一个初始化函数，on就相当于序列化数据函数。他们两个分工明确相互合作。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-3">事件触发流程</h4>
+</blockquote>
+
+<blockquote>
+  <p>当一个事件真正触发的时候,流程大概就是这样的。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="mi">1</span><span class="p">.</span> <span class="nx">handler</span><span class="p">.</span><span class="nx">proxy</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="c1">//这个函数是真正在注册事件的时候注册的。</span>
+  <span class="mi">2</span><span class="p">.</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">compatible</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="c1">//事件状态检测</span>
+  <span class="mi">3</span><span class="p">.</span> <span class="err">判断</span> <span class="nx">e</span> <span class="err">是不是被阻止冒泡</span>   <span class="o">---</span><span class="nx">Y</span> <span class="o">---&gt;</span> <span class="k">return</span> <span class="p">;</span>  <span class="c1">//不继续执行，直接返回</span>
+  <span class="mi">4</span><span class="p">.</span> <span class="err">获取传人的数据</span><span class="nx">data</span>
+  <span class="mi">5</span><span class="p">.</span> <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">()</span> <span class="c1">//执行回调[delegator|autoRemove|fn]这3中情况的其中一种 </span>
+  <span class="mi">6</span><span class="p">.</span> <span class="nx">result</span> <span class="o">===</span> <span class="kc">false</span> <span class="p">?</span> <span class="c1">//查看回调状态   -----Y----&gt; 则阻止默认行为，停止捕获</span>
+  <span class="mi">7</span><span class="p">.</span> <span class="k">return</span> <span class="nx">result</span></code></pre></figure>
+
+<blockquote>
+  <p>最后附上一张删除事件的代码
+<img src="/blog/images/2015/1121_06.jpg" alt="remove" /></p>
 </blockquote>
 
 </div>
