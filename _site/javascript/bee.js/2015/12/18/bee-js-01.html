@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="bee.js一个类zepto的适合嵌入的小型库-01">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>bee.js一个类zepto的适合嵌入的小型库-01</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/javascript/bee.js/2015/12/18/bee-js-01.html">bee.js一个类zepto的适合嵌入的小型库-01</a></h2>
+						<p class="j-i-time">18 Dec 2015</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">前端开发</span>
+							
+							<span class="j-i-tag">bee.js</span>
+							
+							<span class="j-i-tag">嵌入</span>
+							
+							<span class="j-i-tag">dom</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <h3 id="section">前言</h3>
+  <p>已经有才不多一个月没有更新博客了，自从上个月分析完了zepto.js就没有再提笔写博客。一方面是自己确实有太多的东西不知道，
+另一方面,我在想该不该把这个库写出来–bee.js。我对bee.js的定位是：嵌入,小,模块化，所以我取了bee(蜜蜂)，本来是打算用蜂鸟的但是感觉太长了。
+可能因为我工作的原因,有时候需要在别人的页面里面嵌入一段js的时候，会发现别人的页面里面没有jquery | zepto
+之类的操作dom的类库,但又不想引入第3方库（因为感觉太大了）,瞬间感觉整个世界都不好了。</p>
+</blockquote>
+
+<blockquote>
+  <p>bee.js github地址: <a href="https://github.com/Yi-love/notice/blob/master/dev/src/bee/bee.js">https://github.com/Yi-love/notice/blob/master/dev/src/bee/bee.js</a></p>
+</blockquote>
+
+<blockquote>
+  <h3 id="section-1">模块划分</h3>
+  <p>大体上我打算将bee.js分为3个模块:</p>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>核心模块</li>
+    <li>event事件模块</li>
+    <li>ajax模块</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <p>为了适应嵌入环境，所以压缩后的代码打算控制在10kb上下。以免对真正需要执行的代码增加负担。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-2">核心模块</h4>
+  <p>我对bee.js的第一个定位嵌入，就是为了可以嵌入到页面当中。所以它必须小，所以核心模块的功能只有基本的：</p>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>dom获取</li>
+    <li>className操作</li>
+    <li>html操作</li>
+    <li>text操作</li>
+    <li>attr操作</li>
+    <li>val操作</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <p>我想说，你会用jquery|zepto那么你就会bee.js，可以说 bee.js就是mini版的zepto,zepto已经超过了20kb，
+作为嵌入执行代码已经感觉它太过于庞大了。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-3">正题</h4>
+  <p>zepto源码分析的第一篇我就已经分析过了dom的操作，这篇主要是来聊聊第二次解读zepto源码已经编写bee.js时所遇到的问题。
+有时候你觉得很简单的事情可能并不简单。就好比我遇到的第一个问题，如何使 <em>new Bee(dom , selector)</em> 返回的是一个数组，
+而不是一个对象。</p>
+</blockquote>
+
+<blockquote>
+  <p>你可能会觉得好笑，不加思索或者没有真正了解js的话你可能觉得这真的是一件不可思议的事。这第一个坑我踩的满满的。我努力的
+比对了zepto和我自己的代码，没什么出入啊。</p>
+</blockquote>
+
+<blockquote>
+  <p>最后通过代码删减法，比对出了差别，那就是$.fn中多了以下几个函数：
+<img src="/blog/images/2015/1218_01.jpg" alt="$.fn" /></p>
+</blockquote>
+
+<blockquote>
+  <p>这个是为什么呢，唯一有可能就是 <em>new Bee(dom , selector)</em>有了数组的某些功能，使它返回变为数组。
+我们都知道：数组有两种基本的创建方式：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//使用Array构造函数</span>
+    <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">()</span>
+    <span class="c1">//赋值法</span>
+    <span class="kd">var</span> <span class="nx">arr2</span> <span class="o">=</span> <span class="p">[];</span></code></pre></figure>
+
+<blockquote>
+  <p>我想可能因为$.fn添加了数组的几个基本函数而造成了 <em>new Bee(dom , selector)</em>返回的变为数组。</p>
+</blockquote>
+
+<blockquote>
+  <p>猜想：<em>new Bee(dom , selector)</em> 原理与 <em>new Array()</em> 的原理是一样?</p>
+</blockquote>
+
+<blockquote>
+  <p>未完待续….</p>
+</blockquote>
+
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(4)</span></a>
+		
+		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
