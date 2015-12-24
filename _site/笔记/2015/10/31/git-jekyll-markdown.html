@@ -12,7 +12,7 @@
 <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
 <link rel="stylesheet" href="/blog/stylesheets/normalize.css">
 <link rel="stylesheet" href="/blog/stylesheets/base.css">
-<link rel="stylesheet" href="/blog/stylesheets/syntax.css">
+<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
 <script src="/blog/javascripts/base.js"></script>
 <title>git+jekyll+markdown搭建博客框架</title>
 </head>
@@ -90,22 +90,22 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- base.html --&gt;</span>
- 	<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-title"</span> <span class="na">content=</span><span class="s">"{ {page.title}}"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-capable"</span> <span class="na">content=</span><span class="s">"yes"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-touch-fullscreen"</span> <span class="na">content=</span><span class="s">"yes"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Cache-Control"</span> <span class="na">content=</span><span class="s">"no-siteapp"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-status-bar-style"</span> <span class="na">content=</span><span class="s">"black-translucent"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"format-detection"</span> <span class="na">content=</span><span class="s">"telephone=no"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"format-detection"</span> <span class="na">content=</span><span class="s">"email=no"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">"width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"</span> <span class="na">name=</span><span class="s">"viewport"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/normalize.css"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/base.css"</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/stylesheets/syntax.css"</span><span class="nt">&gt;</span>
+ 	<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;apple-mobile-web-app-title&quot;</span> <span class="na">content=</span><span class="s">&quot;{ {page.title}}&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;apple-mobile-web-app-capable&quot;</span> <span class="na">content=</span><span class="s">&quot;yes&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;apple-touch-fullscreen&quot;</span> <span class="na">content=</span><span class="s">&quot;yes&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Cache-Control&quot;</span> <span class="na">content=</span><span class="s">&quot;no-siteapp&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;apple-mobile-web-app-status-bar-style&quot;</span> <span class="na">content=</span><span class="s">&quot;black-translucent&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;format-detection&quot;</span> <span class="na">content=</span><span class="s">&quot;telephone=no&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;format-detection&quot;</span> <span class="na">content=</span><span class="s">&quot;email=no&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no&quot;</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/stylesheets/normalize.css&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/stylesheets/base.css&quot;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/stylesheets/syntax.css&quot;</span><span class="nt">&gt;</span>
 	<span class="c">&lt;!-- 没有去空格 --&gt;</span>
-	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{ {site.baseurl}}/javascripts/base.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;{ {site.baseurl}}/javascripts/base.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 	<span class="c">&lt;!-- 去空格 --&gt;</span>
-	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/blog/javascripts/base.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+	<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/blog/javascripts/base.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 	<span class="nt">&lt;title&gt;</span>{ {page.title}}<span class="nt">&lt;/title&gt;</span></code></pre></figure>
 
 <blockquote>
@@ -122,14 +122,14 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- header.html --&gt;</span>
- 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container-fluid j-header"</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
-				<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"j-row j-nav"</span><span class="nt">&gt;</span>
-					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/"</span><span class="nt">&gt;</span>首页<span class="nt">&lt;/a&gt;</span>
-					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/list.html"</span><span class="nt">&gt;</span>归档<span class="nt">&lt;/a&gt;</span>
-					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://github.com/Yi-love"</span><span class="nt">&gt;</span>Github<span class="nt">&lt;/a&gt;</span>
-					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/me.html"</span><span class="nt">&gt;</span>Me<span class="nt">&lt;/a&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-container-fluid j-header&quot;</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-row&quot;</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-container&quot;</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">&quot;j-row j-nav&quot;</span><span class="nt">&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/&quot;</span><span class="nt">&gt;</span>首页<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/list.html&quot;</span><span class="nt">&gt;</span>归档<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://github.com/Yi-love&quot;</span><span class="nt">&gt;</span>Github<span class="nt">&lt;/a&gt;</span>
+					<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/me.html&quot;</span><span class="nt">&gt;</span>Me<span class="nt">&lt;/a&gt;</span>
 				<span class="nt">&lt;/nav&gt;</span>
 			<span class="nt">&lt;/div&gt;</span>
 		<span class="nt">&lt;/div&gt;</span>
@@ -141,10 +141,10 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- footer.html --&gt;</span>
- 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container-fluid j-footer"</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"j-footer-say"</span><span class="nt">&gt;</span>喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……<span class="nt">&lt;/p&gt;</span>
-			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"j-footer-say j-tlgr"</span><span class="nt">&gt;</span>——周星驰 《大话西游》<span class="nt">&lt;/p&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-container-fluid j-footer&quot;</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-container&quot;</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;j-footer-say&quot;</span><span class="nt">&gt;</span>喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……<span class="nt">&lt;/p&gt;</span>
+			<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;j-footer-say j-tlgr&quot;</span><span class="nt">&gt;</span>——周星驰 《大话西游》<span class="nt">&lt;/p&gt;</span>
 		<span class="nt">&lt;/div&gt;</span>
 	<span class="nt">&lt;/div&gt;</span></code></pre></figure>
 
@@ -154,33 +154,33 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- side.html --&gt;</span>
- 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-col-xs-12 j-col-sm-12 j-col-md-3"</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user"</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user-thumb"</span><span class="nt">&gt;</span>
-				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"{ {site.baseurl}}/images/user.jpg"</span> <span class="na">alt=</span><span class="s">""</span> <span class="nt">/&gt;&lt;/a&gt;</span>
+ 	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-col-xs-12 j-col-sm-12 j-col-md-3&quot;</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-user&quot;</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-user-thumb&quot;</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{ {site.baseurl}}/images/user.jpg&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
 			<span class="nt">&lt;/div&gt;</span>
-			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-user-info"</span><span class="nt">&gt;</span>
-				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>微信<span class="nt">&lt;/a&gt;</span>
-				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>微博<span class="nt">&lt;/a&gt;</span>
-				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>QQ<span class="nt">&lt;/a&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-user-info&quot;</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>微信<span class="nt">&lt;/a&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>微博<span class="nt">&lt;/a&gt;</span>
+				<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>QQ<span class="nt">&lt;/a&gt;</span>
 			<span class="nt">&lt;/div&gt;</span>
 		<span class="nt">&lt;/div&gt;</span>
-		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-class-list"</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>分类<span class="nt">&lt;/h3&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-class-list&quot;</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;j-row&quot;</span><span class="nt">&gt;</span>分类<span class="nt">&lt;/h3&gt;</span>
 			
-			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/category.html?category={ { category|first}}"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/category.html?category={ { category|first}}&quot;</span><span class="nt">&gt;</span>
 				{ {category | first}} 
-				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"j-class-i-num"</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
+				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;j-class-i-num&quot;</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
 			<span class="nt">&lt;/a&gt;</span>
 			
-			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/category.html?category={ { category|first}}"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/category.html?category={ { category|first}}&quot;</span><span class="nt">&gt;</span>
 				{ {category | first}} 
-				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"j-class-i-num"</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
+				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;j-class-i-num&quot;</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
 			<span class="nt">&lt;/a&gt;</span>
 			
-			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ {site.baseurl}}/category.html?category={ { category|first}}"</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ {site.baseurl}}/category.html?category={ { category|first}}&quot;</span><span class="nt">&gt;</span>
 				{ {category | first}} 
-				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"j-class-i-num"</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
+				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;j-class-i-num&quot;</span><span class="nt">&gt;</span>({ {category | last | size}})<span class="nt">&lt;/span&gt;</span>
 			<span class="nt">&lt;/a&gt;</span>
 			
 		<span class="nt">&lt;/div&gt;</span>
@@ -203,15 +203,15 @@
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"> 	<span class="c">&lt;!-- default.html --&gt;</span>
  	<span class="cp">&lt;!DOCTYPE html&gt;</span>
-	<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cmn-Hans"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;zh-cmn-Hans&quot;</span><span class="nt">&gt;</span>
 	<span class="nt">&lt;head&gt;</span>
 		{ % include base.html %}
 	<span class="nt">&lt;/head&gt;</span>
 	<span class="nt">&lt;body&gt;</span>
 		{ % include header.html %}
-		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-container"</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-row"</span><span class="nt">&gt;</span>
-				<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"j-col-xs-12 j-col-sm-12 j-col-md-9"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-container&quot;</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-row&quot;</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;j-col-xs-12 j-col-sm-12 j-col-md-9&quot;</span><span class="nt">&gt;</span>
 					{ {content}}
 				<span class="nt">&lt;/div&gt;</span>
 				{ % include side.html %}
@@ -325,9 +325,9 @@
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(4)</span></a>
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(5)</span></a>
 		
-		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(4)</span></a>
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(5)</span></a>
 		
 		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
 		
