@@ -60,9 +60,9 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//为div下 为有 calssName == three 添加click事件</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="s1">&#39;.three&#39;</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.three'</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
         <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;添加事件&#39;</span> <span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'添加事件'</span> <span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">});</span></code></pre></figure>
 
@@ -134,14 +134,14 @@
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//event参数类型</span>
     <span class="c1">//1.普通 字符串类型</span>
-    <span class="s1">&#39;click&#39;</span>  <span class="o">|</span> <span class="s1">&#39;click mouseover&#39;</span>
+    <span class="s1">'click'</span>  <span class="o">|</span> <span class="s1">'click mouseover'</span>
     <span class="c1">//2.Object 对象</span>
     <span class="p">{</span>
-    	<span class="nx">click</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;this is click event callback.&#39;</span><span class="p">);</span>
+    	<span class="nl">click</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is click event callback.'</span><span class="p">);</span>
     	<span class="p">},</span>
-    	<span class="nx">mouseover</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;tis is mouseover event callback.&#39;</span><span class="p">);</span>
+    	<span class="nx">mouseover</span><span class="err">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'tis is mouseover event callback.'</span><span class="p">);</span>
     	<span class="p">}</span>
     <span class="p">}</span></code></pre></figure>
 
@@ -163,11 +163,11 @@
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//2.Object 对象</span>
     <span class="p">{</span>
-    	<span class="s1">&#39;click mouseout&#39;</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;this is click&amp;mouseout event callback.&#39;</span><span class="p">);</span>
+    	<span class="s1">'click mouseout'</span> <span class="err">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is click&amp;mouseout event callback.'</span><span class="p">);</span>
     	<span class="p">},</span>
-    	<span class="nx">mouseover</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;tis is mouseover event callback.&#39;</span><span class="p">);</span>
+    	<span class="nx">mouseover</span><span class="err">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'tis is mouseover event callback.'</span><span class="p">);</span>
     	<span class="p">}</span>
     <span class="p">}</span></code></pre></figure>
 
@@ -204,38 +204,38 @@
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//现在我用  1代表进入if  0 代表 不进入</span>
     <span class="c1">//8中情况大概就是下面这样:</span>
-    <span class="cm">/**</span>
-<span class="cm">        1.   0 0 0</span>
-<span class="cm">        2.   1 0 0</span>
-<span class="cm">        3.   0 1 0</span>
-<span class="cm">        4.   0 0 1</span>
-<span class="cm">        5.   1 1 0</span>
-<span class="cm">        6.   1 0 1</span>
-<span class="cm">        7.   0 1 1</span>
-<span class="cm">        8.   1 1 1</span>
-<span class="cm">     */</span>
+    <span class="cm">/**
+        1.   0 0 0
+        2.   1 0 0
+        3.   0 1 0
+        4.   0 0 1
+        5.   1 1 0
+        6.   1 0 1
+        7.   0 1 1
+        8.   1 1 1
+     */</span>
     <span class="c1">//1.全部不进入</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="s1">&#39;.class&#39;</span> <span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;done&#39;</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
     <span class="p">}</span> <span class="p">[,</span> <span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">]</span> <span class="p">);</span>
     <span class="c1">//2. selector没有传人</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;done&#39;</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
     <span class="p">}</span> <span class="p">[,</span> <span class="kc">true</span><span class="p">]</span> <span class="p">);</span>
     <span class="c1">//3. 结合实际环境  callback === undefined 才会只进入第2个if</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="s1">&#39;.class&#39;</span> <span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">}</span> <span class="p">,</span> <span class="kc">undefined</span> <span class="p">[,</span> <span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">]</span> <span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">undefined</span> <span class="p">[,</span> <span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">]</span> <span class="p">);</span>
     <span class="c1">//4.callback 没有传人 one = false</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="s1">&#39;.class&#39;</span> <span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
     <span class="c1">//5.selector 和 data 都没有传人</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;done&#39;</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">);</span>
     <span class="p">});</span>
     <span class="c1">//6. selector没有传人 callback = false</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="s1">'success'</span><span class="p">}</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
     <span class="c1">//7. 这个就好比没有添加 return false</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span> <span class="p">,</span> <span class="s1">&#39;.class&#39;</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span> <span class="p">,</span> <span class="s1">'.class'</span> <span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
     <span class="c1">//8.就传了event</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">);</span></code></pre></figure>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">);</span></code></pre></figure>
 
 <blockquote>
   <p>我们使用最多的就是上面的 1,2,5这3中情况。其实也不用特意的去记。只要明白根据类型判断传人的参数来识别用户到底要传人的真正参数就可以了。</p>
@@ -259,7 +259,7 @@
     <span class="nx">delegator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span> 
       <span class="kd">var</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">element</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="c1">//查找匹配</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">match</span> <span class="o">&amp;&amp;</span> <span class="nx">match</span> <span class="o">!==</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//捕获事件元素 != 事件触发元素 才进行代理</span>
-        <span class="nx">evt</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">createProxy</span><span class="p">(</span><span class="nx">e</span><span class="p">),</span> <span class="p">{</span><span class="nx">currentTarget</span><span class="o">:</span> <span class="nx">match</span><span class="p">,</span> <span class="nx">liveFired</span><span class="o">:</span> <span class="nx">element</span><span class="p">})</span> <span class="c1">//代理</span>
+        <span class="nx">evt</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">createProxy</span><span class="p">(</span><span class="nx">e</span><span class="p">),</span> <span class="p">{</span><span class="na">currentTarget</span><span class="p">:</span> <span class="nx">match</span><span class="p">,</span> <span class="na">liveFired</span><span class="p">:</span> <span class="nx">element</span><span class="p">})</span> <span class="c1">//代理</span>
         <span class="k">return</span> <span class="p">(</span><span class="nx">autoRemove</span> <span class="o">||</span> <span class="nx">callback</span><span class="p">).</span><span class="nx">apply</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="p">[</span><span class="nx">evt</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
       <span class="p">}</span>
     <span class="p">}</span>
@@ -270,14 +270,14 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//获取代理对象</span>
-  <span class="nx">closest</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">){</span>
+  <span class="nl">closest</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">){</span>
   	<span class="c1">//node ： 事件源 ， selector：需要代理的目标对象  , context : 代理事件对象</span>
 	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">collection</span> <span class="o">=</span> <span class="kc">false</span>
-	<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> 
+	<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">'object'</span><span class="p">)</span> 
 		<span class="nx">collection</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span><span class="c1">//获取需要代理元素的集合</span>
 	<span class="k">while</span> <span class="p">(</span><span class="nx">node</span> <span class="o">&amp;&amp;</span> 
 	<span class="c1">//集合里面匹配node</span>
-	<span class="o">!</span><span class="p">(</span><span class="nx">collection</span> <span class="o">?</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)))</span>
+	<span class="o">!</span><span class="p">(</span><span class="nx">collection</span> <span class="p">?</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)))</span>
 	   <span class="c1">//向上查找元素，直到找到context 或者根元素为止</span>
 	   <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span> <span class="o">!==</span> <span class="nx">context</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isDocument</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span>
 	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
@@ -304,11 +304,11 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
   <p>1.分配id</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**</span>
-<span class="cm">   * [zid 获取唯一id]</span>
-<span class="cm">   * @param  {[type]} element [description]</span>
-<span class="cm">   * @return {[type]}         [description]</span>
-<span class="cm">   */</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**
+   * [zid 获取唯一id]
+   * @param  {[type]} element [description]
+   * @return {[type]}         [description]
+   */</span>
   <span class="kd">function</span> <span class="nx">zid</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">_zid</span> <span class="o">||</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">_zid</span> <span class="o">=</span> <span class="nx">_zid</span><span class="o">++</span><span class="p">)</span>
   <span class="p">}</span></code></pre></figure>
@@ -340,7 +340,7 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
   <span class="mi">3</span><span class="p">.</span> <span class="err">判断</span> <span class="nx">e</span> <span class="err">是不是被阻止冒泡</span>   <span class="o">---</span><span class="nx">Y</span> <span class="o">---&gt;</span> <span class="k">return</span> <span class="p">;</span>  <span class="c1">//不继续执行，直接返回</span>
   <span class="mi">4</span><span class="p">.</span> <span class="err">获取传人的数据</span><span class="nx">data</span>
   <span class="mi">5</span><span class="p">.</span> <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">()</span> <span class="c1">//执行回调[delegator|autoRemove|fn]这3中情况的其中一种 </span>
-  <span class="mi">6</span><span class="p">.</span> <span class="nx">result</span> <span class="o">===</span> <span class="kc">false</span> <span class="o">?</span> <span class="c1">//查看回调状态   -----Y----&gt; 则阻止默认行为，停止捕获</span>
+  <span class="mi">6</span><span class="p">.</span> <span class="nx">result</span> <span class="o">===</span> <span class="kc">false</span> <span class="p">?</span> <span class="c1">//查看回调状态   -----Y----&gt; 则阻止默认行为，停止捕获</span>
   <span class="mi">7</span><span class="p">.</span> <span class="k">return</span> <span class="nx">result</span></code></pre></figure>
 
 <blockquote>

@@ -54,11 +54,11 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"> 	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
- 		<span class="nx">type</span><span class="o">:</span><span class="s2">&quot;post&quot;</span><span class="p">,</span><span class="c1">//get</span>
-		<span class="nx">url</span><span class="o">:</span><span class="s2">&quot;/ajax&quot;</span><span class="p">,</span>
-		<span class="nx">async</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span>
-		<span class="nx">data</span> <span class="o">:</span> <span class="p">{</span><span class="nx">ajax</span><span class="o">:</span><span class="kc">true</span><span class="p">},</span>
-		<span class="nx">success</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+ 		<span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+		<span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+		<span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+		<span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">},</span>
+		<span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
 			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
 		<span class="p">}</span>
  	<span class="p">});</span></code></pre></figure>
@@ -68,11 +68,11 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nx">ajax</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+        <span class="na">ajax</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
             <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
             <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">type</span> <span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">url</span> <span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">async</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span> <span class="nx">options</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;POST&#39;</span><span class="p">)</span>
-                <span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span><span class="s2">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="nx">options</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">'POST'</span><span class="p">)</span>
+                <span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">"Content-type"</span><span class="p">,</span><span class="s2">"application/x-www-form-urlencoded"</span><span class="p">)</span>
             <span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
                 <span class="k">if</span> <span class="p">(</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span> <span class="o">||</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">304</span> <span class="p">)</span> <span class="p">{</span>
@@ -80,15 +80,15 @@
                     <span class="p">}</span>
                 <span class="p">}</span>
             <span class="p">}</span>
-            <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="o">?</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="o">:</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="p">?</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="p">:</span> <span class="kc">null</span><span class="p">)</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
-        <span class="nx">type</span><span class="o">:</span><span class="s2">&quot;post&quot;</span><span class="p">,</span><span class="c1">//get</span>
-        <span class="nx">url</span><span class="o">:</span><span class="s2">&quot;/ajax&quot;</span><span class="p">,</span>
-        <span class="nx">async</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span>
-        <span class="nx">data</span> <span class="o">:</span> <span class="s1">&#39;ajax=true&#39;</span><span class="p">,</span>
-        <span class="nx">success</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+        <span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+        <span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+        <span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="na">data</span> <span class="p">:</span> <span class="s1">'ajax=true'</span><span class="p">,</span>
+        <span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">})</span></code></pre></figure>
@@ -182,16 +182,16 @@
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//当前url</span>
-    <span class="nx">originAnchor</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="nx">originAnchor</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
     <span class="nx">originAnchor</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span>
     <span class="c1">//ajax请求url</span>
-    <span class="nx">urlAnchor</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="nx">urlAnchor</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
     <span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span>
     <span class="c1">// ie兼容</span>
     <span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">href</span> <span class="c1">//获取ajax请求的url</span>
     <span class="c1">//判断ajax请求是否跨域</span>
-    <span class="nx">settings</span><span class="p">.</span><span class="nx">crossDomain</span> <span class="o">=</span> <span class="p">(</span><span class="nx">originAnchor</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span> <span class="o">+</span> <span class="nx">originAnchor</span><span class="p">.</span><span class="nx">host</span><span class="p">)</span> 
-                        <span class="o">!==</span> <span class="p">(</span><span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">&#39;//&#39;</span> <span class="o">+</span> <span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">host</span><span class="p">)</span></code></pre></figure>
+    <span class="nx">settings</span><span class="p">.</span><span class="nx">crossDomain</span> <span class="o">=</span> <span class="p">(</span><span class="nx">originAnchor</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">'//'</span> <span class="o">+</span> <span class="nx">originAnchor</span><span class="p">.</span><span class="nx">host</span><span class="p">)</span> 
+                        <span class="o">!==</span> <span class="p">(</span><span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">'//'</span> <span class="o">+</span> <span class="nx">urlAnchor</span><span class="p">.</span><span class="nx">host</span><span class="p">)</span></code></pre></figure>
 
 <blockquote>
   <p>ie可能会出现urlAnchor.href = ‘‘的问题，所以加上 urlAnchor.href = urlAnchor.href防止出错。
@@ -207,8 +207,8 @@
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">settings</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span><span class="c1">//为空</span>
         <span class="nx">setting</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
-    <span class="c1">//截取&#39;#&#39;前半部分</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nx">hashIndex</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span>
+    <span class="c1">//截取'#'前半部分</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nx">hashIndex</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">'#'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span>
         <span class="nx">settings</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">setting</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">hashIndex</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></code></pre></figure>
 
 <blockquote>
@@ -219,39 +219,39 @@
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">$</span><span class="p">.</span><span class="nx">ajaxSettings</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1">//请求类型</span>
-    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
     <span class="c1">// 发送请求前执行的函数 , 默认 空</span>
-    <span class="nx">beforeSend</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">beforeSend</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">// 成功请求后的回调</span>
-    <span class="nx">success</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">success</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">//错误回调</span>
-    <span class="nx">error</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">error</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">// 不管xhr成功还是失败，只有状态为complete就执行</span>
-    <span class="nx">complete</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">complete</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">//在指定内容中执行回调</span>
-    <span class="nx">context</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">context</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
     <span class="c1">//ajax触发事件为全局</span>
-    <span class="nx">global</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">global</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="c1">// xhr</span>
-    <span class="nx">xhr</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="na">xhr</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
     <span class="p">},</span>
     <span class="c1">//接受的数据类型</span>
-    <span class="nx">accepts</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">script</span><span class="o">:</span> <span class="s1">&#39;text/javascript, application/javascript, application/x-javascript&#39;</span><span class="p">,</span>
-      <span class="nx">json</span><span class="o">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
-      <span class="nx">xml</span><span class="o">:</span>    <span class="s1">&#39;application/xml, text/xml&#39;</span><span class="p">,</span>
-      <span class="nx">html</span><span class="o">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
-      <span class="nx">text</span><span class="o">:</span>   <span class="s1">&#39;text/plain&#39;</span>
+    <span class="nx">accepts</span><span class="err">:</span> <span class="p">{</span>
+      <span class="nl">script</span><span class="p">:</span> <span class="s1">'text/javascript, application/javascript, application/x-javascript'</span><span class="p">,</span>
+      <span class="nx">json</span><span class="err">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
+      <span class="nx">xml</span><span class="err">:</span>    <span class="s1">'application/xml, text/xml'</span><span class="p">,</span>
+      <span class="nx">html</span><span class="err">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
+      <span class="nx">text</span><span class="err">:</span>   <span class="s1">'text/plain'</span>
     <span class="p">},</span>
     <span class="c1">//是否跨域</span>
-    <span class="nx">crossDomain</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">crossDomain</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="c1">//超时设置  默认不超时</span>
-    <span class="nx">timeout</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">timeout</span><span class="err">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1">//数据需要被序列化</span>
-    <span class="nx">processData</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">processData</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="c1">//对get请求数据进行缓存</span>
-    <span class="nx">cache</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">cache</span><span class="err">:</span> <span class="kc">true</span>
   <span class="p">}</span></code></pre></figure>
 
 <blockquote>
@@ -259,9 +259,9 @@
 Object对象转化成String每个参数用’&amp;’隔开,和get传参类似。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">a</span><span class="o">:</span><span class="s1">&#39;0&#39;</span> <span class="p">,</span> <span class="nx">b</span><span class="o">:</span><span class="s1">&#39;1&#39;</span><span class="p">}</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="na">a</span><span class="p">:</span><span class="s1">'0'</span> <span class="p">,</span> <span class="na">b</span><span class="p">:</span><span class="s1">'1'</span><span class="p">}</span>
     <span class="c1">//转换成</span>
-    <span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;a=0&amp;b=1&#39;</span></code></pre></figure>
+    <span class="nx">str</span> <span class="o">=</span> <span class="s1">'a=0&amp;b=1'</span></code></pre></figure>
 
 <blockquote>
   <p>那么就有processData参数来设置data参数是否需要序列化。如果用户传人的类型已经是序列化的，那么就可以设置processData参数为false.
@@ -274,23 +274,23 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//params.add 函数  </span>
-    <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">key</span> <span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="err">等价于</span> <span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span><span class="s1">&#39;=&#39;</span><span class="o">+</span> <span class="nx">value</span><span class="p">()</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span> <span class="o">||</span> <span class="nx">value</span>
-    <span class="cm">/**</span>
-<span class="cm">	* 序列化</span>
-<span class="cm">	* @param {Object} params [] 最后生成的参数数组</span>
-<span class="cm">	* @param {Object} obj       需要序列化的对象</span>
-<span class="cm">	* @param {Object} traditional  表示是否以传统的方式拼接数据</span>
-<span class="cm">	* @param {Object} scope   表示范围</span>
-<span class="cm">	*/</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">key</span> <span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="err">等价于</span> <span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span><span class="s1">'='</span><span class="o">+</span> <span class="nx">value</span><span class="p">()</span> <span class="o">||</span> <span class="s1">''</span> <span class="o">||</span> <span class="nx">value</span>
+    <span class="cm">/**
+	* 序列化
+	* @param {Object} params [] 最后生成的参数数组
+	* @param {Object} obj       需要序列化的对象
+	* @param {Object} traditional  表示是否以传统的方式拼接数据
+	* @param {Object} scope   表示范围
+	*/</span>
 	<span class="c1">//serialize弱化</span>
     <span class="nx">serialize</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="nx">obj</span><span class="p">,</span> <span class="nx">traditional</span> <span class="p">,</span> <span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
 	
 	<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">o</span> <span class="k">in</span> <span class="nx">obj</span> <span class="p">){</span>
 	    <span class="k">if</span> <span class="p">(</span> <span class="nx">scope</span> <span class="p">){</span>
-	    	<span class="nx">traditional</span> <span class="o">?</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">scope</span> <span class="o">:</span> <span class="nx">scope</span><span class="p">[]</span>
+	    	<span class="nx">traditional</span> <span class="p">?</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">scope</span> <span class="p">:</span> <span class="nx">scope</span><span class="p">[]</span>
 	    <span class="p">}</span>
 	    <span class="c1">//3个分支,每次循环只会进入一个</span>
-	    <span class="c1">//e.g : [{&quot;name&quot;:&quot;username&quot;,&quot;value&quot;:&quot;foo&quot;}]</span>
+	    <span class="c1">//e.g : [{"name":"username","value":"foo"}]</span>
 	    <span class="mi">1</span><span class="p">.</span> <span class="o">!</span><span class="nx">scope</span> <span class="o">&amp;&amp;</span> <span class="nx">array</span> <span class="o">&amp;&amp;</span> <span class="nx">params</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">].</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">o</span><span class="p">].</span><span class="nx">value</span><span class="p">)</span>
 	    <span class="c1">//obj[o] == array || obj[o] == object &amp;&amp; traditional</span>
 	    <span class="c1">//递归序列化</span>
@@ -304,11 +304,11 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
   <p>最后params得到的是一个数组，里面的每一项都是以’a=b’的形式储存的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//e.g : $.param({a:1,b:{c:0,d:22},d:[1,2,3] , e:[{name:&#39;username&#39;,value:&#39;jin&#39;}]})</span>
-    <span class="nx">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a=1&quot;</span><span class="p">,</span><span class="s2">&quot;b[c]=0&quot;</span><span class="p">,</span><span class="s2">&quot;b[d]=22&quot;</span><span class="p">,</span><span class="s2">&quot;d[]=1&quot;</span><span class="p">,</span><span class="s2">&quot;d[]=2&quot;</span><span class="p">,</span><span class="s2">&quot;d[]=3&quot;</span><span class="p">,</span><span class="s2">&quot;e[0][name]=username&quot;</span><span class="p">,</span><span class="s2">&quot;e[0][value]=jin&quot;</span><span class="p">]</span>
-    <span class="c1">//通过&#39;&amp;&#39;将数组连接成字符串,改空格为&#39;+&#39;</span>
-    <span class="nx">params</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%20/g</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
-    <span class="nx">data</span> <span class="o">=</span> <span class="s2">&quot;a=1&amp;b%5Bc%5D=0&amp;b%5Bd%5D=22&amp;d%5B%5D=1&amp;d%5B%5D=2&amp;d%5B%5D=3&amp;e%5B0%5D%5Bname%5D=username&amp;e%5B0%5D%5Bvalue%5D=jin&quot;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//e.g : $.param({a:1,b:{c:0,d:22},d:[1,2,3] , e:[{name:'username',value:'jin'}]})</span>
+    <span class="nx">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"a=1"</span><span class="p">,</span><span class="s2">"b[c]=0"</span><span class="p">,</span><span class="s2">"b[d]=22"</span><span class="p">,</span><span class="s2">"d[]=1"</span><span class="p">,</span><span class="s2">"d[]=2"</span><span class="p">,</span><span class="s2">"d[]=3"</span><span class="p">,</span><span class="s2">"e[0][name]=username"</span><span class="p">,</span><span class="s2">"e[0][value]=jin"</span><span class="p">]</span>
+    <span class="c1">//通过'&amp;'将数组连接成字符串,改空格为'+'</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'&amp;'</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%20/g</span><span class="p">,</span> <span class="s1">'+'</span><span class="p">)</span>
+    <span class="nx">data</span> <span class="o">=</span> <span class="s2">"a=1&amp;b%5Bc%5D=0&amp;b%5Bd%5D=22&amp;d%5B%5D=1&amp;d%5B%5D=2&amp;d%5B%5D=3&amp;e%5B0%5D%5Bname%5D=username&amp;e%5B0%5D%5Bvalue%5D=jin"</span></code></pre></figure>
 
 <blockquote>
   <p>数据是序列化了，可是get和post的传送数据的方式是不一样的，所以必须在序列化外层在套上一层判断，
@@ -321,22 +321,22 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">function</span> <span class="nx">appendQuery</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">query</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">url</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="nx">query</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">query</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="k">return</span> <span class="nx">url</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">url</span> <span class="o">+</span> <span class="s1">'&amp;'</span> <span class="o">+</span> <span class="nx">query</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="c1">//可能看不明白的就是最后的正则</span>
     <span class="c1">// ? == ?</span>
-    <span class="s1">&#39;url?a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="c1">//&quot;url?a=b&amp;c=d&quot;</span>
+    <span class="s1">'url?a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span> <span class="c1">//"url?a=b&amp;c=d"</span>
     <span class="c1">// ?&amp; = ?</span>
-    <span class="s1">&#39;url?&amp;a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="c1">//&quot;url?a=b&amp;c=d&quot;</span>
+    <span class="s1">'url?&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
     <span class="c1">// &amp;? = ?</span>
-    <span class="s1">&#39;url&amp;?a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="c1">//&quot;url?a=b&amp;c=d&quot;</span>
+    <span class="s1">'url&amp;?a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
     <span class="c1">// &amp;?&amp; = ?&amp;</span>
-    <span class="s1">&#39;url&amp;?&amp;a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="c1">//&quot;url?&amp;a=b&amp;c=d&quot;</span>
+    <span class="s1">'url&amp;?&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?&amp;a=b&amp;c=d"</span>
     <span class="c1">// &amp;&amp; = ?</span>
-    <span class="s1">&#39;url&amp;&amp;a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="c1">//&quot;url?a=b&amp;c=d&quot;</span>
+    <span class="s1">'url&amp;&amp;a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span>
     <span class="c1">// ?? = ?</span>
-    <span class="s1">&#39;url??a=b&amp;c=d&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[&amp;?]{1,2}/</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="c1">//&quot;url?a=b&amp;c=d&quot;</span></code></pre></figure>
+    <span class="s1">'url??a=b&amp;c=d'</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&amp;?</span><span class="se">]{1,2}</span><span class="sr">/</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">)</span><span class="c1">//"url?a=b&amp;c=d"</span></code></pre></figure>
 
 <blockquote>
   <p>现在就可以看出 replace(/[&amp;?]{1,2}/, ‘?’)这个正则就是对 ? , ?? , &amp; , &amp;&amp; , ?&amp; , &amp;? 的匹配，并转换为 ?。</p>
@@ -347,8 +347,8 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//内容类型  </span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">!==</span> <span class="kc">false</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">data</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;GET&#39;</span><span class="p">))</span> <span class="c1">//不是get请求则添加请求头</span>
-      <span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span><span class="p">)</span><span class="c1">//post必须添加</span></code></pre></figure>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">!==</span> <span class="kc">false</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">data</span> <span class="o">&amp;&amp;</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'GET'</span><span class="p">))</span> <span class="c1">//不是get请求则添加请求头</span>
+      <span class="nx">setHeader</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">||</span> <span class="s1">'application/x-www-form-urlencoded'</span><span class="p">)</span><span class="c1">//post必须添加</span></code></pre></figure>
 
 <blockquote>
   <p>你可能发现我是不是不想说了，是的。因为后面的参数设置没有多大问题了。看代码就能懂。
@@ -360,8 +360,8 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
   <p>举个例子</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">jp</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">)</span>
-    <span class="nx">jp</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="o">+</span><span class="s1">&#39;&amp;jsonp=callback&#39;</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">jp</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">)</span>
+    <span class="nx">jp</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="o">+</span><span class="s1">'&amp;jsonp=callback'</span>
     <span class="nb">document</span><span class="p">.</span><span class="nx">head</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">jp</span><span class="p">)</span>
     <span class="kd">function</span> <span class="nx">callback</span><span class="p">(</span> <span class="nx">res</span> <span class="p">){</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span>
@@ -376,9 +376,9 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
   <p>服务器怎么写才能返回数据呢。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">data</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span><span class="nx">code</span><span class="o">:</span><span class="s1">&#39;success&#39;</span><span class="p">},</span>
-        <span class="nx">func</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;jsonp&#39;</span><span class="p">]</span>
-    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">func</span><span class="o">+</span><span class="s1">&#39;(&#39;</span><span class="o">+</span><span class="nx">data</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="na">data</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="na">code</span><span class="p">:</span><span class="s1">'success'</span><span class="p">},</span>
+        <span class="nx">func</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'jsonp'</span><span class="p">]</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">func</span><span class="o">+</span><span class="s1">'('</span><span class="o">+</span><span class="nx">data</span><span class="o">+</span><span class="s1">')'</span><span class="p">)</span></code></pre></figure>
 
 <blockquote>
   <p>下面来看看ajaxJSONP的源码
@@ -392,39 +392,39 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1">//请求类型</span>
-    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
     <span class="c1">// 发送请求前执行的函数 , 默认 空</span>
-    <span class="nx">beforeSend</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">beforeSend</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">// 成功请求后的回调</span>
-    <span class="nx">success</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">success</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">//错误回调</span>
-    <span class="nx">error</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">error</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">// 不管xhr成功还是失败，只有状态为complete就执行</span>
-    <span class="nx">complete</span><span class="o">:</span> <span class="nx">empty</span><span class="p">,</span>
+    <span class="na">complete</span><span class="p">:</span> <span class="nx">empty</span><span class="p">,</span>
     <span class="c1">//在指定内容中执行回调</span>
-    <span class="nx">context</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">context</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
     <span class="c1">//ajax触发事件为全局</span>
-    <span class="nx">global</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">global</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="c1">// xhr</span>
-    <span class="nx">xhr</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="na">xhr</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
     <span class="p">},</span>
     <span class="c1">//接受的数据类型</span>
-    <span class="nx">accepts</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">script</span><span class="o">:</span> <span class="s1">&#39;text/javascript, application/javascript, application/x-javascript&#39;</span><span class="p">,</span>
-      <span class="nx">json</span><span class="o">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
-      <span class="nx">xml</span><span class="o">:</span>    <span class="s1">&#39;application/xml, text/xml&#39;</span><span class="p">,</span>
-      <span class="nx">html</span><span class="o">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
-      <span class="nx">text</span><span class="o">:</span>   <span class="s1">&#39;text/plain&#39;</span>
+    <span class="nx">accepts</span><span class="err">:</span> <span class="p">{</span>
+      <span class="nl">script</span><span class="p">:</span> <span class="s1">'text/javascript, application/javascript, application/x-javascript'</span><span class="p">,</span>
+      <span class="nx">json</span><span class="err">:</span>   <span class="nx">jsonType</span><span class="p">,</span>
+      <span class="nx">xml</span><span class="err">:</span>    <span class="s1">'application/xml, text/xml'</span><span class="p">,</span>
+      <span class="nx">html</span><span class="err">:</span>   <span class="nx">htmlType</span><span class="p">,</span>
+      <span class="nx">text</span><span class="err">:</span>   <span class="s1">'text/plain'</span>
     <span class="p">},</span>
     <span class="c1">//是否跨域</span>
-    <span class="nx">crossDomain</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">crossDomain</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="c1">//超时设置  默认不超时</span>
-    <span class="nx">timeout</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">timeout</span><span class="err">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1">//数据需要被序列化</span>
-    <span class="nx">processData</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">processData</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="c1">//对get请求数据进行缓存</span>
-    <span class="nx">cache</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">cache</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
     
     <span class="c1">//其他的</span>
     <span class="nx">context</span> <span class="c1">//内容</span>
@@ -446,14 +446,14 @@ Object对象转化成String每个参数用’&amp;’隔开,和get传参类似�
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
-        <span class="nx">type</span><span class="o">:</span><span class="s2">&quot;post&quot;</span><span class="p">,</span><span class="c1">//get</span>
-        <span class="nx">url</span><span class="o">:</span><span class="s2">&quot;/ajax&quot;</span><span class="p">,</span>
-        <span class="nx">async</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span>
-        <span class="nx">data</span> <span class="o">:</span> <span class="p">{</span><span class="nx">ajax</span><span class="o">:</span><span class="kc">true</span><span class="p">}</span>
+        <span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+        <span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+        <span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">}</span>
 	<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
-		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">)</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'success'</span><span class="p">)</span>
 	<span class="p">},</span><span class="kd">function</span><span class="p">(){</span>
-		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'error'</span><span class="p">)</span>
 	<span class="p">})</span></code></pre></figure>
 
 </div>
