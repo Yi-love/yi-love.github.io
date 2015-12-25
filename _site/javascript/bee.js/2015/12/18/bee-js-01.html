@@ -34,7 +34,7 @@
 		<div class="j-row">
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
 				<div class="j-container j-content">
-					<h2 class="j-i-title"><a href="/blog/javascript/bee.js/2015/12/18/bee-js-01.html">bee.js一个类zepto的适合嵌入的小型库-01</a></h2>
+					<h2 class="j-i-title"><a href="/blog/javascript/bee.js/2015/12/18/bee-js-01.html" title="bee.js一个类zepto的适合嵌入的小型库-01">bee.js一个类zepto的适合嵌入的小型库-01</a></h2>
 						<p class="j-i-time">18 Dec 2015</p>
 						<p class="j-i-tags">
 							
@@ -120,10 +120,10 @@
 我们都知道：数组有两种基本的创建方式：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="c1">//使用Array构造函数</span>
-    <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">()</span>
-    <span class="c1">//赋值法</span>
-    <span class="kd">var</span> <span class="nx">arr2</span> <span class="o">=</span> <span class="p">[];</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//使用Array构造函数</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">()</span>
+  <span class="c1">//赋值法</span>
+  <span class="kd">var</span> <span class="nx">arr2</span> <span class="o">=</span> <span class="p">[];</span></code></pre></figure>
 
 <blockquote>
   <p>我想可能因为$.fn添加了数组的几个基本函数而造成了 <em>new Bee(dom , selector)</em>返回的变为数组。</p>
@@ -132,6 +132,88 @@
 <blockquote>
   <p>说到这我不免有一点感伤，只能怪我没有很好的理解zepto使用的创建对象的模式。所以在理思路的时候总是一团糟。
 这几天我也没有闲着，在恶补js的对象创建以及继承。</p>
+</blockquote>
+
+<blockquote>
+  <p>我们先来看看一种原型模式下的实例的创建：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> <span class="kd">function</span> <span class="nx">Person</span><span class="p">(){</span>
+ <span class="p">}</span>
+ <span class="kd">var</span> <span class="nx">friend</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+ 
+ <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">constructor</span> <span class="p">:</span> <span class="nx">Person</span><span class="p">,</span>
+   <span class="na">name</span> <span class="p">:</span> <span class="s1">'Jin'</span><span class="p">,</span>
+   <span class="na">age</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+   <span class="na">job</span><span class="p">:</span> <span class="s1">'ue'</span><span class="p">,</span>
+   <span class="na">getName</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="nx">friend</span><span class="p">.</span><span class="nx">getName</span><span class="p">()</span><span class="c1">//error</span></code></pre></figure>
+
+<blockquote>
+  <p>这里说明了一点：实例的指针仅指向原型，而不指向构造函数。所以上面的friend会没有getName方法而造成报错。
+那该如何让friend可以调用getName()函数呢。</p>
+</blockquote>
+
+<blockquote>
+  <p>方法一：让friend.prototype = Person.prototype ,于是在调用getName前添加此代码。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> <span class="kd">function</span> <span class="nx">Person</span><span class="p">(){</span>
+ <span class="p">}</span>
+ <span class="kd">var</span> <span class="nx">friend</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+ 
+ <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">constructor</span> <span class="p">:</span> <span class="nx">Person</span><span class="p">,</span>
+   <span class="na">name</span> <span class="p">:</span> <span class="s1">'Jin'</span><span class="p">,</span>
+   <span class="na">age</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+   <span class="na">job</span><span class="p">:</span> <span class="s1">'ue'</span><span class="p">,</span>
+   <span class="na">getName</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="nx">friend</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+ <span class="nx">friend</span><span class="p">.</span><span class="nx">getName</span><span class="p">()</span><span class="c1">//error</span></code></pre></figure>
+
+<blockquote>
+  <p>运行代码还是出错，但我们通过：可以成功的获取到数据。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> <span class="nx">friend</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span><span class="p">()</span><span class="c1">//Jin</span></code></pre></figure>
+
+<blockquote>
+  <p>出现上面的问题其实就是我们没有修改friend指向构造函数原型的指针([[prototype]])。
+如何才能让friend.getName()生效。
+下面是这个过程的内幕：
+<img src="/blog/images/2015/1218_02.jpg" alt="person" /></p>
+</blockquote>
+
+<blockquote>
+  <p>理解了上面的内幕，那我们来看看bee.js(zepto.js)是怎样实现对象的创建的。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">bee</span> <span class="o">=</span> <span class="p">{}</span> <span class="p">,</span> <span class="nx">$</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="kd">function</span> <span class="nx">Bee</span><span class="p">(</span><span class="nx">dom</span> <span class="p">,</span> <span class="nx">selector</span><span class="p">){</span>
+  <span class="p">}</span>
+  <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dom</span> <span class="p">,</span> <span class="nx">selector</span><span class="p">){</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Bee</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span><span class="nx">selector</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">$</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">dom</span> <span class="o">=</span> <span class="nx">doSomeThing</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span><span class="nx">selector</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">constructor</span><span class="p">:</span><span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">,</span>
+    <span class="na">length</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1">//...</span>
+  <span class="p">}</span>
+  <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Bee</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <p>我稍微的简化了代码，这样可以更好的理解内幕原理是怎么实现的。</p>
 </blockquote>
 
 </div>

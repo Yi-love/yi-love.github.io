@@ -34,7 +34,7 @@
 		<div class="j-row">
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
 				<div class="j-container j-content">
-					<h2 class="j-i-title"><a href="/blog/javascript/%E7%AC%94%E8%AE%B0/2015/12/24/js-oo.html">JavaScript面向对象设计之对象创建与继承</a></h2>
+					<h2 class="j-i-title"><a href="/blog/javascript/%E7%AC%94%E8%AE%B0/2015/12/24/js-oo.html" title="JavaScript面向对象设计之对象创建与继承">JavaScript面向对象设计之对象创建与继承</a></h2>
 						<p class="j-i-time">24 Dec 2015</p>
 						<p class="j-i-tags">
 							
@@ -181,6 +181,24 @@
   <span class="kd">function</span> <span class="nx">hasPrototypeProperty</span><span class="p">(</span><span class="nx">object</span> <span class="p">,</span> <span class="nx">name</span><span class="p">){</span>
     <span class="k">return</span> <span class="o">!</span><span class="nx">object</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">name</span> <span class="k">in</span> <span class="nx">object</span><span class="p">);</span>
   <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <p>获取对象属性：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> <span class="c1">//可枚举属性获取</span>
+ <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+ <span class="c1">//for in</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">){</span>
+   <span class="nx">keys</span><span class="p">[</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nx">keys</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">','</span><span class="p">);</span>
+ <span class="c1">//包含不可枚举属性获取</span>
+ <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">getPropertyNames</span><span class="p">(</span><span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span></code></pre></figure>
+
+<blockquote>
+  <p>待续。。。。。</p>
+</blockquote>
 
 </div>
 						</div>
