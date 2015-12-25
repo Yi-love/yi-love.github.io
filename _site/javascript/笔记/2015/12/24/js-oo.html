@@ -130,8 +130,57 @@
 </blockquote>
 
 <blockquote>
-  <p>待续…..</p>
+  <p>总结：创建自定义的构造函数可以将它的实例标识为一种特定的类型。但每个方法都要在每个实例中创建一次。</p>
 </blockquote>
+
+<blockquote>
+  <h4 id="section-4">3.原型模式</h4>
+  <p>我们创建的每一个函数都有一个<em>propotype</em>(原型)属性,这个属性是一个指针，指向一个对象,这个对象包含可以由特定类型的所有实例
+共享的属性和方法。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">Person</span><span class="p">(){</span>
+  <span class="p">}</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'Jin'</span><span class="p">;</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">job</span> <span class="o">=</span> <span class="s1">'ue'</span><span class="p">;</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  	<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">getName</span> <span class="o">==</span> <span class="nx">person2</span><span class="p">.</span><span class="nx">getName</span><span class="p">())</span><span class="c1">//true</span></code></pre></figure>
+
+<blockquote>
+  <p>要点：实例内部包含着一个指针指向构造函数的原型对象，这个连接是存在于实例与构造函数的原型对象之间，而非实例与构造函数之间。
+实例中没有包含属性和函数，但还是可以调用person1.getName()。就是因为这个指针。不过这个过程会调用2次，一次是person1内部，第二次是
+原型对象的getName()。</p>
+</blockquote>
+
+<blockquote>
+  <p>屏蔽原型属性和函数的做法：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//覆盖原型对象的属性</span>
+  <span class="nx">person1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'yi'</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <p>重新访问原型对象的属性:</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//删除实例中的属性</span>
+  <span class="k">delete</span> <span class="nx">person1</span><span class="p">.</span><span class="nx">name</span></code></pre></figure>
+
+<blockquote>
+  <p>判断属性是在实例中还是在原型对象中：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//判断属性是在实例中还是在原型对象中</span>
+  <span class="nx">person1</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="c1">//true  ： 实例中  | false : 原型对象中|| 不存在</span>
+  <span class="c1">//判断属性在原型中  true: 在原型中</span>
+  <span class="kd">function</span> <span class="nx">hasPrototypeProperty</span><span class="p">(</span><span class="nx">object</span> <span class="p">,</span> <span class="nx">name</span><span class="p">){</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">object</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">name</span> <span class="k">in</span> <span class="nx">object</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></figure>
 
 </div>
 						</div>

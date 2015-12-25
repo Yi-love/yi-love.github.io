@@ -74,16 +74,16 @@ body{
 }
 @media (max-width: 640px) {
   .j-container {
-    padding-left: .5rem;
-    padding-right: .5rem;
+    padding-left: .2rem;
+    padding-right: .2rem;
   }
   .j-container-fluid {
-    padding-right: .5rem;
-    padding-left: .5rem;
+    padding-right: .2rem;
+    padding-left: .2rem;
   }
   .j-row {
-    margin-left: -.5rem;
-    margin-right: -.5rem;
+    margin-left: -.2rem;
+    margin-right: -.2rem;
   }
 }
 @media (min-width: 641px) {
@@ -101,60 +101,6 @@ body{
     max-width: 1200px;
   }
 }
-.j-col-lg-1,
-.j-col-lg-2,
-.j-col-lg-3,
-.j-col-lg-4,
-.j-col-lg-5,
-.j-col-lg-6,
-.j-col-lg-7,
-.j-col-lg-8,
-.j-col-lg-9,
-.j-col-lg-10,
-.j-col-lg-11,
-.j-col-lg-12 {
-  position: relative;
-  min-height: 1px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  float: left;
-}
-.j-col-md-1,
-.j-col-md-2,
-.j-col-md-3,
-.j-col-md-4,
-.j-col-md-5,
-.j-col-md-6,
-.j-col-md-7,
-.j-col-md-8,
-.j-col-md-9,
-.j-col-md-10,
-.j-col-md-11,
-.j-col-md-12 {
-  position: relative;
-  min-height: 1px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  float: left;
-}
-.j-col-sm-1,
-.j-col-sm-2,
-.j-col-sm-3,
-.j-col-sm-4,
-.j-col-sm-5,
-.j-col-sm-6,
-.j-col-sm-7,
-.j-col-sm-8,
-.j-col-sm-9,
-.j-col-sm-10,
-.j-col-sm-11,
-.j-col-sm-12 {
-  position: relative;
-  min-height: 1px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  float: left;
-}
 .j-col-xs-1,
 .j-col-xs-2,
 .j-col-xs-3,
@@ -169,8 +115,8 @@ body{
 .j-col-xs-12 {
   position: relative;
   min-height: 1px;
-  padding-left: .5rem;
-  padding-right: .5rem;
+  padding-left: 0rem;
+  padding-right: 0rem;
   float: left;
 }
 .j-col-xs-1 {
@@ -210,6 +156,24 @@ body{
   width: 100.000000%;
 }
 @media (min-width: 640px) {
+  .j-col-sm-1,
+.j-col-sm-2,
+.j-col-sm-3,
+.j-col-sm-4,
+.j-col-sm-5,
+.j-col-sm-6,
+.j-col-sm-7,
+.j-col-sm-8,
+.j-col-sm-9,
+.j-col-sm-10,
+.j-col-sm-11,
+.j-col-sm-12 {
+  position: relative;
+  min-height: 1px;
+  padding-left:.2rem;
+  padding-right: .2rem;
+  float: left;
+}
   .j-col-sm-1 {
     width: 8.333333%;
   }
@@ -248,6 +212,24 @@ body{
   }
 }
 @media (min-width: 1024px) {
+ .j-col-md-1,
+ .j-col-md-2,
+ .j-col-md-3,
+ .j-col-md-4,
+ .j-col-md-5,
+ .j-col-md-6,
+ .j-col-md-7,
+ .j-col-md-8,
+ .j-col-md-9,
+ .j-col-md-10,
+ .j-col-md-11,
+ .j-col-md-12 {
+   position: relative;
+   min-height: 1px;
+   padding-left: .5rem;
+   padding-right: .5rem;
+   float: left;
+  }
   .j-col-md-1 {
     width: 8.333333%;
   }
@@ -286,6 +268,24 @@ body{
   }
 }
 @media (min-width: 1378px) {
+  .j-col-lg-1,
+	.j-col-lg-2,
+	.j-col-lg-3,
+	.j-col-lg-4,
+	.j-col-lg-5,
+	.j-col-lg-6,
+	.j-col-lg-7,
+	.j-col-lg-8,
+	.j-col-lg-9,
+	.j-col-lg-10,
+	.j-col-lg-11,
+	.j-col-lg-12 {
+	  position: relative;
+	  min-height: 1px;
+	  padding-left: .5rem;
+	  padding-right: .5rem;
+	  float: left;
+	}
   .j-col-lg-1 {
     width: 8.333333%;
   }
@@ -367,40 +367,17 @@ body{
 }
 .j-footer{
 	height: auto;
-      min-height: 100px;
-	background: #363434;
+    min-height: 100px;
+	background: #333;
 	margin-top: 20px;
 }
 .j-tlgr{
   text-align: right;
 }
-@media  only screen and (max-width: 640px ) {
-	.j-header{
-		height: auto;
-	}
-	.j-header .j-logo img{
-		height: 34px;
-		width: auto;
-		margin-top: 2px;
-	}
-	.j-header .j-nav{
-		margin-top: 0;
-	}
-	.j-header .j-nav a{
-	   font-size: 16px;
-    }
-    .j-i-title{
-    	line-height: 32px!important;
-    }
-	.j-i-title a{
-	  	white-space:normal!important;
-	  	font-size: 20px;
-	}
-}
 /*******index.html**********/
 .j-list-i ,.j-content{
-	margin-top: 1rem;
-	padding: 1rem;
+	margin-top:1rem;
+	padding:1rem;
 	box-shadow: 0px 0px 10px #C0C0C0;
 	background: #fff;
 }
@@ -521,4 +498,35 @@ body{
 .j-all-i a:hover{
   text-decoration: underline;
 }
-/******category.html****************/
+
+/*******小屏适配**********/
+@media  only screen and (max-width: 640px ) {
+	.j-header{
+		height: auto;
+	}
+	.j-header .j-logo img{
+		height: 34px;
+		width: auto;
+		margin-top: 2px;
+	}
+	.j-header .j-nav{
+		margin-top: 0;
+	}
+	.j-header .j-nav a{
+	   font-size: 16px;
+    }
+    .j-i-title{
+    	line-height: 32px;
+    }
+	.j-i-title a{
+	  	white-space:normal;
+	  	font-size: 20px;
+	}
+	.j-list-i ,.j-content{
+		margin-top:.5rem;
+	    padding:.5rem;
+	}
+	.j-artclie-txt{
+		font-size: 14px;
+	}
+}
