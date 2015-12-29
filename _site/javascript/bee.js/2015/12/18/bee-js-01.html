@@ -195,25 +195,46 @@
   <p>理解了上面的内幕，那我们来看看bee.js(zepto.js)是怎样实现对象的创建的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">bee</span> <span class="o">=</span> <span class="p">{}</span> <span class="p">,</span> <span class="nx">$</span> <span class="o">=</span> <span class="p">{};</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">bee</span> <span class="o">=</span> <span class="p">{}</span> <span class="p">,</span> <span class="nx">$</span><span class="p">;</span>
   <span class="kd">function</span> <span class="nx">Bee</span><span class="p">(</span><span class="nx">dom</span> <span class="p">,</span> <span class="nx">selector</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">selector</span> <span class="o">=</span> <span class="nx">selector</span><span class="o">||</span><span class="s1">''</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dom</span> <span class="p">,</span> <span class="nx">selector</span><span class="p">){</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">Bee</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span><span class="nx">selector</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="nx">$</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">dom</span> <span class="o">=</span> <span class="nx">doSomeThing</span><span class="p">()</span>
+    <span class="kd">var</span> <span class="nx">dom</span> <span class="c1">//=doSomeThing();</span>
     <span class="k">return</span> <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span><span class="nx">selector</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">constructor</span><span class="p">:</span><span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">,</span>
     <span class="na">length</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1">//...</span>
+    <span class="na">slice</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selector</span><span class="p">);</span>
+    <span class="p">}</span>
   <span class="p">}</span>
   <span class="nx">bee</span><span class="p">.</span><span class="nx">B</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Bee</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">;</span></code></pre></figure>
 
 <blockquote>
-  <p>我稍微的简化了代码，这样可以更好的理解内幕原理是怎么实现的。</p>
+  <p>我稍微的简化了代码，这样可以更好的理解内幕原理是怎么实现的。
+<img src="/blog/images/2015/1218_03.jpg" alt="bee" /></p>
+</blockquote>
+
+<blockquote>
+  <p>最后使用 $ 来获取的selector最后得到了一个新的Bee()实例对象，它不仅拥有Bee的属性还拥有Bee的prototype函数。
+照这样的话可以直接返回Bee()实例对象即可。那为什么还要用bee.B包装一下呢。</p>
+</blockquote>
+
+<blockquote>
+  <p>下面是我的疑问，不知道你又没有：</p>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>就是上面说的为什么要用bee.B包装?</li>
+    <li>还是老问题如何返回数组,我们看到上面在chrome中的temp还是一个对象?</li>
+  </ol>
 </blockquote>
 
 </div>
@@ -234,9 +255,9 @@
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(5)</span></a>
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(6)</span></a>
 		
-		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(5)</span></a>
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(6)</span></a>
 		
 		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
 		
