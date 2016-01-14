@@ -49,7 +49,9 @@
 		</p>
 		<div class="j-container">
 			<div class="j-row j-artclie-txt"><blockquote>
-  <p>接着上一篇对象的创建，这一篇主要写javaScript的继承方式。</p>
+  <p>接着上一篇对象的创建，这一篇主要写javaScript的继承方式。
+许多语言的继承分为2种：接口继承和实现继承。
+js没有函数签名，所以无法使用接口继承。js的实现继承是依靠原型链实现的。</p>
 </blockquote>
 
 </div>
@@ -152,15 +154,15 @@
 我们知道不管是zepto还是jquery都可以通过下面的方式获取到服务器的数据或者向服务器发送数据。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js"> 	<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
- 		<span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
-		<span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
-		<span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
-		<span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">},</span>
-		<span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
-			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
-		<span class="p">}</span>
- 	<span class="p">});</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="na">type</span><span class="p">:</span><span class="s2">"post"</span><span class="p">,</span><span class="c1">//get</span>
+    <span class="na">url</span><span class="p">:</span><span class="s2">"/ajax"</span><span class="p">,</span>
+    <span class="na">async</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+    <span class="na">data</span> <span class="p">:</span> <span class="p">{</span><span class="na">ajax</span><span class="p">:</span><span class="kc">true</span><span class="p">},</span>
+    <span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span></code></pre></figure>
 
 <blockquote>
   <p>这里我也写了一段很简单的js模拟ajax功能。</p>
@@ -193,7 +195,7 @@
 我一看这就一个js文件，看样子要去github上确认一下。于是使用命令</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> 	git clone https://github.com/madrobby/zepto.git</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">  git clone https://github.com/madrobby/zepto.git</code></pre></figure>
 
 <blockquote>
   <p>克隆了一份到本地，打开一看原来zepto本来是有很多个模块组成的。</p>

@@ -56,7 +56,7 @@
 我一看这就一个js文件，看样子要去github上确认一下。于是使用命令</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-sh" data-lang="sh"> 	git clone https://github.com/madrobby/zepto.git</code></pre></figure>
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">  git clone https://github.com/madrobby/zepto.git</code></pre></figure>
 
 <blockquote>
   <p>克隆了一份到本地，打开一看原来zepto本来是有很多个模块组成的。</p>
@@ -91,17 +91,17 @@
 纵观全局,先分析  $ 是怎么来的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="kd">var</span> <span class="nx">Zepto</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-		<span class="p">......</span> <span class="c1">//省略代码</span>
-		<span class="nx">zepto</span><span class="p">.</span><span class="nx">Z</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Z</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span>
-		<span class="nx">zepto</span><span class="p">.</span><span class="nx">uniq</span> <span class="o">=</span> <span class="nx">uniq</span>
-		<span class="nx">zepto</span><span class="p">.</span><span class="nx">deserializeValue</span> <span class="o">=</span> <span class="nx">deserializeValue</span>
-		<span class="nx">$</span><span class="p">.</span><span class="nx">zepto</span> <span class="o">=</span> <span class="nx">zepto</span>
-		
-		<span class="k">return</span> <span class="nx">$</span> <span class="c1">// $ 这个就是zepto暴露到全局的唯一对象 </span>
-	<span class="p">})()</span>
-	<span class="nb">window</span><span class="p">.</span><span class="nx">Zepto</span> <span class="o">=</span> <span class="nx">Zepto</span>
-	<span class="nb">window</span><span class="p">.</span><span class="nx">$</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">Zepto</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">Zepto</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+	<span class="p">......</span> <span class="c1">//省略代码</span>
+	<span class="nx">zepto</span><span class="p">.</span><span class="nx">Z</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Z</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span>
+	<span class="nx">zepto</span><span class="p">.</span><span class="nx">uniq</span> <span class="o">=</span> <span class="nx">uniq</span>
+	<span class="nx">zepto</span><span class="p">.</span><span class="nx">deserializeValue</span> <span class="o">=</span> <span class="nx">deserializeValue</span>
+	<span class="nx">$</span><span class="p">.</span><span class="nx">zepto</span> <span class="o">=</span> <span class="nx">zepto</span>
+	
+	<span class="k">return</span> <span class="nx">$</span> <span class="c1">// $ 这个就是zepto暴露到全局的唯一对象 </span>
+<span class="p">})()</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Zepto</span> <span class="o">=</span> <span class="nx">Zepto</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">$</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">Zepto</span><span class="p">)</span></code></pre></figure>
 
 <blockquote>
   <p>会发现整个Zepto其实是一个闭包的自动执行函数,对外界暴露的唯一的就是 $,就是那一条<em>return $</em>.</p>
@@ -120,9 +120,9 @@
   <p>现在我们进如Zepto内部,看一下$是一个什么对象。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">$</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">){</span>
-	    <span class="k">return</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
-	<span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>原来Zepto内部还有一个zepto对象(首字母小写),现在终于明朗了。$其实是对zepto.init函数的封装。
@@ -162,15 +162,15 @@
   <p>selector为空，是直接执行 zepto.Z() , 并返回。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="kd">function</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
-	    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">dom</span> <span class="p">?</span> <span class="nx">dom</span><span class="p">.</span><span class="nx">length</span> <span class="p">:</span> <span class="mi">0</span>
-	    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-	    <span class="k">this</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="nx">len</span>
-	    <span class="k">this</span><span class="p">.</span><span class="nx">selector</span> <span class="o">=</span> <span class="nx">selector</span> <span class="o">||</span> <span class="s1">''</span>
-	<span class="p">}</span>
-	<span class="nx">zepto</span><span class="p">.</span><span class="nx">Z</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
-	    <span class="k">return</span> <span class="k">new</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="c1">//新建对象 ，防止使用同一个对象产生错误，使用new</span>
-	<span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">dom</span> <span class="p">?</span> <span class="nx">dom</span><span class="p">.</span><span class="nx">length</span> <span class="p">:</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="nx">len</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">selector</span> <span class="o">=</span> <span class="nx">selector</span> <span class="o">||</span> <span class="s1">''</span>
+<span class="p">}</span>
+<span class="nx">zepto</span><span class="p">.</span><span class="nx">Z</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">dom</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="c1">//新建对象 ，防止使用同一个对象产生错误，使用new</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>这个函数其实就是对获取到的dom元素等做一下格式化，假如dom是存在的那就将所有的都赋值到this对象上。</p>
@@ -209,10 +209,10 @@
   <p>zepto会认为这样做的目的是生成dom元素。那么这样的操作其实等价于：</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$('&lt;div&gt;传人html&lt;/div&gt;')</span>
-	<span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">)</span>
-	<span class="nx">div</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"传人html"</span>
-	<span class="k">return</span> <span class="nx">div</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//$('&lt;div&gt;传人html&lt;/div&gt;')</span>
+<span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">)</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"传人html"</span>
+<span class="k">return</span> <span class="nx">div</span></code></pre></figure>
 
 <blockquote>
   <p>这只是一个最简单的列子，如果要作为一个灵活的功能模块的话，还需要进一步的优化和扩展，比如如何判断传人的是html标签.
@@ -240,12 +240,12 @@
 所以上面的也是可以简写的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">// html标签判断</span>
-	<span class="k">if</span> <span class="p">(</span><span class="nx">selector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'&lt;'</span> <span class="o">&amp;&amp;</span> <span class="sr">/^</span><span class="se">\s</span><span class="sr">*&lt;</span><span class="se">(\w</span><span class="sr">+|!</span><span class="se">)[^</span><span class="sr">&gt;</span><span class="se">]</span><span class="sr">*&gt;/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">)){</span>
-		<span class="nx">dom</span> <span class="o">=</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">fragment</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nb">RegExp</span><span class="p">.</span><span class="nx">$1</span><span class="p">,</span> <span class="nx">context</span><span class="p">),</span> <span class="nx">selector</span> <span class="o">=</span> <span class="kc">null</span>
-	<span class="p">}</span>
-    <span class="c1">// RegExp.$1  等价于  匹配到的tag  </span>
-    <span class="c1">// e.g: $('&lt;img&gt;')   --&gt; RegExp.$1 == img </span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// html标签判断</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">selector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'&lt;'</span> <span class="o">&amp;&amp;</span> <span class="sr">/^</span><span class="se">\s</span><span class="sr">*&lt;</span><span class="se">(\w</span><span class="sr">+|!</span><span class="se">)[^</span><span class="sr">&gt;</span><span class="se">]</span><span class="sr">*&gt;/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">)){</span>
+	<span class="nx">dom</span> <span class="o">=</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">fragment</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nb">RegExp</span><span class="p">.</span><span class="nx">$1</span><span class="p">,</span> <span class="nx">context</span><span class="p">),</span> <span class="nx">selector</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="p">}</span>
+<span class="c1">// RegExp.$1  等价于  匹配到的tag  </span>
+<span class="c1">// e.g: $('&lt;img&gt;')   --&gt; RegExp.$1 == img </span></code></pre></figure>
 
 <blockquote>
   <p>zepto交给了zepto.fragment()去处理，也就是说上面的js只要保证最少有一个&lt;tag&gt;即可。
@@ -266,13 +266,13 @@
   <p>最后我在拓展一下，将元素复制到dom这一步</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//将所有的html元素全部输出到dom中</span>
-      <span class="nx">dom</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">container</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-      <span class="p">})</span>
-      <span class="c1">//等价于</span>
-      <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[].</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">);</span>
-      <span class="nx">dom</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">;</span> <span class="c1">//只不过zepto为了让container恢复原始状态而使用了上面的方式</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//将所有的html元素全部输出到dom中</span>
+  <span class="nx">dom</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="c1">//等价于</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[].</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">);</span>
+  <span class="nx">dom</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">;</span> <span class="c1">//只不过zepto为了让container恢复原始状态而使用了上面的方式</span></code></pre></figure>
 
 <blockquote>
   <p>另外的一个就是如果带有属性传人的话，也就是properties 对象不为空时。添加属性是为每一个dom元素都添加的。也就是dom数组里的所有元素都添加。</p>
@@ -284,10 +284,10 @@
 那么当使用</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">$</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
-	<span class="c1">//是等价于</span>
-	<span class="kd">var</span> <span class="nx">dom</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">context</span><span class="p">);</span>
-	<span class="nx">dom</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+<span class="c1">//是等价于</span>
+<span class="kd">var</span> <span class="nx">dom</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">context</span><span class="p">);</span>
+<span class="nx">dom</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span></code></pre></figure>
 
 <blockquote>
   <p>上面这种格式来获取dom元素时，其实调用了2次zepto.init,比一般的dom获取多了一次。
@@ -301,25 +301,25 @@ $.find()函数写的非常的简洁：
 现在我们来分析一下他是如何实现过滤获取到最后符合条件的结果的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//过滤不符合条件的dom节点</span>
-	<span class="c1">//e.g : dom = dom.find(selector);</span>
-	<span class="c1">// $this = dom</span>
-	<span class="nx">result</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="c1">//过滤</span>
-      	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span>
-      	<span class="k">return</span> <span class="nx">emptyArray</span><span class="p">.</span><span class="nx">some</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">$this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">){</span>
-        	<span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
-      	<span class="p">})</span>
-    <span class="p">})</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//过滤不符合条件的dom节点</span>
+<span class="c1">//e.g : dom = dom.find(selector);</span>
+<span class="c1">// $this = dom</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="c1">//过滤</span>
+  	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span>
+  	<span class="k">return</span> <span class="nx">emptyArray</span><span class="p">.</span><span class="nx">some</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">$this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">){</span>
+    	<span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
+  	<span class="p">})</span>
+<span class="p">})</span></code></pre></figure>
 
 <p>这里面牵涉到3个函数,filter,some,contains。现在我们分别来看这3个函数。</p>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//filter函数</span>
-	<span class="nl">filter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
-      <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">filter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">){</span>
-        <span class="k">return</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span>
-      <span class="p">}))</span>
-    <span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//filter函数</span>
+<span class="nl">filter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
+  <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">filter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">zepto</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span>
+  <span class="p">}))</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>我们来看看some函数的定义：只要有数组元素满足f的要求就返回true，否则返回false。</p>
@@ -331,16 +331,16 @@ $.find()函数写的非常的简洁：
   <p>那么我们就可以推断出 $.contains函数就是判断 selector 是否是 dom的子节点。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$.contains函数  通过它可以判断某个节点是不是另一个节点的后代</span>
-	<span class="nx">$</span><span class="p">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">contains</span> <span class="p">?</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
-      	<span class="k">return</span> <span class="nx">parent</span> <span class="o">!==</span> <span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
-    <span class="p">}</span> <span class="p">:</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
-      	<span class="k">while</span> <span class="p">(</span><span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">))</span>
-        	<span class="k">if</span> <span class="p">(</span><span class="nx">node</span> <span class="o">===</span> <span class="nx">parent</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span>
-     	<span class="k">return</span> <span class="kc">false</span>
-    <span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//$.contains函数  通过它可以判断某个节点是不是另一个节点的后代</span>
+<span class="nx">$</span><span class="p">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">contains</span> <span class="p">?</span>
+<span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+  	<span class="k">return</span> <span class="nx">parent</span> <span class="o">!==</span> <span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+<span class="p">}</span> <span class="p">:</span>
+<span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+  	<span class="k">while</span> <span class="p">(</span><span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">))</span>
+    	<span class="k">if</span> <span class="p">(</span><span class="nx">node</span> <span class="o">===</span> <span class="nx">parent</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span>
+ 	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>那么你可能会发现，我为什么没有先讨论filter,而是先讨论的some函数和contains函数。
@@ -355,71 +355,71 @@ filter 真正是什么函数还得看它内部的实现。</p>
 和数学里面 负负得正类似。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$.not 函数</span>
-	<span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
-     	<span class="kd">var</span> <span class="nx">nodes</span><span class="o">=</span><span class="p">[]</span>
-      	<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">call</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span>
-          	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">selector</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="nx">idx</span><span class="p">))</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-        <span class="p">})</span>
-      	<span class="k">else</span> <span class="p">{</span>
-        	<span class="kd">var</span> <span class="nx">excludes</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">'string'</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span>
-          	<span class="p">(</span><span class="nx">likeArray</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">.</span><span class="nx">item</span><span class="p">))</span> <span class="p">?</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span>
-        	<span class="k">this</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">){</span>
-          		<span class="k">if</span> <span class="p">(</span><span class="nx">excludes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span>
-        	<span class="p">})</span>
-      	<span class="p">}</span>
-      	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span>
-    <span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//$.not 函数</span>
+<span class="kd">function</span><span class="p">(</span><span class="nx">selector</span><span class="p">){</span>
+ 	<span class="kd">var</span> <span class="nx">nodes</span><span class="o">=</span><span class="p">[]</span>
+  	<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">call</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span>
+      	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">selector</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="nx">idx</span><span class="p">))</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="p">})</span>
+  	<span class="k">else</span> <span class="p">{</span>
+    	<span class="kd">var</span> <span class="nx">excludes</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s1">'string'</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span>
+      	<span class="p">(</span><span class="nx">likeArray</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">isFunction</span><span class="p">(</span><span class="nx">selector</span><span class="p">.</span><span class="nx">item</span><span class="p">))</span> <span class="p">?</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">:</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span>
+    	<span class="k">this</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">){</span>
+      		<span class="k">if</span> <span class="p">(</span><span class="nx">excludes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span>
+    	<span class="p">})</span>
+  	<span class="p">}</span>
+  	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>因为传人的是函数所以not函数会执行if分支,第二次是dom数组所以执行else。
 现在整个流程基本跑通。那现在我们就是要把整个流程在理清楚就可以了。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//filter函数执行过程简单化</span>
-	<span class="kd">var</span> <span class="nx">result</span> <span class="p">,</span> <span class="nx">$this</span> <span class="o">=</span> <span class="k">this</span> <span class="p">,</span> <span class="nx">nodes</span> <span class="o">=</span><span class="p">[];</span>
-	<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span>
-		<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">isBlong</span><span class="p">(</span><span class="nx">$this</span> <span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="p">){</span> <span class="c1">//判断idx是否属于 $this的子元素</span>
-			<span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span><span class="c1">//得到不属于 </span>
-		<span class="p">}</span>		
-	<span class="p">}</span>
-	<span class="kd">function</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">parants</span> <span class="p">,</span> <span class="nx">node</span><span class="p">){</span>
-		<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">parent</span> <span class="k">in</span> <span class="nx">parents</span> <span class="p">){</span>
-			<span class="k">if</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span> <span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">){</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//匹配到了</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-		<span class="k">return</span> <span class="kc">false</span> <span class="c1">//所有的node不属于任何一个dom里的子节点</span>
-	<span class="p">}</span>
-	<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span> 
-		<span class="k">if</span> <span class="p">(</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">){</span> <span class="c1">//把不属于dom子节点的排除掉，留下属于的</span>
-			<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//filter函数执行过程简单化</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="p">,</span> <span class="nx">$this</span> <span class="o">=</span> <span class="k">this</span> <span class="p">,</span> <span class="nx">nodes</span> <span class="o">=</span><span class="p">[];</span>
+<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span>
+	<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">isBlong</span><span class="p">(</span><span class="nx">$this</span> <span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="p">){</span> <span class="c1">//判断idx是否属于 $this的子元素</span>
+		<span class="nx">nodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span><span class="c1">//得到不属于 </span>
+	<span class="p">}</span>		
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">parants</span> <span class="p">,</span> <span class="nx">node</span><span class="p">){</span>
+	<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">parent</span> <span class="k">in</span> <span class="nx">parents</span> <span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span> <span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">){</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//匹配到了</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span></code></pre></figure>
+	<span class="k">return</span> <span class="kc">false</span> <span class="c1">//所有的node不属于任何一个dom里的子节点</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span> 
+	<span class="k">if</span> <span class="p">(</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">){</span> <span class="c1">//把不属于dom子节点的排除掉，留下属于的</span>
+		<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span></code></pre></figure>
 
 <blockquote>
   <p>你可能会发现，其实是没有必要怎么复杂，只要把isBlong函数前的!去掉就可以得到属于dom的子元素了,最后的for循环就可以不用了。而zepto是为了简化代码，调用了两次not函数。
 这是相同的道理。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//filter函数终极版</span>
-	<span class="kd">var</span> <span class="nx">result</span> <span class="p">,</span> <span class="nx">$this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-	<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span>
-		<span class="k">if</span> <span class="p">(</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">$this</span> <span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="p">){</span> <span class="c1">//判断idx是否属于 $this的子元素</span>
-			<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span><span class="c1">//得到属于 </span>
-		<span class="p">}</span>		
-	<span class="p">}</span>
-	<span class="kd">function</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">parants</span> <span class="p">,</span> <span class="nx">node</span><span class="p">){</span>
-		<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">parent</span> <span class="k">in</span> <span class="nx">parents</span> <span class="p">){</span>
-			<span class="k">if</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span> <span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">){</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//匹配到了</span>
-			<span class="p">}</span>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//filter函数终极版</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="p">,</span> <span class="nx">$this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">idx</span> <span class="k">in</span> <span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">){</span>
+	<span class="k">if</span> <span class="p">(</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">$this</span> <span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="p">){</span> <span class="c1">//判断idx是否属于 $this的子元素</span>
+		<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span><span class="c1">//得到属于 </span>
+	<span class="p">}</span>		
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">isBlong</span><span class="p">(</span><span class="nx">parants</span> <span class="p">,</span> <span class="nx">node</span><span class="p">){</span>
+	<span class="k">for</span> <span class="p">(</span> <span class="kd">var</span> <span class="nx">parent</span> <span class="k">in</span> <span class="nx">parents</span> <span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">parent</span> <span class="p">,</span> <span class="nx">node</span><span class="p">)</span> <span class="p">){</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//匹配到了</span>
 		<span class="p">}</span>
-		<span class="k">return</span> <span class="kc">false</span> <span class="c1">//所有的node不属于任何一个dom里的子节点</span>
 	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span></code></pre></figure>
+	<span class="k">return</span> <span class="kc">false</span> <span class="c1">//所有的node不属于任何一个dom里的子节点</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span></code></pre></figure>
 
 <blockquote>
   <p>这就是find函数执行第2种情况的最终代码。</p>
@@ -463,23 +463,23 @@ zepto对这个函数进行了优化，所以看起来比较的费劲。这里我
   <p>selector 为函数</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="c1">//$(selector)</span>
-	<span class="c1">//e.g </span>
-	<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">)</span>
-	<span class="p">})</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//$(selector)</span>
+<span class="c1">//e.g </span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">)</span>
+<span class="p">})</span></code></pre></figure>
 
 <blockquote>
   <p>上面是一个最简单的调用方法，就是传人一个函数，那么zepto是通过调用 * $(document).ready(selector)*函数执行的。</p>
 </blockquote>
 
-<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">ready</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){</span>
-      	<span class="c1">// need to check if document.body exists for IE as that browser reports</span>
-      	<span class="c1">// document ready when it hasn't yet created the body element</span>
-      	<span class="k">if</span> <span class="p">(</span><span class="nx">readyRE</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="c1">//ie</span>
-      	<span class="k">else</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">},</span> <span class="kc">false</span><span class="p">)</span>
-      	<span class="k">return</span> <span class="k">this</span>
-    <span class="p">}</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">ready</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){</span>
+  	<span class="c1">// need to check if document.body exists for IE as that browser reports</span>
+  	<span class="c1">// document ready when it hasn't yet created the body element</span>
+  	<span class="k">if</span> <span class="p">(</span><span class="nx">readyRE</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="c1">//ie</span>
+  	<span class="k">else</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">},</span> <span class="kc">false</span><span class="p">)</span>
+  	<span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span></code></pre></figure>
 
 <blockquote>
   <p>看了就明白了，就一句话：dom加载完后执行这个函数。</p>
