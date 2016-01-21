@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="JavaScript-Promise对象学习笔记">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>JavaScript-Promise对象学习笔记</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="/blog/javascript/%E7%AC%94%E8%AE%B0/2016/01/21/javascript-promise.html" title="JavaScript-Promise对象学习笔记">JavaScript-Promise对象学习笔记</a></h2>
+						<p class="j-i-time">21 Jan 2016</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">Promise</span>
+							
+							<span class="j-i-tag">js</span>
+							
+							<span class="j-i-tag">异步</span>
+							
+							<span class="j-i-tag">延迟</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <p>Promise最初被提出是在 <em>E语言</em> 中， 它是基于并列/并行处理设计的一种编程语言
+Node.js等则规定在JavaScript的回调函数的第一个参数为 Error 对象，这也是它的一个惯例。
+promise的功能是可以将复杂的异步处理轻松地进行模式化， 这也可以说得上是使用promise的理由之一。</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="promise">Promise类型</h3>
+  <p>目前大致分为3种类型</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="constructor">1. Constructor</h3>
+  <p>创建一个promise对象、可以使用 new 来调用 Promise 的构造器来进行实例化.</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span> <span class="p">,</span> <span class="nx">reject</span><span class="p">){</span>
+    <span class="c1">//异步处理</span>
+    <span class="c1">//处理结束后，调用resolve或 reject</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="instance-method">2. Instance Method</h3>
+  <p>通过new生成的promise对象，可以通过promise.then()实例方法调用 resolve(成功) / reject(失败)时的回调函数。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">onFulfilled</span><span class="p">,</span> <span class="nx">onRejected</span><span class="p">)</span>
+  <span class="c1">//resolve(成功)时：onFulfilled 被调用</span>
+  <span class="c1">//reject(失败)时：onRejected被调用</span></code></pre></figure>
+
+<blockquote>
+  <p>异常处理：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">onRejected</span><span class="p">)</span>
+  <span class="c1">//or</span>
+  <span class="nx">promise</span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">onRejected</span><span class="p">)</span></code></pre></figure>
+
+<blockquote>
+  <p>上面的任意一种都可以处理，但<em>promise.catch(onReject)</em>通常是更好的选择。</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="static-method">3.Static Method</h3>
+  <p>Promise.all() , Promise.resolve() ,主要都是一些对Promise进行操作的辅助方法。</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="promise-">Promise 工作流</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">asyncFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">resolve</span><span class="p">(</span><span class="s1">'Async Hello world'</span><span class="p">);</span>
+      <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">asyncFunction</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>    <span class="c1">// =&gt; 'Async Hello world'</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="promise--1">Promise 状态</h3>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>Pending — 创建时的初始状态</li>
+    <li>Fulfilled — resolve时，会调用onFulfilled</li>
+    <li>Rejected —  reject时 ，会调用 onRejected</li>
+  </ol>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">         <span class="o">-----------&gt;</span> <span class="nx">Fulfilled</span>
+         <span class="o">|</span>   <span class="nx">value</span>
+  <span class="nx">Pending</span>
+         <span class="o">|</span>   <span class="nx">error</span>
+         <span class="o">-----------&gt;</span> <span class="nx">Rejected</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="xhr--promise">创建 XHR 的 Promise对象</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">getURL</span><span class="p">(</span><span class="nx">url</span><span class="p">){</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span> <span class="p">,</span> <span class="nx">reject</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">()</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">'GET'</span> <span class="p">,</span> <span class="nx">url</span> <span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+         <span class="k">if</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">2000</span> <span class="p">){</span>
+           <span class="nx">resolve</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">responseText</span><span class="p">)</span>
+         <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+           <span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">statusText</span><span class="p">))</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="c1">//req.onreadystatechange : The readyState attribute changes value, </span>
+      <span class="c1">//                           except when it changes to UNSENT.</span>
+      <span class="c1">//req.onload : The request has successfully completed.</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">statusText</span><span class="p">))</span>
+      <span class="p">}</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">send</span><span class="p">()</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'http://test/'</span>
+  <span class="nx">getURL</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="nx">onFulfilled</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="nx">onRejected</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
+  	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="xmlhttprequest">XMLHttpRequest</h4>
+  <p><em>XMLHttpRequest 可以取回所有类型的数据资源,并不局限于XML. 而且除了HTTP ,它还支持file 和 ftp 协议</em></p>
+</blockquote>
+
+<blockquote>
+  <h3 id="promise-1">Promise快捷方式</h3>
+  <ol>
+    <li>promise.resolve(value)</li>
+  </ol>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> 
+  <span class="o">===</span> 
+  <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">){</span>
+    <span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <p>可以直接调用.then</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <p>promise.reject(error)也是如此。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span><span class="nx">reject</span><span class="p">){</span>
+    <span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"出错了"</span><span class="p">))</span>
+  <span class="p">})</span>
+  <span class="o">===</span>
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"BOOM!"</span><span class="p">)).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="promise-2">Promise的为什么是异步</h3>
+  <p>同步调用和异步调用同时存在导致的混乱。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section">1.同步调用</h4>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">onReady</span><span class="p">(</span><span class="nx">fn</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">readyState</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'interactive'</span> <span class="o">||</span> <span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">){</span>
+      <span class="nx">fn</span><span class="p">()</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span> <span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">onReady</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'DOM is ready'</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'===Starting==='</span><span class="p">)</span></code></pre></figure>
+
+<blockquote>
+  <p>根据执行时DOM是否已经装载完毕来决定是对回调函数进行同步调用还是异步调用。
+1:如果在调用onReady之前DOM已经载入的话,对回调函数进行同步调用;
+2:如果在调用onReady之前DOM还没有载入的话,通过注册 DOMContentLoaded 事件监听器来对回调函数进行异步调用.
+因此，如果这段代码在源文件中出现的位置不同，在控制台上打印的log消息顺序也会不同。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="section-1">2.异步调用</h4>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">onReady</span><span class="p">(</span><span class="nx">fn</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">readyState</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'interactive'</span> <span class="o">||</span> <span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">){</span>
+      <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span> <span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">onReady</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'DOM is ready'</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'===Starting==='</span><span class="p">)</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-2">注意：</h4>
+</blockquote>
+
+<blockquote>
+  <p>1.绝对不能对异步回调函数（即使在数据已经就绪）进行同步调用。</p>
+</blockquote>
+
+<blockquote>
+  <p>2.如果对异步回调函数进行同步调用的话，处理顺序可能会与预期不符，可能带来意料之外的后果。</p>
+</blockquote>
+
+<blockquote>
+  <p>3.对异步回调函数进行同步调用，还可能导致栈溢出或异常处理错乱等问题。</p>
+</blockquote>
+
+<blockquote>
+  <p>4.如果想在将来某时刻调用异步回调函数的话，可以使用 setTimeout 等异步API。</p>
+</blockquote>
+
+<blockquote>
+  <pre><code>                                              Effective JavaScript
+</code></pre>
+</blockquote>
+
+<blockquote>
+  <pre><code>                                              — David Herman
+</code></pre>
+</blockquote>
+
+<blockquote>
+  <h3 id="promise-3">Promise异步</h3>
+  <p>为了避免上述中同时使用同步、异步调用可能引起的混乱问题，Promise在规范上规定 Promise只能使用异步调用方式 。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">onReadyPromise</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">readyState</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'interactive'</span> <span class="o">||</span> <span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">resolve</span><span class="p">();</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="nx">resolve</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+  <span class="nx">onReadyPromise</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'DOM fully loaded and parsed'</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'==Starting=='</span><span class="p">)</span></code></pre></figure>
+
+<blockquote>
+  <p>待续……</p>
+</blockquote>
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="">微信</a>
+			<a href="">微博</a>
+			<a href="">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(7)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
+		
+		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
