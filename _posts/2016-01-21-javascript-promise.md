@@ -106,7 +106,8 @@ tags: [Promise,js,异步,延迟]
 >*XMLHttpRequest 可以取回所有类型的数据资源,并不局限于XML. 而且除了HTTP ,它还支持file 和 ftp 协议*
 
 >### Promise快捷方式
->1. promise.resolve(value)
+
+>#### promise.resolve(value)
 {%highlight js%}
   promise.resolve(42) 
   === 
@@ -120,16 +121,34 @@ tags: [Promise,js,异步,延迟]
     console.log(value)
   })
 {%endhighlight%}
->promise.reject(error)也是如此。
+>#### promise.reject(error)也是如此。
 {%highlight js%}
   new Promise(function(resolve,reject){
     reject(new Error("出错了"))
   })
   ===
   Promise.reject(new Error("BOOM!")).catch(function(error){
-    console.error(error)
+    console.log(error)
   })
 {%endhighlight%}
+
+>#### promise.catch兼容
+> IE < 9  调用方式。catch 在IE8是保留字
+{%highlight js%}
+  var promise = new Promise(function(resolve , reject){
+    reject('错了')
+  })
+  
+  //以下 2选1
+  promise['catch'](function(error){
+    console.log(error)
+  })
+  // or 
+  promise.then(undefined, function(error) {
+    console.log(error)
+  })
+{%endhighlight%}
+
 
 >### Promise的为什么是异步
 >同步调用和异步调用同时存在导致的混乱。
@@ -203,4 +222,59 @@ tags: [Promise,js,异步,延迟]
   console.log('==Starting==')
 {%endhighlight%}
 
->待续......
+>### Promise的promise对象
+>promise在每次调用then之后都会返回一个新的promise对象.
+
+>#### promise误区
+{%highlight js%}
+  //误区
+  var ap = new Promise(function(resolve){
+    resolve(100)
+  })
+  ap.then(function(value){
+   return value*2
+  })
+  ap.then(function(value){
+    console.log('1:',value)//100
+  })
+  
+  //正确
+  var bp = new Promise(function(resolve){
+    resolve(100)
+  })
+  bp.then(function(value){
+   return value*2
+  }).then(function(value){
+    console.log('2:',value)//100*2
+  })
+{%endhighlight%}
+
+>#### then 的错误使用
+>下面是错误的使用promise,因为promise.then()返回的是一个新的promise对象，所以下面返回旧的对象是有问题的。
+{%highlight js%}
+  function badAsyncCall(){
+    var promise = Promise.resolve()
+    promise.then(function(){
+      //任意处理
+      return newArr
+    })
+    return promise
+  }
+{%endhighlight%}
+
+>#### then 的正确调用
+>只要将上面错误的调用promise.then()方法直接return 即可。promise.then()返回一个新的promise对象。这就符合了Promise的链式调用。
+{%highlight js%}
+  function badAsyncCall(){
+    var promise = Promise.resolve()
+    return promise.then(function(){
+      //任意处理
+      return newArr
+    })
+  }
+{%endhighlight%}
+
+
+
+
+

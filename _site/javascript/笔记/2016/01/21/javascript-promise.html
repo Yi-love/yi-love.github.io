@@ -34,7 +34,7 @@
 		<div class="j-row">
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
 				<div class="j-container j-content">
-					<h2 class="j-i-title"><a href="/blog/javascript/%E7%AC%94%E8%AE%B0/2016/01/21/javascript-promise.html" title="JavaScript-Promise对象学习笔记">JavaScript-Promise对象学习笔记</a></h2>
+					<h2 class="j-i-title"><a href="javascript:void(0)" title="JavaScript-Promise对象学习笔记">JavaScript-Promise对象学习笔记</a></h2>
 						<p class="j-i-time">21 Jan 2016</p>
 						<p class="j-i-tags">
 							
@@ -172,9 +172,10 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
 
 <blockquote>
   <h3 id="promise-1">Promise快捷方式</h3>
-  <ol>
-    <li>promise.resolve(value)</li>
-  </ol>
+</blockquote>
+
+<blockquote>
+  <h4 id="promiseresolvevalue">promise.resolve(value)</h4>
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> 
@@ -192,7 +193,7 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
   <span class="p">})</span></code></pre></figure>
 
 <blockquote>
-  <p>promise.reject(error)也是如此。</p>
+  <h4 id="promiserejecterror">promise.reject(error)也是如此。</h4>
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span><span class="nx">reject</span><span class="p">){</span>
@@ -200,7 +201,25 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
   <span class="p">})</span>
   <span class="o">===</span>
   <span class="nx">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"BOOM!"</span><span class="p">)).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="promisecatch">promise.catch兼容</h4>
+  <p>IE &lt; 9  调用方式。catch 在IE8是保留字</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span> <span class="p">,</span> <span class="nx">reject</span><span class="p">){</span>
+    <span class="nx">reject</span><span class="p">(</span><span class="s1">'错了'</span><span class="p">)</span>
+  <span class="p">})</span>
+  
+  <span class="c1">//以下 2选1</span>
+  <span class="nx">promise</span><span class="p">[</span><span class="s1">'catch'</span><span class="p">](</span><span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="c1">// or </span>
+  <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
   <span class="p">})</span></code></pre></figure>
 
 <blockquote>
@@ -300,8 +319,62 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'==Starting=='</span><span class="p">)</span></code></pre></figure>
 
 <blockquote>
-  <p>待续……</p>
+  <h3 id="promisepromise">Promise的promise对象</h3>
+  <p>promise在每次调用then之后都会返回一个新的promise对象.</p>
 </blockquote>
+
+<blockquote>
+  <h4 id="promise-4">promise误区</h4>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//误区</span>
+  <span class="kd">var</span> <span class="nx">ap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">){</span>
+    <span class="nx">resolve</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">ap</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+   <span class="k">return</span> <span class="nx">value</span><span class="o">*</span><span class="mi">2</span>
+  <span class="p">})</span>
+  <span class="nx">ap</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'1:'</span><span class="p">,</span><span class="nx">value</span><span class="p">)</span><span class="c1">//100</span>
+  <span class="p">})</span>
+  
+  <span class="c1">//正确</span>
+  <span class="kd">var</span> <span class="nx">bp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">){</span>
+    <span class="nx">resolve</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+  <span class="p">})</span>
+  <span class="nx">bp</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+   <span class="k">return</span> <span class="nx">value</span><span class="o">*</span><span class="mi">2</span>
+  <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2:'</span><span class="p">,</span><span class="nx">value</span><span class="p">)</span><span class="c1">//100*2</span>
+  <span class="p">})</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="then-">then 的错误使用</h4>
+  <p>下面是错误的使用promise,因为promise.then()返回的是一个新的promise对象，所以下面返回旧的对象是有问题的。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">badAsyncCall</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+    <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="c1">//任意处理</span>
+      <span class="k">return</span> <span class="nx">newArr</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="nx">promise</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="then--1">then 的正确调用</h4>
+  <p>只要将上面错误的调用promise.then()方法直接return 即可。promise.then()返回一个新的promise对象。这就符合了Promise的链式调用。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">badAsyncCall</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="c1">//任意处理</span>
+      <span class="k">return</span> <span class="nx">newArr</span>
+    <span class="p">})</span>
+  <span class="p">}</span></code></pre></figure>
+
 </div>
 						</div>
 				</div>
