@@ -8,6 +8,9 @@ tags: [Promise,js,异步,延迟]
 >Node.js等则规定在JavaScript的回调函数的第一个参数为 Error 对象，这也是它的一个惯例。
 >promise的功能是可以将复杂的异步处理轻松地进行模式化， 这也可以说得上是使用promise的理由之一。
 
+>### *promise对象的调用总是异步进行的*
+
+
 >### Promise类型
 >目前大致分为3种类型
 
@@ -275,6 +278,71 @@ tags: [Promise,js,异步,延迟]
 {%endhighlight%}
 
 
+>#### Promise.all
+>Promise.all 接收一个promise对象数组作为参数，当这个数组里面的所有promise全部变为resolve或者reject状态的时候，它会去调用.then方法。
+{%highlight js%}
+  // `delay`毫秒后执行resolve
+  function timerPromisefy(delay) {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
+            resolve(delay);
+        }, delay);
+    });
+  }
+  var startDate = Date.now();
+  // 所有promise变为resolve后程序退出
+  Promise.all([
+    timerPromisefy(1),
+    timerPromisefy(32),
+    timerPromisefy(64),
+    timerPromisefy(128)
+  ]).then(function (values) {
+    console.log(Date.now() - startDate + 'ms');
+    // 約128ms
+    console.log(values);    // [1,32,64,128]
+  });
+{%endhighlight%}
+
+>所有的promise都是同时开始，并行执行。
+
+>#### Promise.race
+>Promise.race 只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
+{%highlight js%}
+  // `delay`毫秒后执行resolve
+  function timerPromisefy(delay) {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
+            resolve(delay);
+        }, delay);
+    });
+  }
+  // 任何一个promise变为resolve或reject 的话程序就停止运行
+  Promise.race([
+    timerPromisefy(1),
+    timerPromisefy(32),
+    timerPromisefy(64),
+    timerPromisefy(128)
+  ]).then(function (value) {
+    console.log(value);    // => 1
+  });
+{%endhighlight%}
 
 
+>#### Promise异常处理
+>.then 中发生的异常，只有在该方法链后面出现的 catch 方法才能捕获。由于 .catch 方法是 .then 的别名，使用 .then 也能完成同样的工作。
+{%highlight js%}
+  function throwError(value) {
+    // 抛出异常
+    throw new Error(value);
+  }
+  
+  Promise.resolve(42).then(throwError).catch(onRejected);
+  ===
+  Promise.resolve(42).then(throwError).then(null, onRejected);
+{%endhighlight%}
+
+>### 参考文档：
+>[1][http://liubin.org/promises-book/][promise]
+
+[promise]:http://liubin.org/promises-book/
 

@@ -55,7 +55,11 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
 </blockquote>
 
 <blockquote>
-  <h3 id="promise">Promise类型</h3>
+  <h3 id="promise"><em>promise对象的调用总是异步进行的</em></h3>
+</blockquote>
+
+<blockquote>
+  <h3 id="promise-1">Promise类型</h3>
   <p>目前大致分为3种类型</p>
 </blockquote>
 
@@ -171,7 +175,7 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
 </blockquote>
 
 <blockquote>
-  <h3 id="promise-1">Promise快捷方式</h3>
+  <h3 id="promise-2">Promise快捷方式</h3>
 </blockquote>
 
 <blockquote>
@@ -223,7 +227,7 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
   <span class="p">})</span></code></pre></figure>
 
 <blockquote>
-  <h3 id="promise-2">Promise的为什么是异步</h3>
+  <h3 id="promise-3">Promise的为什么是异步</h3>
   <p>同步调用和异步调用同时存在导致的混乱。</p>
 </blockquote>
 
@@ -299,7 +303,7 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
 </blockquote>
 
 <blockquote>
-  <h3 id="promise-3">Promise异步</h3>
+  <h3 id="promise-4">Promise异步</h3>
   <p>为了避免上述中同时使用同步、异步调用可能引起的混乱问题，Promise在规范上规定 Promise只能使用异步调用方式 。</p>
 </blockquote>
 
@@ -324,7 +328,7 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
 </blockquote>
 
 <blockquote>
-  <h4 id="promise-4">promise误区</h4>
+  <h4 id="promise-5">promise误区</h4>
 </blockquote>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">//误区</span>
@@ -374,6 +378,78 @@ promise的功能是可以将复杂的异步处理轻松地进行模式化， 这
       <span class="k">return</span> <span class="nx">newArr</span>
     <span class="p">})</span>
   <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="promiseall">Promise.all</h4>
+  <p>Promise.all 接收一个promise对象数组作为参数，当这个数组里面的所有promise全部变为resolve或者reject状态的时候，它会去调用.then方法。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">// `delay`毫秒后执行resolve</span>
+  <span class="kd">function</span> <span class="nx">timerPromisefy</span><span class="p">(</span><span class="nx">delay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">resolve</span><span class="p">(</span><span class="nx">delay</span><span class="p">);</span>
+        <span class="p">},</span> <span class="nx">delay</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">startDate</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+  <span class="c1">// 所有promise变为resolve后程序退出</span>
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+  <span class="p">]).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">startDate</span> <span class="o">+</span> <span class="s1">'ms'</span><span class="p">);</span>
+    <span class="c1">// 約128ms</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">values</span><span class="p">);</span>    <span class="c1">// [1,32,64,128]</span>
+  <span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <p>所有的promise都是同时开始，并行执行。</p>
+</blockquote>
+
+<blockquote>
+  <h4 id="promiserace">Promise.race</h4>
+  <p>Promise.race 只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="c1">// `delay`毫秒后执行resolve</span>
+  <span class="kd">function</span> <span class="nx">timerPromisefy</span><span class="p">(</span><span class="nx">delay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">resolve</span><span class="p">(</span><span class="nx">delay</span><span class="p">);</span>
+        <span class="p">},</span> <span class="nx">delay</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="c1">// 任何一个promise变为resolve或reject 的话程序就停止运行</span>
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">race</span><span class="p">([</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+    <span class="nx">timerPromisefy</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+  <span class="p">]).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>    <span class="c1">// =&gt; 1</span>
+  <span class="p">});</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="promise-6">Promise异常处理</h4>
+  <p>.then 中发生的异常，只有在该方法链后面出现的 catch 方法才能捕获。由于 .catch 方法是 .then 的别名，使用 .then 也能完成同样的工作。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 抛出异常</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">throwError</span><span class="p">).</span><span class="k">catch</span><span class="p">(</span><span class="nx">onRejected</span><span class="p">);</span>
+  <span class="o">===</span>
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">42</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">throwError</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">onRejected</span><span class="p">);</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-3">参考文档：</h3>
+  <p>[1]<a href="http://liubin.org/promises-book/">http://liubin.org/promises-book/</a></p>
+</blockquote>
 
 </div>
 						</div>
