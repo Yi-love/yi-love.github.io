@@ -10,22 +10,22 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
-<link rel="stylesheet" href="/blog/stylesheets/base.css">
-<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
-<script src="/blog/javascripts/base.js"></script>
+<link rel="stylesheet" href="/stylesheets/normalize.css">
+<link rel="stylesheet" href="/stylesheets/base.css">
+<link rel="stylesheet" href="/stylesheets/monokai.css">
+<script src="/javascripts/base.js"></script>
 <title>zepto.js.v1.0 源码解读-event.js-03</title>
 </head>
 <body>
 	<div class="j-container-fluid j-header">
 	<div class="j-row">
 		<div class="j-container">
-			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<h1 class="j-logo"><a href="/"><img src="/images/logo.png" /> </a></h1>
 			<nav class="j-row j-nav">
-				<a href="/blog/">首页</a>
-				<a href="/blog/list.html">归档</a>
+				<a href="/">首页</a>
+				<a href="/list.html">归档</a>
 				<a href="https://github.com/Yi-love">Github</a>
-				<a href="/blog/me.html">Me</a>
+				<a href="/me.html">Me</a>
 			</nav>
 		</div>
 	</div>
@@ -72,8 +72,8 @@
 
 <blockquote>
   <h4 id="section-1">事件添加流程图</h4>
-  <p><img src="/blog/images/2015/1121_01.jpg" alt="$.event" />
-<img src="/blog/images/2015/1121_02.jpg" alt="$.event" /></p>
+  <p><img src="/images/2015/1121_01.jpg" alt="$.event" />
+<img src="/images/2015/1121_02.jpg" alt="$.event" /></p>
 </blockquote>
 
 <blockquote>
@@ -120,7 +120,7 @@
 
 <blockquote>
   <p>上代码:
-<img src="/blog/images/2015/1121_03.jpg" alt="$.on" /></p>
+<img src="/images/2015/1121_03.jpg" alt="$.on" /></p>
 </blockquote>
 
 <blockquote>
@@ -286,7 +286,7 @@
 <blockquote>
   <p>extend函数都不会陌生，它的作用就是将<em>{currentTarget: match, liveFired: element}</em>代理对象添加到原来的 <em>event</em>事件对象上
 createProxy函数应该就是返回event事件对象。对与否,我们拭目以待。
-<img src="/blog/images/2015/1121_04.jpg" alt="createproxy" /></p>
+<img src="/images/2015/1121_04.jpg" alt="createproxy" /></p>
 </blockquote>
 
 <blockquote>
@@ -297,7 +297,7 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
 <blockquote>
   <h4 id="add-">add 函数</h4>
   <p>add函数才是真正添加事件的核心，主要的工作就是将事件句柄添加到handlers全局对象中，并为元素注册事件。
-<img src="/blog/images/2015/1121_05.jpg" alt="$.add" /></p>
+<img src="/images/2015/1121_05.jpg" alt="$.add" /></p>
 </blockquote>
 
 <blockquote>
@@ -345,7 +345,7 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
 
 <blockquote>
   <p>最后附上一张删除事件的代码
-<img src="/blog/images/2015/1121_06.jpg" alt="remove" /></p>
+<img src="/images/2015/1121_06.jpg" alt="remove" /></p>
 </blockquote>
 
 </div>
@@ -355,7 +355,7 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
 	<div class="j-user">
 		<div class="j-user-thumb">
-			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
+			<a href=""><img src="/images/user.jpg" alt="" /></a>
 		</div>
 		<div class="j-user-info">
 			<a href="">微信</a>
@@ -366,11 +366,11 @@ createProxy函数应该就是返回event事件对象。对与否,我们拭目以
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(7)</span></a>
+		<a href="/category.html?category=笔记">笔记 <span class="j-class-i-num">(8)</span></a>
 		
-		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
+		<a href="/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
 		
-		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		<a href="/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
 		
 	</div>
 </div>
