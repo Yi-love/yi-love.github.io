@@ -10,22 +10,22 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-<link rel="stylesheet" href="/stylesheets/normalize.css">
-<link rel="stylesheet" href="/stylesheets/base.css">
-<link rel="stylesheet" href="/stylesheets/monokai.css">
-<script src="/javascripts/base.js"></script>
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
+<script src="/blog/javascripts/base.js"></script>
 <title>zepto.js.v1.0 源码解读-zepto.js-01</title>
 </head>
 <body>
 	<div class="j-container-fluid j-header">
 	<div class="j-row">
 		<div class="j-container">
-			<h1 class="j-logo"><a href="/"><img src="/images/logo.png" /> </a></h1>
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
 			<nav class="j-row j-nav">
-				<a href="/">首页</a>
-				<a href="/list.html">归档</a>
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
 				<a href="https://github.com/Yi-love">Github</a>
-				<a href="/me.html">Me</a>
+				<a href="/blog/me.html">Me</a>
 			</nav>
 		</div>
 	</div>
@@ -128,14 +128,14 @@
   <p>原来Zepto内部还有一个zepto对象(首字母小写),现在终于明朗了。$其实是对zepto.init函数的封装。
 也就是说 $(serlector [,context]) || Zepto(selector[,context]) ,其实就是执行的zepto.init函数。
 下面我们进入zepto.init函数去看看 ,为了看清楚我这里特意截取图片。
-<img src="/images/2015/1107_03.jpg" alt="zepto.init函数" /></p>
+<img src="/blog/images/2015/1107_03.jpg" alt="zepto.init函数" /></p>
 </blockquote>
 
 <blockquote>
   <p>下面是我对这个函数的流程简化图。
-<img src="/images/2015/1107_02.jpg" alt="zepto.init函数简化" />
+<img src="/blog/images/2015/1107_02.jpg" alt="zepto.init函数简化" />
 再来一张对比图,看不清自行拉到新窗口看。
-<img src="/images/2015/1107_01.jpg" alt="zepto.init函数简化" /></p>
+<img src="/blog/images/2015/1107_01.jpg" alt="zepto.init函数简化" /></p>
 </blockquote>
 
 <blockquote>
@@ -249,7 +249,7 @@
 
 <blockquote>
   <p>zepto交给了zepto.fragment()去处理，也就是说上面的js只要保证最少有一个&lt;tag&gt;即可。
-<img src="/images/2015/1107_04.jpg" alt="zepto.fragment函数" /></p>
+<img src="/blog/images/2015/1107_04.jpg" alt="zepto.fragment函数" /></p>
 </blockquote>
 
 <blockquote>
@@ -259,7 +259,7 @@
 
 <blockquote>
   <p>再来看看对应的正则判断：
-<img src="/images/2015/1107_05.jpg" alt="zepto正则" /></p>
+<img src="/blog/images/2015/1107_05.jpg" alt="zepto正则" /></p>
 </blockquote>
 
 <blockquote>
@@ -292,7 +292,7 @@
 <blockquote>
   <p>上面这种格式来获取dom元素时，其实调用了2次zepto.init,比一般的dom获取多了一次。
 $.find()函数写的非常的简洁：
-<img src="/images/2015/1107_06.jpg" alt="$.find函数" /></p>
+<img src="/blog/images/2015/1107_06.jpg" alt="$.find函数" /></p>
 </blockquote>
 
 <blockquote>
@@ -325,7 +325,7 @@ $.find()函数写的非常的简洁：
   <p>我们来看看some函数的定义：只要有数组元素满足f的要求就返回true，否则返回false。</p>
 </blockquote>
 
-<p><img src="/images/2015/1107_07.jpg" alt="array.some函数" /></p>
+<p><img src="/blog/images/2015/1107_07.jpg" alt="array.some函数" /></p>
 
 <blockquote>
   <p>那么我们就可以推断出 $.contains函数就是判断 selector 是否是 dom的子节点。</p>
@@ -431,7 +431,7 @@ filter 真正是什么函数还得看它内部的实现。</p>
 装B的，看看能看得懂不。</p>
 </blockquote>
 
-<p><img src="/images/2015/1107_08.jpg" alt="zepto.qsa函数" /></p>
+<p><img src="/blog/images/2015/1107_08.jpg" alt="zepto.qsa函数" /></p>
 
 <blockquote>
   <p>先看看注释说了些什么。zepto.qsa函数是CSS选择器的实现，主要用 <em>document.querySelectorAll</em>方法，以及对像 <em>#id</em>这样的，使用一些优化方法。
@@ -439,7 +439,7 @@ filter 真正是什么函数还得看它内部的实现。</p>
 zepto对这个函数进行了优化，所以看起来比较的费劲。这里我做一下还原。</p>
 </blockquote>
 
-<p><img src="/images/2015/1107_09.jpg" alt="zepto.qsa函数" /></p>
+<p><img src="/blog/images/2015/1107_09.jpg" alt="zepto.qsa函数" /></p>
 
 <blockquote>
   <p>是不是瞬间感觉lower好多。zepto有个好处就是你能跟着他的函数往下走，不像jquery非常复杂。现在回过头来看看就知道zepto为什么把函数压缩优化了吧。既占空间又感觉不上档次。</p>
@@ -511,7 +511,7 @@ zepto对这个函数进行了优化，所以看起来比较的费劲。这里我
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
 	<div class="j-user">
 		<div class="j-user-thumb">
-			<a href=""><img src="/images/user.jpg" alt="" /></a>
+			<a href=""><img src="/blog/images/user.jpg" alt="" /></a>
 		</div>
 		<div class="j-user-info">
 			<a href="">微信</a>
@@ -522,11 +522,11 @@ zepto对这个函数进行了优化，所以看起来比较的费劲。这里我
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/category.html?category=笔记">笔记 <span class="j-class-i-num">(8)</span></a>
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(9)</span></a>
 		
-		<a href="/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
 		
-		<a href="/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
 		
 	</div>
 </div>
