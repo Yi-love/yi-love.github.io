@@ -118,126 +118,86 @@
 </blockquote>
 
 <blockquote>
-  <h3 id="promise">3.Promise图片预加载</h3>
-  <p>思想：通过Promise异步加载图片。</p>
-</blockquote>
-
-<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">global</span><span class="p">)</span> <span class="p">{</span>
-  <span class="s1">'use strict'</span><span class="p">;</span>
-  <span class="c1">//主要的加载器Promise</span>
-  <span class="kd">function</span> <span class="nx">defer</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">,</span> 
-      <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">resolve</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
-      <span class="nx">reject</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">});</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="na">resolve</span><span class="p">:</span> <span class="nx">resolve</span><span class="p">,</span><span class="c1">//成功</span>
-      <span class="na">reject</span><span class="p">:</span> <span class="nx">reject</span><span class="p">,</span><span class="c1">//失败</span>
-      <span class="na">promise</span><span class="p">:</span> <span class="nx">promise</span><span class="c1">//promise对象</span>
-    <span class="p">};</span>
-  <span class="p">}</span>
-  <span class="cm">/**
-   * 图片预加载 ImagePreloader
-   */</span>
-  <span class="kd">var</span> <span class="nx">ImagePreloader</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">parallel</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">parallel</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="p">};</span>
-
-  <span class="cm">/**
-   * 图片加载队列
-   */</span>
-  <span class="nx">ImagePreloader</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">queue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">array</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="nx">array</span><span class="p">];</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">deferred</span> <span class="o">=</span> <span class="nx">defer</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-      <span class="na">collection</span><span class="p">:</span> <span class="nx">array</span><span class="p">,</span>
-      <span class="na">deferred</span><span class="p">:</span> <span class="nx">deferred</span>
-    <span class="p">});</span>
-    <span class="k">return</span> <span class="nx">deferred</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
-  <span class="p">};</span>
-
-  <span class="cm">/**
-   * 处理加载成功和失败的图片 preloadImage
-   */</span>
-  <span class="nx">ImagePreloader</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">preloadImage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">();</span>
-      <span class="nx">image</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="nx">resolve</span><span class="p">;</span>
-      <span class="nx">image</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="nx">resolve</span><span class="p">;</span>
-      <span class="nx">image</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">path</span><span class="p">;</span>
-    <span class="p">});</span>
-  <span class="p">};</span>
-
-  <span class="cm">/**
-   * 加载图片
-   */</span>
-  <span class="nx">ImagePreloader</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">preload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">deck</span><span class="p">,</span> <span class="nx">decks</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">parallel</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">item</span><span class="p">.</span><span class="nx">collection</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">'undefined'</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">item</span><span class="p">.</span><span class="nx">collection</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">preloadImage</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">collection</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-          <span class="p">}</span>
-        <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">item</span><span class="p">.</span><span class="nx">collection</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">collection</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">preloadImage</span><span class="p">);</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">deck</span> <span class="o">=</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">collection</span><span class="p">)</span><span class="c1">//请求图片</span>
-        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">deferred</span><span class="p">.</span><span class="nx">resolve</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">deferred</span><span class="p">))</span>
-        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">console</span><span class="p">));</span>
-      <span class="nx">decks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">deck</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">decks</span><span class="p">);</span>
-  <span class="p">};</span>
-  <span class="nx">global</span><span class="p">.</span><span class="nx">ImagePreloader</span> <span class="o">=</span> <span class="nx">ImagePreloader</span><span class="p">;</span>
-<span class="p">}(</span><span class="nb">window</span><span class="p">));</span></code></pre></figure>
-
-<blockquote>
-  <p>例子：</p>
-</blockquote>
-
-<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">Deck</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">preloader</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'data-images'</span><span class="p">));</span>
-    <span class="nx">preloader</span><span class="p">.</span><span class="nx">queue</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Deck '</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s1">' loaded.'</span><span class="p">);</span>
-        <span class="nx">node</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'loaded'</span><span class="p">);</span>
-      <span class="p">})</span>
-      <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">console</span><span class="p">));</span>
-  <span class="p">}</span>
-  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">ip</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImagePreloader</span><span class="p">({</span>
-	  <span class="na">parallel</span><span class="p">:</span> <span class="kc">false</span>
-	<span class="p">});</span>
-	<span class="kd">var</span> <span class="nx">decks</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'.deck'</span><span class="p">));</span>
-	<span class="nx">decks</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">deck</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-	  <span class="k">new</span> <span class="nx">Deck</span><span class="p">(</span><span class="nx">deck</span><span class="p">,</span> <span class="nx">ip</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
-	<span class="p">});</span>
-	<span class="nx">ip</span><span class="p">.</span><span class="nx">preload</span><span class="p">()</span>
-	 <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-	  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'All decks loaded.'</span><span class="p">);</span>
-	<span class="p">});</span>
-  <span class="p">});</span></code></pre></figure>
-
-<blockquote>
-  <h3 id="section-5">4.页面性能测试</h3>
+  <h3 id="section-5">3.页面性能测试</h3>
   <p><a href="http://www.webpagetest.org/">http://www.webpagetest.org/</a></p>
 </blockquote>
 
+<blockquote>
+  <h3 id="jsonp-ie8">4. JSONP IE8兼容</h3>
+  <p>因为ie8在script元素上没有onload事件。所以只能通过监听script.onreadystatechange判断js是否加载完成。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">script</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+  <span class="nx">script</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+   <span class="c1">//成功</span>
+  <span class="p">};</span>
+  <span class="nx">script</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="c1">//兼容 ie8</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">script</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'loaded'</span> <span class="o">||</span> <span class="nx">script</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span> <span class="p">){</span>
+      <span class="c1">//成功</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="nx">script</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">//失败</span>
+  <span class="p">};</span>
+  <span class="nb">window</span><span class="p">[</span><span class="nx">_callbackName</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="c1">//callback函数注册到window</span>
+    <span class="nx">responseData</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="nx">head</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">script</span><span class="p">);</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="trigger">5. 事件触发trigger</h3>
+  <p>通过js代码触发某个dom元素的事件。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="cm">/**
+  * [trigger 触发事件]
+  * @param  {[element]} element [目标元素]
+  * @param  {[string]} event [需要触发的事件]
+  */</span>
+  <span class="kd">function</span> <span class="nx">trigger</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span><span class="nx">event</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">event</span> <span class="o">===</span> <span class="s1">'string'</span><span class="p">))</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nx">element</span><span class="p">.</span><span class="nx">dispatchEvent</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">evt</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span> <span class="s1">'Events'</span> <span class="p">);</span><span class="c1">// initEvent接受3个参数</span>
+      <span class="nx">evt</span><span class="p">.</span><span class="nx">initEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">evt</span><span class="p">);</span>     
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="nx">element</span><span class="p">.</span><span class="nx">fireEvent</span> <span class="p">){</span> <span class="c1">//IE</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">fireEvent</span><span class="p">(</span><span class="s1">'on'</span><span class="o">+</span><span class="nx">event</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="js">6. JS类型判断</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">class2type</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="p">;</span><span class="s2">"Boolean Number String Function Array Date RegExp Object Error"</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+    <span class="nx">class2type</span><span class="p">[</span><span class="s2">"[object "</span><span class="o">+</span><span class="nx">name</span><span class="o">+</span><span class="s2">"]"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+  <span class="p">});</span>
+  <span class="kd">function</span> <span class="nx">isType</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>	<span class="k">return</span> <span class="nx">obj</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">?</span> <span class="nb">String</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">:</span> <span class="nx">class2type</span><span class="p">[</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)]</span> <span class="o">||</span> <span class="s1">'object'</span><span class="p">};</span>
+  <span class="c1">//案例</span>
+  <span class="nx">isType</span><span class="p">([])</span> <span class="c1">//"array"</span>
+  <span class="nx">isType</span><span class="p">({})</span><span class="c1">//"object"</span>
+  <span class="nx">isType</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span><span class="c1">//"null"</span>
+  <span class="nx">isType</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">/g</span><span class="p">)</span><span class="c1">//"regexp"</span>
+  <span class="c1">//typeof</span>
+  <span class="k">typeof</span> <span class="p">[]</span> <span class="c1">//"object"</span>
+  <span class="k">typeof</span> <span class="p">{}</span><span class="c1">//"object"</span>
+  <span class="k">typeof</span> <span class="kc">null</span><span class="c1">//"object"</span>
+  <span class="k">typeof</span> <span class="sr">/</span><span class="se">\d</span><span class="sr">/g</span><span class="c1">//"object"</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-6">扩展</h4>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">function</span> <span class="nx">likeArray</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="s1">'number'</span> <span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isDocument</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span>   <span class="p">{</span> <span class="k">return</span> <span class="nx">obj</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">==</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">DOCUMENT_NODE</span> <span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isWindow</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">obj</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span> <span class="o">==</span> <span class="nx">obj</span><span class="p">.</span><span class="nb">window</span> <span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isFunction</span><span class="p">(</span> <span class="nx">value</span> <span class="p">){</span>	<span class="k">return</span> <span class="nx">isType</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'function'</span><span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span> <span class="k">return</span> <span class="nx">isType</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"object"</span> <span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isString</span><span class="p">(</span> <span class="nx">obj</span> <span class="p">){</span> <span class="k">return</span> <span class="nx">isType</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'string'</span><span class="p">};</span>
+  <span class="kd">function</span> <span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">isObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isWindow</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></figure>
 </div>
 						</div>
 				</div>
@@ -256,9 +216,9 @@
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(9)</span></a>
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(10)</span></a>
 		
-		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(7)</span></a>
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(8)</span></a>
 		
 		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
 		
