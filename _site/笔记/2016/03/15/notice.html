@@ -198,6 +198,313 @@
   <span class="kd">function</span> <span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isWindow</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
   <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="css">7.CSS样式优先级</h3>
+  <p>优先级：style &gt; id &gt; class &gt; name</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-md" data-lang="md"><span class="p"> *</span> 标签选择符、伪类及伪对象：优先级别积分为1。
+<span class="p"> *</span> 类选择符、属性选择符：优先级别积分为10。
+<span class="p"> *</span> ID选择符：优先级别积分为100。
+<span class="p"> *</span> style属性：优先级积分为1000。</code></pre></figure>
+
+<blockquote>
+  <h3 id="css-1">8.CSS画三角形</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#triangle-down</span> <span class="p">{</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">border-left</span><span class="p">:</span> <span class="m">50px</span> <span class="nb">solid</span> <span class="nb">transparent</span><span class="p">;</span>
+  <span class="nl">border-right</span><span class="p">:</span> <span class="m">50px</span> <span class="nb">solid</span> <span class="nb">transparent</span><span class="p">;</span>
+  <span class="nl">border-top</span><span class="p">:</span> <span class="m">100px</span> <span class="nb">solid</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="dpr">9.获取当前设备的dpr</h3>
+  <p>javaScript方法：</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">dpr</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">devicePixelRatio</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <p>css方法</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css">  <span class="o">//</span><span class="nt">-webkit-device-pixel-ratio</span>
+  <span class="o">//</span><span class="nt">-webkit-min-device-pixel-ratio</span>
+  <span class="o">//</span><span class="nt">-webkit-max-device-pixel-ratio</span>
+  <span class="k">@media</span> <span class="n">screen</span> <span class="n">and</span> <span class="p">(</span><span class="n">-webkit-min-device-pixel-ratio</span><span class="p">:</span><span class="m">0</span><span class="p">){</span>
+  	<span class="o">//</span><span class="nt">css</span>
+  <span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="retina1px">10.Retina屏幕1px边框</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+ <span class="nl">border-width</span><span class="p">:</span><span class="nb">thin</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="bug">11.圆角bug</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+ <span class="nl">background-clip</span><span class="p">:</span><span class="n">padding-box</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-7">12.禁止复制文本</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+ <span class="nl">-moz-user-select</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+ <span class="nl">-webkit-user-select</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+ <span class="nl">-ms-user-select</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+ <span class="nl">-khtml-user-select</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+ <span class="py">user-select</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-8">13.透明度</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+ <span class="nl">filter</span><span class="p">:</span><span class="n">alpha</span><span class="p">(</span><span class="n">opacity</span><span class="err">=</span><span class="m">65</span><span class="p">);</span>
+ <span class="nl">opacity</span><span class="p">:</span><span class="m">0.65</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-9">14.文本省略</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+  <span class="err">overflow：hidden;</span>
+  <span class="err">white—space：nowrap;</span>
+  <span class="err">text—overflow：ellipsis;</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-10">15.背景色渐变</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+  <span class="nl">filter</span><span class="p">:</span> <span class="n">progid</span><span class="p">:</span><span class="n">DXImageTransform</span><span class="p">.</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Gradient</span><span class="p">(</span>
+    <span class="n">gradientType</span><span class="err">=</span><span class="m">0</span><span class="p">,</span><span class="n">startColorStr</span><span class="err">=</span><span class="m">#fff</span><span class="p">,</span><span class="n">endColorStr</span><span class="err">=</span><span class="m">#e4e5f0</span><span class="p">);</span> <span class="c">/*IE 6 7 8*/</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">-ms-linear-gradient</span><span class="p">(</span><span class="nb">top</span><span class="p">,</span> <span class="m">#fff</span><span class="p">,</span>  <span class="m">#e4e5f0</span><span class="p">);</span><span class="c">/* IE 10 */</span>
+  <span class="nl">background</span><span class="p">:</span><span class="n">-moz-linear-gradient</span><span class="p">(</span><span class="nb">top</span><span class="p">,</span><span class="m">#fff</span><span class="p">,</span><span class="m">#e4e5f0</span><span class="p">);</span><span class="c">/*火狐*/</span>
+  <span class="nl">background</span><span class="p">:</span><span class="n">-webkit-gradient</span><span class="p">(</span><span class="n">linear</span><span class="p">,</span> <span class="m">0%</span> <span class="m">0%</span><span class="p">,</span> <span class="m">0%</span> <span class="m">100%</span><span class="p">,</span><span class="n">from</span><span class="p">(</span><span class="m">#fff</span><span class="p">),</span> <span class="n">to</span><span class="p">(</span><span class="m">#e4e5f0</span><span class="p">));</span><span class="c">/*谷歌*/</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">-webkit-gradient</span><span class="p">(</span><span class="n">linear</span><span class="p">,</span> <span class="m">0%</span> <span class="m">0%</span><span class="p">,</span> <span class="m">0%</span> <span class="m">100%</span><span class="p">,</span> <span class="n">from</span><span class="p">(</span><span class="m">#fff</span><span class="p">),</span> <span class="n">to</span><span class="p">(</span><span class="m">#e4e5f0</span><span class="p">));</span><span class="c">/* Safari 4-5, Chrome 1-9*/</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">-webkit-linear-gradient</span><span class="p">(</span><span class="nb">top</span><span class="p">,</span> <span class="m">#fff</span><span class="p">,</span> <span class="m">#e4e5f0</span><span class="p">);</span>   <span class="c">/*Safari5.1 Chrome 10+*/</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">-o-linear-gradient</span><span class="p">(</span><span class="nb">top</span><span class="p">,</span> <span class="m">#fff</span><span class="p">,</span> <span class="m">#e4e5f0</span><span class="p">);</span>  <span class="c">/*Opera 11.10+*/</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="aurl">16.利用a标签解析url</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">parseURL</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'a'</span><span class="p">);</span>
+  <span class="nx">a</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">{</span>
+      <span class="na">source</span><span class="p">:</span> <span class="nx">url</span><span class="p">,</span>
+      <span class="na">protocol</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">protocol</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">':'</span><span class="p">,</span><span class="s1">''</span><span class="p">),</span>
+      <span class="na">host</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">hostname</span><span class="p">,</span>
+      <span class="na">port</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="na">query</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">search</span><span class="p">,</span>
+      <span class="na">params</span><span class="p">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+          <span class="kd">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="p">{},</span>
+              <span class="nx">seg</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^</span><span class="se">\?</span><span class="sr">/</span><span class="p">,</span><span class="s1">''</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">'&amp;'</span><span class="p">),</span>
+              <span class="nx">len</span> <span class="o">=</span> <span class="nx">seg</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
+          <span class="k">for</span> <span class="p">(;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">len</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">seg</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">}</span>
+              <span class="nx">s</span> <span class="o">=</span> <span class="nx">seg</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">);</span>
+              <span class="nx">ret</span><span class="p">[</span><span class="nx">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">s</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="nx">ret</span><span class="p">;</span>
+      <span class="p">})(),</span>
+      <span class="na">file</span><span class="p">:</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\/([^\/</span><span class="sr">?#</span><span class="se">]</span><span class="sr">+</span><span class="se">)</span><span class="sr">$/i</span><span class="p">)</span> <span class="o">||</span> <span class="p">[,</span><span class="s1">''</span><span class="p">])[</span><span class="mi">1</span><span class="p">],</span>
+      <span class="na">hash</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">'#'</span><span class="p">,</span><span class="s1">''</span><span class="p">),</span>
+      <span class="na">path</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^</span><span class="se">([^\/])</span><span class="sr">/</span><span class="p">,</span><span class="s1">'/$1'</span><span class="p">),</span>
+      <span class="na">relative</span><span class="p">:</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/tps</span><span class="se">?</span><span class="sr">:</span><span class="se">\/\/[^\/]</span><span class="sr">+</span><span class="se">(</span><span class="sr">.+</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span> <span class="o">||</span> <span class="p">[,</span><span class="s1">''</span><span class="p">])[</span><span class="mi">1</span><span class="p">],</span>
+      <span class="na">segments</span><span class="p">:</span> <span class="nx">a</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^</span><span class="se">\/</span><span class="sr">/</span><span class="p">,</span><span class="s1">''</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span>
+  <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="iframe">17.禁止别人以iframe加载你的页面</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">!=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">location</span><span class="p">)</span> 
+    <span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-11">18.整数操作</h3>
+  <p>JavaScript中是没有整型概念的，但利用好位操作符可以轻松处理，同时获得效率上的提升。
+|0和~~是很好的一个例子，使用这两者可以将浮点转成整型且效率方面要比同类的parseInt,Math.round 要快。在处理像素及动画位移等效果的时候会很有用。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">(</span><span class="mf">12.4</span> <span class="o">/</span> <span class="mf">4.13</span><span class="p">)</span> <span class="o">|</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//结果为3</span>
+  <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="o">~~</span><span class="p">(</span><span class="mf">12.4</span> <span class="o">/</span> <span class="mf">4.13</span><span class="p">);</span><span class="c1">//结果为3</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="css-2">19.CSS中也可以做简单运算</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">element</span><span class="p">{</span>
+  <span class="nl">background-position</span><span class="p">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="n">-</span> <span class="m">50px</span><span class="p">)</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="n">-</span> <span class="m">20px</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="cdnhttp">20.加载CDN文件时，可以省掉HTTP标识</h3>
+  <p>CDN即从专门的服务器加载一些通用的JS和CSS文件，出于安全考虑有的CDN服务器使用HTTPS方式连接，而有的是传统的HTTP，其实我们在使用时可以忽略掉这个，将它从URL中省去。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"//domain.com/path/to/script.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script&gt;</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="requestanimationframe-vs-setinterval">21. requestAnimationFrame VS setInterval</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"> <span class="nx">requestAnimationFrame</span>
+  <span class="c1">// 基于：关键帧</span>
+  <span class="c1">//窗口不可见的时候会把动画停掉</span>
+    <span class="nx">velocity</span><span class="p">.</span><span class="nx">js</span> <span class="err">：</span> <span class="nx">$</span><span class="p">.</span><span class="nx">animate</span>
+    <span class="nl">greensock</span><span class="p">:</span> <span class="err">高性能</span> <span class="p">,</span><span class="err">大</span>
+
+<span class="nx">setInterval</span>
+  <span class="c1">// 基于:时间</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="select--option-">22. select &gt; option 选择</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'select'</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">selectedIndex</span><span class="p">;</span> <span class="c1">//序号，取当前选中选项的序号</span>
+  <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">options</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">text</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="javascript--">23. Javascript 按位取反运算符 (~)</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="o">~</span><span class="mi">5</span><span class="p">;</span>
+  <span class="cm">/*
+   5 二进制 101，补满 32位
+   00000000000000000000000000000101
+      按位取反
+   11111111111111111111111111111010
+     由于32位开头第一个是1，所以这是一个负数，将二进制转换成负数，需要先反码
+   00000000000000000000000000000101
+    之后，再+1
+   00000000000000000000000000000110
+    转换成十进制为6，加上符号变成负数 -6
+  */</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="nx">temp</span><span class="p">);</span><span class="c1">// -6</span>
+  
+  <span class="nx">i</span> <span class="o">=</span> <span class="o">~~</span><span class="nx">index</span><span class="p">;</span><span class="c1">//~~一种利用符号进行的类型转换,转换成数字类型</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="o">+</span><span class="nx">obj</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>   
+  <span class="c1">//等价于 </span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="s2">"number"</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-12">24. 最佳清空数组的方法</h3>
+  <p>最佳的请空数组方式是：将length设置为0.</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="html5-canvas">25.html5 canvas画图</h3>
+  <p>rgba表示颜色的方法：即红绿蓝三原色和透明值。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/*
+* r=red
+* g=green
+* b=blue
+* a=alpha
+*/</span>
+<span class="kd">var</span> <span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'canvas'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">ctxt</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">'2d'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">;</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">ctxt</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">ctxt</span><span class="p">.</span><span class="nx">getImageData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">480</span><span class="p">).</span><span class="nx">data</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">'img/pic.jpg'</span><span class="p">;</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-13">26.图像数组的遍历</h3>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">ctxt</span><span class="p">.</span><span class="nx">getImageData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">480</span><span class="p">).</span><span class="nx">data</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">len</span><span class="p">;</span><span class="nx">i</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">red</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+    <span class="nx">green</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+    <span class="nx">blue</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span>
+    <span class="nx">alpha</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
+<span class="p">}</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-14">27.图片颜色反转</h3>
+  <p>颜色反转的算法就是三原色求反，即255-原色</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">draw</span><span class="p">(</span><span class="nx">img</span><span class="p">){</span>
+    <span class="nx">ctxt</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">480</span><span class="p">);</span>
+    <span class="c1">// console.log(img);</span>
+    <span class="nx">ctxt</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">invert</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">back</span> <span class="o">=</span> <span class="nx">ctxt</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="mi">480</span><span class="p">,</span> <span class="mi">480</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nx">back</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">len</span><span class="p">;</span><span class="nx">i</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">red</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+        <span class="nx">green</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+        <span class="nx">blue</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span>
+        <span class="nx">alpha</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
+
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="o">-</span><span class="nx">red</span><span class="p">;</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="o">-</span><span class="nx">green</span><span class="p">;</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="o">-</span><span class="nx">blue</span><span class="p">;</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nx">alpha</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">back</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//颜色反转</span>
+<span class="nx">draw</span><span class="p">(</span><span class="nx">invert</span><span class="p">());</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-15">28.颜色一些算法</h3>
+</blockquote>
+
+<blockquote>
+  <h5 id="section-16">去色</h5>
+</blockquote>
+
+<blockquote>
+  <p>把图片变成黑白图，只要把每个像素的R、G、B设为亮度（Y）的值就行了。</p>
+</blockquote>
+
+<blockquote>
+  <p>关于R、G、B、Y的关系可以看到这里看看，这里只要记住这条公式：Y = 0.299R + 0.587G + 0.114B，使用位：(R* 4899 + G * 9617 + B* 1868 + 8192) » 14，速度会快</p>
+</blockquote>
+
+<blockquote>
+  <h5 id="section-17">反相（反转）</h5>
+</blockquote>
+
+<blockquote>
+  <p>就是将一个颜色换成它的补色。</p>
+</blockquote>
+
+<blockquote>
+  <p>补色就是用255（8位通道模式下，255即2的8次方，16位要用65535去减，即2的16次方）减去它本身得到的值：R(补) = 255–R。</p>
+</blockquote>
 </div>
 						</div>
 				</div>

@@ -472,6 +472,9 @@ body{
     color: #0d0d0d;
     font-size: 15px;
 }
+.j-artclie-txt h1,.j-artclie-txt h2,.j-artclie-txt h3,.j-artclie-txt h4,.j-artclie-txt h5,.j-artclie-txt h6{
+	margin: 1rem 0;
+}
 .j-footer-say{
   color: #FF5722;
 }
