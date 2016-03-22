@@ -1,6 +1,6 @@
 ---
 layout: page
-title:Promise 处理 XMLHttpRequest请求
+title: JavaScript Promise处理 XMLHttpRequest请求
 categories: [笔记,JavaScript ,Promise]
 tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ---
