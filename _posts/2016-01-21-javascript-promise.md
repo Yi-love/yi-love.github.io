@@ -1,7 +1,7 @@
 ---
 layout: page
 title: JavaScript-Promise对象学习笔记
-categories: [JavaScript, 笔记]
+categories: [JavaScript, 笔记,Promise]
 tags: [Promise,js,异步,延迟]
 ---
 >Promise最初被提出是在 *E语言* 中， 它是基于并列/并行处理设计的一种编程语言
