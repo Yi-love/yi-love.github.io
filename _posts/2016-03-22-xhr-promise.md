@@ -7,6 +7,14 @@ tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 
 >XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端ajax库)。目标就是脱离jquery，模块化。
 
+>由于 XHRP API 是基于 Promise 设计，有必要先学习一下 Promise，推荐阅读 MDN Promise 教程 。旧浏览器不支持 Promise，可以使用 es6-promise 。
+>以下我也给出了我的解决方法。
+
+>#### 参考：
+>[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+>[https://github.com/github/fetch](https://github.com/github/fetch)
+
 ### 知识要点
 {%highlight js%}
    ajax
@@ -38,18 +46,18 @@ xhr.promise 提供3个接口
 ### 1.参数说明
 {%highlight js%}
 {
-	type :'GET',       //请求类型
-	xhr : function(){  //xhr
-		return new window.XMLHttpRequest()
-	},
-	crossDomain: false,//是否跨域
-    timeout: 0,        //超时设置默认不超时
-    processData: true, //数据需要被序列化
-    cache: true,       //对get请求数据进行缓存
-    data ： {} ,       //数据
-    jsonp : 'callback',//跨域请求默认参数
-    username: '',     //用户名
-    password : ''     //密码
+  type :'GET',       //请求类型
+  xhr : function(){  //xhr
+	return new window.XMLHttpRequest()
+  },
+  crossDomain: false,//是否跨域
+  timeout: 0,        //超时设置默认不超时
+  processData: true, //数据需要被序列化
+  cache: true,       //对get请求数据进行缓存
+  data ： {} ,       //数据
+  jsonp : 'callback',//跨域请求默认参数
+  username: '',     //用户名
+  password : ''     //密码
 }
 {%endhighlight%}
 

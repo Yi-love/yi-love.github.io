@@ -4,70 +4,49 @@ title: JavaScript Promise对象处理图片预加载
 categories: [笔记,JavaScript,Promise]
 tags: [预处理,图片加载,前端]
 ---
+>图片预加载。自己收集的Promise处理图片加载的库做一个分享。库比较小，所以直接上代码吧。
 
->图片预加载。自己收集的Promise处理图片加载的库。做一个分享。
+>大概的思路就是：
+
+>     通过Promise的异步处理加载图片，当图片加载完成之后返回，接下来对图片要做的操作自己接着处理即可。
+
+>### 库文件源代码
 {%highlight js%}
 (function (global) {
-
   'use strict';
-
   function defer() {
     var resolve, reject, promise = new Promise(function (a, b) {
       resolve = a;
       reject = b;
     });
-
     return {
       resolve: resolve,
       reject: reject,
       promise: promise
     };
   }
-
-  /**
-   * Image preloader
-   * @param {Object} options
-   */
   var ImagePreloader = function (options) {
     this.options = options || {};
     this.options.parallel = this.options.parallel || false;
     this.items = [];
     this.max = 0;
   };
-
-  /**
-   * The `queue` methods is intended to add an array (a deck) of images to the
-   * queue. It does not preload the images though; only adds them to the queue.
-   * @param  {Array} array - Array of images to add the queue
-   * @return {Promise}
-   */
+  //队列
   ImagePreloader.prototype.queue = function (array) {
     if (!Array.isArray(array)) {
       array = [array];
     }
-
     if (array.length > this.max) {
       this.max = array.length;
     }
-    
     var deferred = defer();
-
     this.items.push({
       collection: array,
       deferred: deferred
     });
-    
     return deferred.promise;
   };
-
-  /**
-   * The `preloadImage` preloads the image resource living at `path` and returns
-   * a promise that resolves when the image is successfully loaded by the 
-   * browser or if there is an error. Beware, the promise is not rejected in 
-   * case the image cannot be loaded; it gets resolved nevertheless.
-   * @param  {String} path - Image url
-   * @return {Promise}
-   */
+  //加载当前图片
   ImagePreloader.prototype.preloadImage = function (path) {
     return new Promise(function (resolve, reject) {
       var image = new Image();
@@ -76,20 +55,10 @@ tags: [预处理,图片加载,前端]
       image.src = path;
     });
   };
-
-  /**
-   * The `preload` method preloads the whole queue of decks added through the
-   * `queue` method. It returns a promise that gets resolved when all decks have
-   * been fully loaded.
-   * The decks are loaded either sequencially (one after the other) or in
-   * parallel, depending on the `parallel` options.
-   * @return {Promise}
-   */
+  //加载图片处理
   ImagePreloader.prototype.preload = function () {
     var deck, decks = [];
-
     if (this.options.parallel) {
-
       for (var i = 0; i < this.max; i++) {
         this.items.forEach(function (item) {
           if (typeof item.collection[i] !== 'undefined') {
@@ -97,33 +66,27 @@ tags: [预处理,图片加载,前端]
           }
         }, this);
       }
-
     } else {
-
       this.items.forEach(function (item) {
         item.collection = item.collection.map(this.preloadImage);
       }, this);
-
     }
-
     this.items.forEach(function (item) {
       deck = Promise.all(item.collection)
         .then(item.deferred.resolve.bind(item.deferred))
         .catch(console.log.bind(console));
-
       decks.push(deck);
     });
-
     return Promise.all(decks);
   };
-
   global.ImagePreloader = ImagePreloader;
-
 }(window));
+{%endhighlight%}
 
+>### 测试
+{%highlight js%}
 function Deck(node, preloader, index) {
     var data = JSON.parse(node.getAttribute('data-images'));
-
     preloader.queue(data)
         .then(function () {
           console.log('Deck ' + index + ' loaded.');
@@ -131,20 +94,17 @@ function Deck(node, preloader, index) {
         })
     .catch(console.error.bind(console));
 }
-
 document.addEventListener('DOMContentLoaded', function () {
-var ip = new ImagePreloader({
-  parallel: false
-});
+  var ip = new ImagePreloader({
+	parallel: false
+  });
   var decks = Array.prototype.slice.call(document.querySelectorAll('.deck'));
-  
   decks.forEach(function (deck, index) {
     new Deck(deck, ip, index);
-  });
-
+  });	
   ip.preload()
-    .then(function () {
-      console.log('All decks loaded.');
-    });
+	.then(function () {
+	  console.log('All decks loaded.');
+	});
 });
 {%endhighlight%}
