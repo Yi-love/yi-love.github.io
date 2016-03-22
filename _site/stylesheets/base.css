@@ -503,7 +503,16 @@ body{
 .j-all-i a:hover{
   text-decoration: underline;
 }
-
+/********me*********/
+.j-me-box{
+	text-align: center;
+	height: 100%;
+}
+.j-me-pic{
+	max-width: 300px;
+	line-height: 1;
+	vertical-align: middle;
+}
 /*******小屏适配**********/
 @media  only screen and (max-width: 640px ) {
 	.j-header{
