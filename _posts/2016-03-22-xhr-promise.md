@@ -1,11 +1,11 @@
 ---
 layout: page
-title: XMLHttpRequest Promise库
+title:Promise 处理 XMLHttpRequest请求
 categories: [笔记,JavaScript ,Promise]
 tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ---
 
->XHRP就好比jquery的ajax模块一样。
+>XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端ajax库)。目标就是脱离jquery，模块化。
 
 ### 知识要点
 {%highlight js%}
@@ -20,11 +20,11 @@ tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ### xhr.promise依赖模块
 1.IE8兼容Array依赖
 {%highlight js%}
-<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/fix.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/fix.js"></script>
 {%endhighlight%}
 2.IE系列Promise依赖
 {%highlight js%}
-<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/npo.src.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/npo.src.js"></script>
 {%endhighlight%}
 
 ### 外部接口
