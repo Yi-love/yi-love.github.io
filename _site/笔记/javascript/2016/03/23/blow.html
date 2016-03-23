@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="原生JavaScript写的查看大图组件">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>原生JavaScript写的查看大图组件</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="javascript:void(0)" title="原生JavaScript写的查看大图组件">原生JavaScript写的查看大图组件</a></h2>
+						<p class="j-i-time">23 Mar 2016</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">JavaScript</span>
+							
+							<span class="j-i-tag">组件</span>
+							
+							<span class="j-i-tag">兼容</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><blockquote>
+  <p>最近接手了一个商城项目，所以自己写了一下小的组件来使用。虽然可能背负上重复造轮子的骂名。但我还是觉得有必要写的。
+这起码也是自己的一个实践过程。兼容方面考虑到兼容IE8+,所以很多的代码都是在做兼容。</p>
+</blockquote>
+
+<blockquote>
+  <h3 id="section">知识点</h3>
+</blockquote>
+
+<blockquote>
+  <h4 id="css">1.css设置兼容</h4>
+  <p>ie8是不支持style来设置属性的。但ie8支持存在runtimeStyle属性对象。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**
+* 设置元素样式属性
+* @param {Object} element 元素
+* @param {Object} props   属性对象
+*/</span>
+<span class="kd">function</span> <span class="nx">setCss</span><span class="p">(</span><span class="nx">element</span> <span class="p">,</span> <span class="nx">props</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">element</span><span class="p">.</span><span class="nx">style</span> <span class="p">){</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span>  <span class="nx">props</span> <span class="p">)</span> <span class="p">{</span>
+	  <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">props</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
+    <span class="p">};</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">runtimeStyle</span><span class="p">){</span><span class="c1">//ie8</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span>  <span class="nx">props</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">runtimeStyle</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">props</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-1">2.事件监听</h4>
+  <p>事件监听ie8也是与正常的添加事件监听不同，所以需要使用attachEvent来处理事件监听。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**
+ * 事件监听
+ * @param {Object} element 元素
+ * @param {Object} type    类型
+ * @param {Object} fn      回调函数
+ */</span>
+<span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">element</span> <span class="p">,</span> <span class="nx">type</span> <span class="p">,</span> <span class="nx">fn</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="nx">element</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="p">){</span><span class="c1">//w3c</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">type</span> <span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span> <span class="p">){</span><span class="c1">//ie8</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">'on'</span><span class="o">+</span><span class="nx">type</span> <span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="c1">//其他</span>
+    <span class="nx">element</span><span class="p">[</span><span class="s1">'on'</span><span class="o">+</span><span class="nx">type</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-2">3.获取元素相对于页面的左边距和上边距的距离</h4>
+  <p>因为无法立即获得这个距离，所以只能通过遍历元素到body之间所有的元素的上边距或左边距进行选取最大值。
+才可以获取得到最后元素距离页面左边距和上边距的距离。</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//获取距离距离top和left的距离</span>
+<span class="kd">function</span> <span class="nx">getOffset</span><span class="p">(</span><span class="nx">element</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">top</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">,</span> <span class="nx">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="nx">element</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="nx">element</span> <span class="o">!=</span> <span class="nx">body</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span> <span class="o">!=</span> <span class="nb">document</span> <span class="p">){</span>
+      <span class="nx">top</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="o">+</span><span class="nx">element</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="p">,</span> <span class="nx">top</span><span class="p">);</span>
+      <span class="nx">left</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="o">+</span><span class="nx">element</span><span class="p">.</span><span class="nx">offsetLeft</span> <span class="p">,</span> <span class="nx">left</span><span class="p">);</span>
+      <span class="nx">element</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">left</span><span class="p">:</span><span class="nx">left</span> <span class="p">,</span> <span class="na">top</span><span class="p">:</span><span class="nx">top</span><span class="p">};</span>
+<span class="p">};</span></code></pre></figure>
+
+<blockquote>
+  <h4 id="section-3">4.滚动距离</h4>
+  <p>获取滚动条滚动的距离，这里主要的也是兼容问题。</p>
+</blockquote>
+
+<blockquote>
+  <p>IE Firefox Opera 标准模式下使用 document.documentElement.scrollLeft;</p>
+</blockquote>
+
+<blockquote>
+  <p>获取页面的水平滚动条位置，而混杂模式下则是使用 document.body.scrollLeft。</p>
+</blockquote>
+
+<blockquote>
+  <p>Chrome Safari 在两种文档模式下均使用 document.body.scrollLeft 获取页面的水平滚动条位置。</p>
+</blockquote>
+
+<blockquote>
+  <p>In IE 6 standards compatibility mode (where document.compatMode == “CSS1Compat”), 
+use <em>document.body.parentNode.scrollLeft</em> and <em>document.body.parentNode.scrollTop</em> to get the scroll values of the html element.</p>
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//获取屏幕滚动距离</span>
+<span class="kd">function</span> <span class="nx">getScrollXY</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">x</span> <span class="p">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollX</span>  <span class="o">||</span><span class="nb">window</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">||</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">,</span>
+    <span class="na">y</span> <span class="p">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollTop</span><span class="o">||</span> 
+        <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span>
+  <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<blockquote>
+  <h3 id="section-4">案例</h3>
+</blockquote>
+
+<p><a href="/blog/examples/blow/index.html">案例演示</a></p>
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href="/blog/me.html"><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="/blog/me.html">微信</a>
+			<a href="/blog/me.html">微博</a>
+			<a href="/blog/me.html">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(12)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(10)</span></a>
+		
+		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		
+		<a href="/blog/category.html?category=Promise">Promise <span class="j-class-i-num">(3)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
