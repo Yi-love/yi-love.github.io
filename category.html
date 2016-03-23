@@ -7,7 +7,7 @@ title: category
 <script>
 	window.onload = function(){
 		var category = decodeURIComponent(parseURL(document.location.href).params["category"]);
-		var data = '{ {% for categorie in site.categories %}{% if categorie[0] != site.categories.first[0] %},{% endif %}"{{ categorie[0] }}":[{% for post in categorie[1] %}{% if post != categorie[1].first %},{% endif %}{"url":"{{post.url}}", "tags":{{post.tags | jsonify }} , "content":"{{post.excerpt | uri_escape}}" , "title":"{{post.title}}","date":"{{post.date | date:"%d/%m/%Y"}}"}{% endfor %}]{% endfor %} }';
+		var data = '{ {% for categorie in site.categories %}{% if categorie[0] != site.categories.first[0] %},{% endif %}"{{ categorie[0] }}":[{% for post in categorie[1] %}{% if post != categorie[1].first %},{% endif %}{"url":"{{post.url}}", "tags":{{post.tags | jsonify }} , "content":"{{post.excerpt | uri_escape}}" , "title":"{{post.title}}","date":"{{post.date | date_to_string}}"}{% endfor %}]{% endfor %} }';
 		var str = '',arr = JSON.parse(data)[category];
 		for ( var i = 0 ; i < arr.length ; i++ ){
 			str +=  ['<li class="j-row j-list-i">',
