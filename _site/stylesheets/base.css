@@ -528,6 +528,7 @@ body{
 	}
 	.j-header .j-nav a{
 	   font-size: 16px;
+	   padding: 8px .5rem;
     }
     .j-i-title{
     	line-height: 32px;
