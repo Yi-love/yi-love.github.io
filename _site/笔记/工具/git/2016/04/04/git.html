@@ -96,6 +96,79 @@
   <span class="c">#提交新建的 develop 分支</span>
   <span class="nv">$ </span>git push origin develop<span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h4 id="section-5">1.6 分支合并</h4>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1</pre></td><td class="code"><pre>  <span class="nv">$ </span>git merge 分支<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h4 id="section-6">1.7 分支删除</h4>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1</pre></td><td class="code"><pre>  <span class="nv">$ </span>git branch -d 分支名<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h4 id="section-7">1.8 分支删除</h4>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2</pre></td><td class="code"><pre>  <span class="nv">$ </span>git branch -d 本地分支名
+  <span class="nv">$ </span>git push origin --delete 远程分支名<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h4 id="section-8">1.9 更新分支信息</h4>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1</pre></td><td class="code"><pre>  <span class="nv">$ </span>git fetch -p 更新分支信息<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h3 id="git">2.工作时常用的Git命令</h3>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre>  <span class="nv">$ </span>git add <span class="o">[</span>filename] 添加文件
+  <span class="nv">$ </span>git commit -m <span class="s1">'desc'</span> 提交到缓存区
+  <span class="nv">$ </span>git push origin <span class="o">[</span>branchname] 提交修改到远程分支<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h3 id="git-1">3.Git工作流</h3>
+<blockquote>
+  <p>文中的几种工作流是作为方案指导而不是条例规定。在展示了各种工作流可能的用法后，你可以从不同的工作流中挑选或揉合出一个满足你自己需求的工作流。</p>
+</blockquote>
+
+<h4 id="section-9">3.1 集中式工作流</h4>
+<blockquote>
+  <p>如果你的开发团队成员已经很熟悉Subversion，集中式工作流让你无需去适应一个全新流程就可以体验Git带来的收益。这个工作流也可以作为向更Git风格工作流迁移的友好过渡。</p>
+</blockquote>
+
+<h4 id="section-10">3.2 功能分支工作流</h4>
+<blockquote>
+  <p>功能分支工作流以集中式工作流为基础，不同的是为各个新功能分配一个专门的分支来开发。这样可以在把新功能集成到正式项目前，用Pull Requests的方式讨论变更。</p>
+</blockquote>
+
+<h4 id="gitflow">3.3 Gitflow工作流</h4>
+<blockquote>
+  <p>Gitflow工作流通过为功能开发、发布准备和维护分配独立的分支，让发布迭代过程更流畅。严格的分支模型也为大型项目提供了一些非常必要的结构。</p>
+</blockquote>
+
+<h4 id="forking">3.4 Forking工作流</h4>
+<blockquote>
+  <p>Forking工作流是分布式工作流，充分利用了Git在分支和克隆上的优势。可以安全可靠地管理大团队的开发者（developer），并能接受不信任贡献者（contributor）的提交。</p>
+</blockquote>
+
+<h4 id="pull-requests">3.5 Pull Requests</h4>
+<blockquote>
+  <p>Pull requests是Bitbucket提供的让开发者更方便地进行协作的功能，提供了友好的Web界面可以在提议的修改合并到正式项目之前对修改进行讨论。</p>
+</blockquote>
+
+<h3 id="section-11">参考资料：</h3>
+<p><a href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io">Git 工作流程-阮一峰</a></p>
+
+<p><a href="https://github.com/oldratlee/translations/tree/master/git-workflows-and-tutorials?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io">Git工作流指南</a></p>
+
+<p><a href="http://jonyfang.com/blog/2015/11/12/git_command_and_git_branching_model/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io">Git 常用命令和 Git Flow 梳理</a></p>
+
+<p><a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></p>
+
+<p><img src="/blog/images/2016/0404_01.png" alt="git" /></p>
+
 </div>
 						</div>
 				</div>
