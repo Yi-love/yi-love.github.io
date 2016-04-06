@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-title" content="vim命令">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/blog/stylesheets/normalize.css">
+<link rel="stylesheet" href="/blog/stylesheets/base.css">
+<link rel="stylesheet" href="/blog/stylesheets/monokai.css">
+<script src="/blog/javascripts/base.js"></script>
+<title>vim命令</title>
+</head>
+<body>
+	<div class="j-container-fluid j-header">
+	<div class="j-row">
+		<div class="j-container">
+			<h1 class="j-logo"><a href="/blog/"><img src="/blog/images/logo.png" /> </a></h1>
+			<nav class="j-row j-nav">
+				<a href="/blog/">首页</a>
+				<a href="/blog/list.html">归档</a>
+				<a href="https://github.com/Yi-love">Github</a>
+				<a href="/blog/me.html">Me</a>
+				<a href="http://blog.csdn.net/yjy188" target="_blank">CSDN</a>
+			</nav>
+		</div>
+	</div>
+</div>
+	<div class="j-container">
+		<div class="j-row">
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
+				<div class="j-container j-content">
+					<h2 class="j-i-title"><a href="javascript:void(0)" title="vim命令">vim命令</a></h2>
+						<p class="j-i-time">06 Apr 2016</p>
+						<p class="j-i-tags">
+							
+							<span class="j-i-tag">vim命令</span>
+							
+						</p>
+						<div class="j-container">
+							<div class="j-row j-artclie-txt"><p>以下是今天收集的vim命令，方便自己今后查看。</p>
+
+<h3 id="vim">vim常用命令</h3>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</pre></td><td class="code"><pre> <span class="c">#基本设置</span>
+	<span class="nb">set </span>nu 显示行号
+ <span class="c">#基本功能</span>
+	u 撤销操作
+	p 粘贴
+	dd 删除整行
+	yy 复制整行
+	yw 单个单词
+	
+  <span class="c">#替换命令</span>
+	当前行：s/from/to/gce    //g:全局 ,c：询问,e：错误忽略
+	某一行：33s/from/to/gc  //替换33行
+	最后一行：<span class="nv">$s</span>/from/to/gc //替换最后一行
+	所有行： %s/from/to/gc
+	
+  <span class="c">#字元(character)</span>
+	h   左
+	j   下
+	k   上
+	l   右
+  <span class="c">#单词(word)</span>
+	w	下一个word
+	W	下一个word<span class="o">(</span>跳过标点符号<span class="o">)</span>
+	b	前一个word
+	e	跳到目前word的尾端
+	
+  <span class="c">#行(line)</span>
+	0	跳到目前行的开头
+	^	跳到目前行第一个非空白字元
+	<span class="nv">$	</span>跳到行尾
+	
+  <span class="c">#段落(paragraph)、区块(block)</span>
+	<span class="o">{</span>	上一段<span class="o">(</span>以空白行分隔<span class="o">)</span>
+	<span class="o">}</span>	下一段<span class="o">(</span>以空白行分隔<span class="o">)</span>
+	<span class="o">[{</span>	跳到当前区块开头
+	<span class="o">]}</span>	跳到当前区块結尾
+	%	跳到目前对应的括号上<span class="o">(</span>適适用各种括号,有设定好的话连HTML tag都能跳<span class="o">)</span>
+	
+  <span class="c">#荧屏(screen)、绝对位置</span>
+	H	荧屏顶部
+	M	荧屏中间
+	L	荧屏底部
+	:x
+	xG	跳到第x行<span class="o">(</span>x是行号<span class="o">)</span>
+	
+  <span class="c">#搜索(search)</span>
+	/xxxx	搜索xxxx
+	<span class="c">#	往前搜索目前游标所在的字(word)</span>
+	<span class="k">*</span>	往后搜索目前游标所在的字<span class="o">(</span>word<span class="o">)</span>
+	fx	在目前行往后搜索字元x
+	gd	跳到目前游标所在的字<span class="o">(</span>word<span class="o">)</span>的定义位置<span class="o">(</span>写程序用, 跳到定义变量/函数的地方<span class="o">)</span>
+	
+  <span class="c">#分割视窗</span>
+	:split	分割视窗<span class="o">(</span>可加名称随便开启另一档案<span class="o">)</span>
+	:diffsplit xxx	以分割视窗和档案xxx做比較<span class="o">(</span>diff<span class="o">)</span>
+	Ctrl-W p	跳到前一個分割视窗<span class="o">(</span>在两个分割窗來回切换<span class="o">)</span>
+	Ctrl-W j	跳到下面的分割窗
+	Ctrl-W h	跳到左边的分割窗
+	Ctrl-W k	跳到上面的分割窗
+	Ctrl-W l	跳到右边的分割窗
+	
+  <span class="c">#自动捕获(Auto-completion) (在Insert Mode中使用)	</span>
+	Ctrl-N	自动捕获档案內的下一个可能字<span class="o">(</span>word<span class="o">)</span>
+	Ctrl-P	自动捕获档案內的上一个可能字<span class="o">(</span>word<span class="o">)</span>
+	Ctrl-X  Ctrl-F	自动捕获档名	<span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+</div>
+						</div>
+				</div>
+			</div>
+			<div class="j-col-xs-12 j-col-sm-12 j-col-md-3">
+	<div class="j-user">
+		<div class="j-user-thumb">
+			<a href="/blog/me.html"><img src="/blog/images/user.jpg" alt="" /></a>
+		</div>
+		<div class="j-user-info">
+			<a href="/blog/me.html">微信</a>
+			<a href="/blog/me.html">微博</a>
+			<a href="/blog/me.html">QQ</a>
+		</div>
+	</div>
+	<div class="j-class-list">
+		<h3 class="j-row">分类</h3>
+		
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(14)</span></a>
+		
+		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(10)</span></a>
+		
+		<a href="/blog/category.html?category=bee.js">bee.js <span class="j-class-i-num">(1)</span></a>
+		
+		<a href="/blog/category.html?category=Promise">Promise <span class="j-class-i-num">(3)</span></a>
+		
+		<a href="/blog/category.html?category=工具">工具 <span class="j-class-i-num">(2)</span></a>
+		
+		<a href="/blog/category.html?category=Git">Git <span class="j-class-i-num">(1)</span></a>
+		
+		<a href="/blog/category.html?category=vim">vim <span class="j-class-i-num">(1)</span></a>
+		
+	</div>
+</div>
+		</div>
+	</div>
+	<div class="j-container-fluid j-footer">
+	<div class="j-container">
+		<p class="j-footer-say">喜欢一个人需要理由吗？需要吗？不需要吗？需要吗？……</p>
+		<p class="j-footer-say j-tlgr">——周星驰 《大话西游》</p>
+	</div>
+</div>
+
+</body>
+</html>
