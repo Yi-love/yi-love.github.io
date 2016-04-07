@@ -79,7 +79,8 @@
 18
 19
 20
-21</pre></td><td class="code"><pre> <span class="cm">/**
+21
+22</pre></td><td class="code"><pre> <span class="cm">/**
  * [css 校验]
  * cmd ： gulp css
  * author : jin
@@ -94,11 +95,12 @@
         <span class="na">remove</span><span class="p">:</span><span class="kc">true</span> <span class="c1">//是否去掉不必要的前缀 默认：true</span>
       <span class="p">}))</span><span class="c1">//自动添加前缀</span>
      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifycss</span><span class="p">())</span>
-     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">changed</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">build</span><span class="p">))</span>
-     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">build</span><span class="p">))</span>
+     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">changed</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">dist</span><span class="p">))</span>
+     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">dist</span><span class="p">))</span>
      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sourcemaps</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'./'</span><span class="p">))</span><span class="c1">//map文件位置</span>
-     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">build</span><span class="p">))</span>
-     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">reload</span><span class="p">({</span><span class="na">stream</span><span class="p">:</span> <span class="kc">true</span><span class="p">}));</span><span class="c1">//时时刷新</span>
+     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">dist</span><span class="p">))</span>
+     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">reload</span><span class="p">({</span><span class="na">stream</span><span class="p">:</span> <span class="kc">true</span><span class="p">}));</span> <span class="c1">//时时刷新  </span>
+     <span class="c1">// 全局定义：var reload = browserSync.reload;</span>
  <span class="p">});</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
