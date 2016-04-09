@@ -37,6 +37,7 @@ tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 
 ### 外部接口
 xhr.promise 提供3个接口
+
 >   ajax ：普通的ajax处理普通的ajax请求
 
 >   jsonp : 处理跨域的jsonp请求
