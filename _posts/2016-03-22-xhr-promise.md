@@ -63,8 +63,10 @@ xhr.promise 提供3个接口
 {%endhighlight%}
 
 ### 2.XHRP使用
+
 #### 1.ajax调用
 普通的ajax请求。
+
 {%highlight js%}
    XHRP.ajax({
         type:'post',
