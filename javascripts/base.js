@@ -30,3 +30,12 @@ function parseURL(url) {
         segments: a.pathname.replace(/^\//,"").split("/")
     };
 }
+
+/*全屏*/
+function fullScreen(){
+	var body = document.getElementsByTagName('body')[0];
+	if ( body.className.indexOf('j-fluid') >= 0 ){
+		return body.className = '';
+	}
+	return body.className = 'j-fluid';
+}

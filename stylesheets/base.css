@@ -341,7 +341,82 @@ body{
 body{
 	background: #E9EBEC;
 }
-
+/*****fluid*******/
+.j-fluid .j-container{
+	max-width:100%;
+}
+.j-tips-box{
+	position:fixed;
+	bottom:0;
+	right: .5rem;
+	z-index: 9;
+	background: ;
+}
+.j-tips-max-box , .j-tips-top-box{
+	width: 40px;
+	height: 40px;
+	background: #383636;
+	/*opacity: .5;*/
+	margin-bottom: .5rem;
+	cursor: pointer;
+	transition: all .4s;
+}
+.j-tips-max-box:hover , .j-tips-top-box:hover{
+	background: #ED2C2C;
+}
+.j-tips-max-box span{
+	width: 8px;
+	height: 8px;
+	margin: 6px;
+	border: 2px solid #fff;
+	display: block;
+	float: left;
+}
+.j-tips-max-box .l-t{
+	border-bottom: none;
+	border-right: none;
+}
+.j-tips-max-box .l-b{
+	border-top: none;
+	border-right: none;
+}
+.j-tips-max-box .r-t{
+	border-bottom: none;
+	border-left: none;
+}
+.j-tips-max-box .r-b{
+	border-top: none;
+	border-left: none;
+}
+.j-tips-top-box .j-tip-top{
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	line-height: 48px;
+	position: relative;
+}
+.j-tips-top-box .j-tip-top span{
+	width: 2px;
+	height: 16px;
+	background: #fff;
+	display: block;
+	position: absolute;
+}
+.j-tips-top-box .j-tip-top .l-bar{
+	transform: rotateZ(45deg);
+	-ms-transform: rotateZ(45deg);
+	-webkit-transform: rotateZ(45deg);
+	left: 14px;
+	top: 12px;
+}
+.j-tips-top-box .j-tip-top .r-bar{
+	transform: rotateZ(-45deg);
+	-ms-transform: rotateZ(-45deg);
+	-webkit-transform: rotateZ(-45deg);
+	left: 25px;
+	top: 12px;
+}
 /*********header***********/
 .j-header{
 	width: 100%;
@@ -349,7 +424,7 @@ body{
 	background: #0288D1;
 }
 .j-logo{
-	height: 40px;
+/*	height: 40px;*/
 	float: left;
 }
 .j-nav{
