@@ -2,7 +2,7 @@
 <html lang="zh-cmn-Hans">
 <head>
 	<meta charset="UTF-8">
-<meta name="apple-mobile-web-app-title" content="React-Redux-koa-webpack 全面学习与实践">
+<meta name="apple-mobile-web-app-title" content="IE8 兼容背景颜色为：rgba时无法显示问题">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-touch-fullscreen" content="yes">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="/blog/stylesheets/base.css">
 <link rel="stylesheet" href="/blog/stylesheets/monokai.css">
 <script src="/blog/javascripts/base.js"></script>
-<title>React-Redux-koa-webpack 全面学习与实践</title>
+<title>IE8 兼容背景颜色为：rgba时无法显示问题</title>
 </head>
 <body>
 	<div class="j-container-fluid j-header">
@@ -35,73 +35,53 @@
 		<div class="j-row">
 			<div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
 				<div class="j-container j-content">
-					<h2 class="j-i-title"><a href="javascript:void(0)" title="React-Redux-koa-webpack 全面学习与实践">React-Redux-koa-webpack 全面学习与实践</a></h2>
-						<p class="j-i-time">15 Apr 2016</p>
+					<h2 class="j-i-title"><a href="javascript:void(0)" title="IE8 兼容背景颜色为：rgba时无法显示问题">IE8 兼容背景颜色为：rgba时无法显示问题</a></h2>
+						<p class="j-i-time">21 Apr 2016</p>
 						<p class="j-i-tags">
 							
-							<span class="j-i-tag">react</span>
+							<span class="j-i-tag">ie8</span>
 							
-							<span class="j-i-tag">组件化</span>
+							<span class="j-i-tag">background</span>
 							
-							<span class="j-i-tag">redux</span>
-							
-							<span class="j-i-tag">koa</span>
-							
-							<span class="j-i-tag">同构</span>
+							<span class="j-i-tag">rgba</span>
 							
 						</p>
 						<div class="j-container">
-							<div class="j-row j-artclie-txt"><p>这是一篇告诉你如何从编写小的 React 静态浏览器demo，到结合react,redux,koa,webpack,isomorphic-fetch等工具和插件完成一个Node服务器与客户端同构demo的开发。</p>
+							<div class="j-row j-artclie-txt"><p>IE8下不支持rgba,对背景设置透明度的时候必须进行透明度兼容。</p>
 
-<p>完成这个过程你需要学习或者了解的知识点有以下几点：</p>
+<h3 id="css">css兼容代码</h3>
 
-<p>在编写代码过程中大量使用es6语法，所以没有接触过es6语法的可以先学习es6语法。</p>
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.className</span><span class="p">{</span>
+  <span class="c">/*一般的高级浏览器都支持*/</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="p">,</span><span class="m">255</span><span class="p">,</span><span class="m">255</span><span class="p">,</span><span class="m">0.1</span><span class="p">);</span>
+  <span class="c">/*IE8下*/</span>
+  <span class="nl">filter</span><span class="p">:</span><span class="n">progid</span><span class="p">:</span><span class="n">DXImageTransform</span><span class="p">.</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">startColorstr</span><span class="err">=</span><span class="m">#19ffff</span><span class="n">ff</span><span class="p">,</span><span class="n">endColorstr</span><span class="err">=</span><span class="m">#19ffff</span><span class="n">ff</span><span class="p">);</span>   
+<span class="p">}</span></code></pre></figure>
 
-<p>下面是主要的知识点：</p>
+<p>原理：使用渐变来完成透明度兼容。</p>
 
-<figure class="highlight"><pre><code class="language-txt" data-lang="txt">koa :服务器
-	koa-route ： koa路由控制
-	koa-static : 静态文件目录
-	koa-logger: 日志
+<h3 id="ffffff">#19ffffff分析</h3>
+<p>#19ffffff 由两部分构成：19 和  ffffff</p>
 
-swig ： html模版语言
-
-history ： 历史记录
-
-react : 组件管理
-	react-dom: reactdom插入
-	react-router：react路由
-
-webpack : 文件打包
-
-isomorphic-fetch：同构数据请求
-
-recompose ：React的一个高阶功能组件
-
-redux : Redux 就是用来确保 state 变化的可预测性
-	
-#babel
-	babel-cli :js编译
-	babel-preset-es2015-node5</code></pre></figure>
-
-<p>这是一张服务器与客户端同构的结构图：</p>
-
-<p><img src="/blog/images/2016/0415_01.jpg" alt="react-redux-koa" /></p>
-
-<h3 id="react">React</h3>
-<p>React 是较早使用 JavaScript 构建大型、快速的 Web 应用程序的技术方案。也可以说 在React里面一切都是组件。
-下面是我个人在学习React的笔记以及对不同场景运用React的体会。通过不同的运用的场景来体会React。</p>
-
-<h3 id="react-1">1.React运用场景</h3>
 <blockquote>
-  <ol>
-    <li>静态页面</li>
-    <li>react-koa-webpack开发</li>
-    <li>react-redux-koa-webpack开发</li>
-  </ol>
+  <p>19：表示的透明度阀值 (19 === rgba中的0.1)
+  ffffff : 表示颜色</p>
 </blockquote>
 
-<p>待续……</p>
+<h3 id="section">阀值计算</h3>
+<p>使用rgba下的透明度 ： alpha*255 取整然后转换为16进制即可。</p>
+
+<figure class="highlight"><pre><code class="language-txt" data-lang="txt">  rgba     ie8filter
+  
+  0.1      0.1*255 = 25 转为16进制 ： 19 (16+9)
+  0.2      33
+  0.3      4C
+  0.4      66
+  0.5      7F
+  0.6      99
+  0.7      B2
+  0.8      C8
+  0.9      E5 </code></pre></figure>
 
 </div>
 						</div>
