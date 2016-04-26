@@ -158,7 +158,7 @@ react要求为了避免多余属性的存在。所以第一步的任务就是划
       price : 99.78,
       original : 21000.99,
       skuMap : false
-	}
+    }
   ];
     /**
      * [NumberInput   数量选择]
