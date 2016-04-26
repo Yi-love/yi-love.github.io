@@ -101,7 +101,290 @@ redux : Redux 就是用来确保 state 变化的可预测性
   </ol>
 </blockquote>
 
-<p>待续……</p>
+<h3 id="react-2">2 场景一 : 静态页面直接使用React</h3>
+<p>下面将使用购物车为案例，体验react。先看看案例的最终效果。</p>
+
+<blockquote>
+  <p>效果图如下：</p>
+</blockquote>
+
+<p><img src="/blog/images/2016/0415_02.jpg" alt="react-redux-koa" /></p>
+
+<p>React构造购物车demo: <a href="/blog/examples/koa-react-redux/react/index.html">购物车demo</a></p>
+
+<h4 id="section">2.1 购物车组件划分</h4>
+<p>react要求为了避免多余属性的存在。所以第一步的任务就是划分组件，分析每一个组件所需要的数据。</p>
+
+<p>下图是我对购物车组件的划分（不包含没有划分组件的元素）：</p>
+
+<p><img src="/blog/images/2016/0415_03.jpg" alt="react-redux-koa" /></p>
+
+<p>每一个绿色的框表示一件商品，所有的绿色框组合起来就是购物车商品列表。如果加上底部的菜单栏，那么一个简单的购物车就完成了。</p>
+
+<h4 id="section-1">2.2 购物车数据流</h4>
+<p>我们都知道写出组件化很简单，如何与组件进行交互是很麻烦的。在这之前你得先了解一个概念。</p>
+
+<blockquote>
+  <ol>
+    <li>props是一个父组件传递给子组件的数据流，这个数据流可以一直传递到子孙组件。而state代表的是一个组件内部自身的状态</li>
+    <li>改变一个组件自身状态，从语义上来说，就是这个组件内部已经发生变化，有可能需要对此组件以及组件所包含的子孙组件进行重渲染。</li>
+    <li>props是父组件传递的参数，可以被用于显示内容，或者用于此组件自身状态的设置（部分props可以用来设置组件的state），
+      不仅仅是组件内部state改变才会导致重渲染，父组件传递的props发生变化，也会执行。</li>
+  </ol>
+</blockquote>
+
+<p>两者的变化都有可能导致组件重渲染，所以只有理解props与state的意义，才能很好地决定到底什么时候用props或state。</p>
+
+<p>数据流图：</p>
+
+<p><img src="/blog/images/2016/0415_04.jpg" alt="react-redux-koa" /></p>
+
+<p>数据从购物车顶层注入，分别根据不同组件的不同数据需要将数据流入到各个组件当中。有的数据可能直接使用，有的可能是通过计算出来的
+衍生数据。</p>
+
+<p>在购物车中，我们希望修改了购物车中商品的数量或者选择商品之后，数据都是最新的。那么这时候你可能想到的是双向数据绑定，react可以实现
+双向数据绑定，但它的原理其实还是单一数据流，组合setSate等函数完成的双向数据绑定功能。说白了react没有真正的双向数据绑定，有也是通过其它方式
+模拟的。</p>
+
+<p>疑惑：为什么每次修改商品数量，或者选择商品还是其他操作，我都希望原来注入的Data元数据都是最新的？</p>
+
+<p>这是因为购物车中所有的操作的结果就是要提交商品数据。
+这些数据就是元数据中的某些属性或者衍生数据来着。我们必须保证元数据是随着用户操作保持时时更新，在最后用户提交商品到订单的时候数据才是最新的。</p>
+
+<p>结论：这里使用props属性传递是最合适的。</p>
+
+<p>又到21：00点多了。先发代码，后面再来写。。。
+待续。。。。</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="o">&lt;!</span><span class="nx">DOCTYPE</span> <span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">html</span> <span class="nx">lang</span><span class="o">=</span><span class="s2">"en"</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">meta</span> <span class="nx">charset</span><span class="o">=</span><span class="s2">"UTF-8"</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="err">购物车</span><span class="o">&lt;</span><span class="sr">/title</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nx">href</span><span class="o">=</span><span class="s2">"./index.css"</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/head</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"cart"</span><span class="o">&gt;&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"./build/react.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"./build/react-dom.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"./build/browser.min.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/babel"</span><span class="o">&gt;</span>
+  <span class="kd">var</span> <span class="nx">CART_INFO</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">isChecked</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isSku</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isDeleted</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">isCollect</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">thumb</span> <span class="p">:</span> <span class="s1">'./images/01.png'</span><span class="p">,</span>
+      <span class="na">title</span> <span class="p">:</span> <span class="s1">'七匹狼男鞋'</span><span class="p">,</span>
+      <span class="na">num</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="na">gid</span><span class="p">:</span><span class="mi">88888</span><span class="p">,</span>
+      <span class="na">store</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+      <span class="na">price</span> <span class="p">:</span> <span class="mf">45.37</span><span class="p">,</span>
+      <span class="na">original</span> <span class="p">:</span> <span class="mf">999.99</span><span class="p">,</span>
+      <span class="na">skuMap</span> <span class="p">:</span> <span class="p">[</span><span class="s1">'颜色：红色'</span><span class="p">,</span><span class="s1">'尺寸：30'</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">isChecked</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">isSku</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isDeleted</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isCollect</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">thumb</span> <span class="p">:</span> <span class="s1">'./images/02.png'</span><span class="p">,</span>
+      <span class="na">title</span> <span class="p">:</span> <span class="s1">'拖把'</span><span class="p">,</span>
+      <span class="na">num</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="na">gid</span><span class="p">:</span><span class="mi">88899</span><span class="p">,</span>
+      <span class="na">store</span> <span class="p">:</span> <span class="mi">67</span><span class="p">,</span>
+      <span class="na">price</span> <span class="p">:</span> <span class="mf">22.09</span><span class="p">,</span>
+      <span class="na">original</span> <span class="p">:</span> <span class="mf">120.00</span><span class="p">,</span>
+      <span class="na">skuMap</span> <span class="p">:</span> <span class="p">[</span><span class="s1">'型号：中'</span><span class="p">,</span><span class="s1">'尺寸：1.5米'</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">isChecked</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isSku</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">isDeleted</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">isCollect</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="na">thumb</span> <span class="p">:</span> <span class="s1">'./images/03.png'</span><span class="p">,</span>
+      <span class="na">title</span> <span class="p">:</span> <span class="s1">'这个太牛逼了'</span><span class="p">,</span>
+      <span class="na">num</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="na">gid</span><span class="p">:</span><span class="mi">555555</span><span class="p">,</span>
+      <span class="na">store</span> <span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="na">price</span> <span class="p">:</span> <span class="mf">99.78</span><span class="p">,</span>
+      <span class="na">original</span> <span class="p">:</span> <span class="mf">21000.99</span><span class="p">,</span>
+      <span class="na">skuMap</span> <span class="p">:</span> <span class="kc">false</span>
+	<span class="p">}</span>
+  <span class="p">];</span>
+    <span class="cm">/**
+     * [NumberInput   数量选择]
+     */</span>
+	<span class="kd">var</span> <span class="nx">NumberInput</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">numSub</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">op</span><span class="p">){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">setBuyNum</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">onChange</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">setBuyNum</span><span class="p">(</span><span class="o">+</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[^\d]</span><span class="sr">/g</span> <span class="p">,</span><span class="s1">''</span><span class="p">)));</span>
+		<span class="p">},</span>
+		<span class="na">numAdd</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">setBuyNum</span><span class="p">(</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">setBuyNum</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">num</span><span class="p">){</span>
+			<span class="nx">num</span> <span class="o">=</span> <span class="nx">num</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">min</span> <span class="p">?</span> <span class="nx">num</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">min</span><span class="p">;</span>
+			<span class="nx">num</span> <span class="o">=</span> <span class="nx">num</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">max</span> <span class="p">?</span> <span class="nx">num</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">max</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="s1">'num'</span> <span class="p">,</span> <span class="nx">num</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">shouldComponentUpdate</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">,</span> <span class="nx">nextState</span><span class="p">)</span> <span class="p">{</span>
+		  	<span class="k">return</span> <span class="nx">nextProps</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="na">render</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span>
+              <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"op-box"</span><span class="o">&gt;&lt;</span><span class="nx">span</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"op"</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">numSub</span><span class="p">}</span><span class="o">&gt;-&lt;</span><span class="sr">/span</span><span class="err">&gt;
+</span>              <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"buynum"</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span> <span class="o">||</span> <span class="mi">1</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onChange</span><span class="p">}</span> <span class="sr">/&gt;&lt;span className="op" onClick={this.numAdd}&gt;+&lt;/</span><span class="nx">span</span><span class="o">&gt;&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>			<span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="cm">/**
+     * [Operater   操作]
+     */</span>
+	<span class="kd">var</span> <span class="nx">Operater</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">handleCollect</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="s1">'isCollect'</span><span class="p">,</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isCollect</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">handleDelete</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="s1">'isDeleted'</span><span class="p">,</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isDeleted</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="c1">// shouldComponentUpdate: function(nextProps, nextState) {</span>
+		<span class="c1">//   	return nextProps.isCollect != this.props.isCollect || nextProps.isDeleted != this.props.isDeleted;</span>
+		<span class="c1">// },</span>
+		<span class="na">render</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="kd">var</span> <span class="nx">collecttxt</span><span class="o">=</span> <span class="s1">'收藏'</span><span class="p">,</span> <span class="nx">collectcss</span> <span class="o">=</span> <span class="s1">'collect'</span> <span class="p">,</span>  <span class="nx">deletetxt</span> <span class="o">=</span> <span class="s1">'删除'</span> <span class="p">,</span> <span class="nx">delectcss</span><span class="o">=</span><span class="s1">'delete'</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isCollect</span> <span class="p">?</span> <span class="p">(</span><span class="nx">collecttxt</span> <span class="o">=</span> <span class="s1">'取消'</span><span class="o">+</span><span class="nx">collecttxt</span> <span class="p">,</span> <span class="nx">collectcss</span> <span class="o">=</span> <span class="s1">'discollect'</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isDeleted</span> <span class="p">?</span> <span class="p">(</span><span class="nx">deletetxt</span> <span class="o">=</span> <span class="s1">'取消'</span> <span class="p">,</span> <span class="nx">delectcss</span> <span class="o">=</span> <span class="s1">'disdelete'</span> <span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"item-opbox"</span><span class="o">&gt;</span>
+						<span class="o">&lt;</span><span class="nx">span</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="s1">'op-i '</span><span class="o">+</span><span class="nx">collectcss</span><span class="p">}</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleCollect</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">collecttxt</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/span</span><span class="err">&gt;
+</span>						<span class="o">&lt;</span><span class="nx">span</span> <span class="nx">className</span> <span class="o">=</span><span class="p">{</span><span class="s1">'op-i '</span><span class="o">+</span><span class="nx">delectcss</span><span class="p">}</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleDelete</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">deletetxt</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/span</span><span class="err">&gt;
+</span>					<span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err">)
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="cm">/**
+	 * [SkuContainer sku渲染 ]
+	 */</span>
+	<span class="kd">var</span> <span class="nx">SkuContainer</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">render</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"sku-box"</span><span class="o">&gt;</span>
+					<span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isSku</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">skuMap</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">sku</span> <span class="p">,</span> <span class="nx">key</span><span class="p">){</span> 
+						<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">span</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">sku</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/span&gt;</span><span class="err">)
+</span>						<span class="p">})</span>
+					<span class="p">}</span>
+				   <span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err">)
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="cm">/**
+	 * [CheckBox 选中]
+	 */</span>
+	<span class="kd">var</span> <span class="nx">CheckBox</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">handleChecked</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="s1">'isChecked'</span><span class="p">,</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isChecked</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="c1">// shouldComponentUpdate: function(nextProps, nextState) {</span>
+		<span class="c1">//   	return nextProps.isChecked != this.props.isChecked;</span>
+		<span class="c1">// },</span>
+		<span class="na">render</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"checkbox"</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isChecked</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChecked</span><span class="p">}</span> <span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="cm">/**
+	 * [CartItem 单个商品渲染]
+	 */</span>
+	<span class="kd">var</span> <span class="nx">CartItem</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">render</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;&lt;</span><span class="nx">table</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"cart"</span><span class="o">&gt;&lt;</span><span class="nx">thead</span><span class="o">&gt;&lt;</span><span class="nx">tr</span><span class="o">&gt;&lt;</span><span class="nx">td</span><span class="o">&gt;</span><span class="err">选择</span><span class="o">&lt;</span><span class="sr">/td&gt;&lt;td&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">td</span><span class="o">&gt;</span><span class="err">名称</span><span class="o">&lt;</span><span class="sr">/td&gt;&lt;td&gt;价格&lt;/</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">td</span><span class="o">&gt;</span><span class="err">原价</span><span class="o">&lt;</span><span class="sr">/td&gt;&lt;td&gt;描述&lt;/</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">td</span><span class="o">&gt;</span><span class="err">数量</span><span class="o">&lt;</span><span class="sr">/td&gt;&lt;td&gt;操作&lt;/</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="sr">/tr&gt;&lt;/</span><span class="nx">thead</span><span class="o">&gt;&lt;</span><span class="nx">tbody</span><span class="o">&gt;</span>
+					<span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">carts</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">carts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">car</span> <span class="p">,</span> <span class="nx">key</span><span class="p">){</span>
+						<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">tr</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">CheckBox</span> <span class="nx">isChecked</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">isChecked</span><span class="p">}</span> <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">that</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">}</span> <span class="sr">/&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">thumb</span><span class="p">}</span> <span class="nx">width</span><span class="o">=</span><span class="s2">"60"</span> <span class="nx">height</span><span class="o">=</span><span class="s2">"60"</span> <span class="o">/&gt;&lt;</span><span class="sr">/td</span><span class="err">&gt;
+</span>								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">h4</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h4&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">price</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">original</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">SkuContainer</span> <span class="nx">isSku</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">isSku</span><span class="p">}</span> <span class="nx">skuMap</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">skuMap</span><span class="p">}</span> <span class="sr">/&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">NumberInput</span> <span class="nx">state</span> <span class="o">=</span><span class="p">{</span> <span class="p">{</span><span class="nl">num</span> <span class="p">:</span> <span class="nx">car</span><span class="p">.</span><span class="nx">num</span><span class="p">,</span><span class="na">max</span><span class="p">:</span><span class="nx">car</span><span class="p">.</span><span class="nx">store</span> <span class="p">,</span> <span class="na">min</span> <span class="p">:</span> <span class="mi">1</span><span class="p">}}</span> <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">that</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">}</span> <span class="sr">/&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+								<span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;</span><span class="nx">Operater</span> <span class="nx">isDeleted</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">isDeleted</span><span class="p">}</span> <span class="nx">isCollect</span><span class="o">=</span><span class="p">{</span><span class="nx">car</span><span class="p">.</span><span class="nx">isCollect</span><span class="p">}</span> <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">that</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">}</span> <span class="sr">/&gt;&lt;/</span><span class="nx">td</span><span class="o">&gt;</span>
+							<span class="o">&lt;</span><span class="sr">/tr&gt;</span><span class="err">)
+</span>						<span class="p">})</span>
+					<span class="p">}</span><span class="o">&lt;</span><span class="sr">/tbody&gt;&lt;/</span><span class="nx">table</span><span class="o">&gt;&lt;</span><span class="sr">/div&gt;</span><span class="err">)
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="cm">/**
+	 * [CartMenu 提交bar]
+	 */</span>
+	<span class="kd">var</span> <span class="nx">CartMenu</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">render</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"cart-allpay"</span><span class="o">&gt;</span>
+				<span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"checkbox"</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isAll</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isCheckAll</span><span class="p">}</span> <span class="sr">/&gt;全选&lt;/</span><span class="nx">label</span><span class="o">&gt;</span>
+				<span class="o">&lt;</span><span class="nx">span</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"num"</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">num</span><span class="p">}</span><span class="err">个</span><span class="o">&lt;</span><span class="sr">/span&gt; &lt;span className="pay"&gt;{this.props.money}元&lt;/</span><span class="nx">span</span><span class="o">&gt;&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onClick</span><span class="p">}</span><span class="o">&gt;</span><span class="err">获取数据</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>				<span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err">)
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="cm">/**
+	 * [cart  购物车]
+	 */</span>
+	<span class="kd">var</span> <span class="nx">Cart</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+		<span class="na">getInitialState</span><span class="p">:</span><span class="kd">function</span><span class="p">(){</span>
+			<span class="k">return</span> <span class="p">{</span><span class="na">carts</span><span class="p">:[]</span> <span class="p">,</span> <span class="na">num</span> <span class="p">:</span> <span class="mi">0</span> <span class="p">,</span> <span class="na">money</span><span class="p">:</span> <span class="mi">0</span> <span class="p">,</span><span class="na">isAll</span> <span class="p">:</span> <span class="kc">false</span><span class="p">};</span>
+		<span class="p">},</span>
+		<span class="na">componentWillMount</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="kd">var</span> <span class="nx">carts</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">carts</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">computed</span><span class="p">(</span><span class="nx">carts</span><span class="p">);</span>
+			<span class="nx">data</span><span class="p">.</span><span class="nx">carts</span> <span class="o">=</span> <span class="nx">carts</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">handleSet</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">handleChange</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span> <span class="p">,</span><span class="nx">props</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+			<span class="kd">var</span> <span class="nx">carts</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">carts</span><span class="p">;</span>
+			<span class="nx">carts</span><span class="p">[</span><span class="nx">key</span><span class="p">][</span><span class="nx">props</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">computed</span><span class="p">(</span><span class="nx">carts</span><span class="p">);</span>
+			<span class="nx">data</span><span class="p">.</span><span class="nx">carts</span> <span class="o">=</span> <span class="nx">carts</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">handleSet</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">handleClick</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="na">handleSet</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span><span class="na">carts</span><span class="p">:</span><span class="nx">obj</span><span class="p">.</span><span class="nx">carts</span> <span class="p">,</span> <span class="na">num</span><span class="p">:</span><span class="nx">obj</span><span class="p">.</span><span class="nx">num</span> <span class="p">,</span> <span class="na">money</span><span class="p">:</span><span class="nx">obj</span><span class="p">.</span><span class="nx">money</span> <span class="p">,</span> <span class="na">isAll</span><span class="p">:</span><span class="nx">obj</span><span class="p">.</span><span class="nx">isAll</span><span class="p">})</span>
+		<span class="p">},</span>
+		<span class="nx">isCheckAll</span> <span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+			<span class="kd">var</span> <span class="nx">isall</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">isAll</span> <span class="p">,</span> <span class="nx">carts</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">carts</span><span class="p">;</span> 
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">carts</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			 	<span class="nx">carts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">isChecked</span> <span class="o">=</span> <span class="nx">isall</span><span class="p">;</span>
+			<span class="p">};</span>
+			<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">computed</span><span class="p">(</span><span class="nx">carts</span><span class="p">);</span>
+			<span class="nx">data</span><span class="p">.</span><span class="nx">carts</span> <span class="o">=</span> <span class="nx">carts</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">handleSet</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">computed</span> <span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">carts</span><span class="p">){</span>
+			 <span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">,</span> <span class="nx">money</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">,</span> <span class="nx">isAll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			 <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">carts</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			 	<span class="k">if</span> <span class="p">(</span> <span class="nx">carts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">isChecked</span> <span class="p">){</span>
+			 		<span class="nx">num</span> <span class="o">+=</span> <span class="nx">carts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">num</span><span class="p">;</span>
+			 		<span class="nx">money</span> <span class="o">+=</span> <span class="nx">carts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">num</span><span class="o">*</span><span class="nx">carts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">price</span><span class="p">;</span>
+			 	<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+			 		<span class="nx">isAll</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			 	<span class="p">}</span>
+			 <span class="p">};</span>
+			 <span class="k">return</span> <span class="p">{</span><span class="na">num</span> <span class="p">:</span> <span class="nx">num</span> <span class="o">&gt;</span><span class="mi">0</span> <span class="p">?</span> <span class="nx">num</span> <span class="p">:</span> <span class="mi">0</span> <span class="p">,</span> <span class="na">money</span> <span class="p">:</span> <span class="nx">money</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">?</span> <span class="nx">money</span> <span class="p">:</span> <span class="mf">0.00</span> <span class="p">,</span> <span class="na">isAll</span><span class="p">:</span><span class="nx">isAll</span><span class="p">}</span>
+		<span class="p">},</span>
+		<span class="na">render</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'render start'</span><span class="p">);</span>
+			<span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+					<span class="o">&lt;</span><span class="nx">CartItem</span> <span class="nx">carts</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">carts</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>					<span class="o">&lt;</span><span class="nx">CartMenu</span> <span class="nx">isAll</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">isAll</span><span class="p">}</span> <span class="nx">isCheckAll</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">isCheckAll</span><span class="p">}</span> <span class="nx">num</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">num</span><span class="p">}</span> <span class="nx">money</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">money</span><span class="p">}</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleClick</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>				<span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err">)
+</span>		<span class="p">}</span>
+	<span class="p">});</span>
+	<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Cart</span> <span class="nx">carts</span><span class="o">=</span><span class="p">{</span><span class="nx">CART_INFO</span><span class="p">}</span> <span class="sr">/&gt; , document.getElementById</span><span class="se">(</span><span class="sr">'cart'</span><span class="se">))</span><span class="err">;
+</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/html&gt;</span></code></pre></figure>
 
 </div>
 						</div>
@@ -122,7 +405,7 @@ redux : Redux 就是用来确保 state 变化的可预测性
 	<div class="j-class-list">
 		<h3 class="j-row">分类</h3>
 		
-		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(18)</span></a>
+		<a href="/blog/category.html?category=笔记">笔记 <span class="j-class-i-num">(19)</span></a>
 		
 		<a href="/blog/category.html?category=JavaScript">JavaScript <span class="j-class-i-num">(12)</span></a>
 		
@@ -140,9 +423,9 @@ redux : Redux 就是用来确保 state 变化的可预测性
 		
 		<a href="/blog/category.html?category=Node">Node <span class="j-class-i-num">(2)</span></a>
 		
-		<a href="/blog/category.html?category=IE兼容">IE兼容 <span class="j-class-i-num">(1)</span></a>
+		<a href="/blog/category.html?category=IE兼容">IE兼容 <span class="j-class-i-num">(2)</span></a>
 		
-		<a href="/blog/category.html?category=CSS">CSS <span class="j-class-i-num">(1)</span></a>
+		<a href="/blog/category.html?category=CSS">CSS <span class="j-class-i-num">(2)</span></a>
 		
 	</div>
 </div>
