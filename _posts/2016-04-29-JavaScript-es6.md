@@ -17,15 +17,15 @@ let 与 var 都是用来定义变量的。var 全局范围有效,let局部有效
 
 `for`循环最合适 `let`定义变量：
 
-{%highlight js%}
+```js
   var arr = [1,2];
   for(let i = 0 ; i < arr.length ;i++){}
   console.log(i);
   //ReferenceError: i is not defined
-{%endhighlight%}
+```
 
 `let` 和 `var` 作用域区别:
-{%highlight js%}
+```js
  var arr = [];
  for(var i = 0 ; i < 10 ; i++){
    arr[i] = function(){
@@ -33,11 +33,11 @@ let 与 var 都是用来定义变量的。var 全局范围有效,let局部有效
    }
  }
  arr[6]();//10
-{%endhighlight%}
+```
 `i` 是全局的，所以都会输出最后i的值。
 
 使用 `let`，声明的变量仅在块级作用域内有效，最后输出的是6。
-{%highlight js%}
+```js
  var arr = [];
  for(let i = 0 ; i < 10 ; i++){
    arr[i] = function(){
@@ -45,67 +45,67 @@ let 与 var 都是用来定义变量的。var 全局范围有效,let局部有效
    }
  }
  arr[6]();//6
-{%endhighlight%}
+```
 每次循环 `i` 都是一个新的变量。
 
 #### 不存在变量提升
 `let` 不像 `var` 变量。可以先使用后定义。
-{%highlight js%}
+```js
  console.log(a,b);//ReferenceError: b is not defined
  var a = 10;
  let b = 2;
-{%endhighlight%}
+```
 
 #### 暂时性死区
 只要块级作用域存在 `let`命令，它所声明的变量就会绑定在这个区域。
-{%highlight js%}
+```js
  var a = 123;
  if(true){
    console.log(a);//ReferenceError: a is not defined
    let a;
  }
-{%endhighlight%}
+```
 
 隐蔽的死区。
-{%highlight js%}
+```js
  function add(x = y, y = 2) {
   return x+y;
  }
 add(); // 报错
-{%endhighlight%}
+```
 
 #### 不允许重复声明
 let不允许在相同作用域内，重复声明同一个变量。
-{%highlight js%}
+```js
   let a = 10;
   let a = 1;
-{%endhighlight%}
+```
 
 ### const常量
 const也用来声明变量，但是声明的是常量。一旦声明，常量的值就不能改变。
 
 普通模式：
-{%highlight js%}
+```js
   const c = 123;
   c = 12;
   console.log(c);//123
-{%endhighlight%}
+```
 
 严格模式：
-{%highlight js%}
+```js
   'use strict';
   const c = 123;
   c = 12;//TypeError: Assignment to constant variable.
   console.log(c);
-{%endhighlight%}
+```
 
 作用域：
-{%highlight js%}
+```js
   if(true){
    const a =12;
   }
   console.log(a);
-{%endhighlight%}
+```
 
 const变量必须先申明后使用。
 
