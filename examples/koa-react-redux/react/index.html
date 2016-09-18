@@ -11,50 +11,59 @@
     <script src="./build/react-dom.js"></script>
     <script src="./build/browser.min.js"></script>
     <script type="text/babel">
-	    var CART_INFO = [
-	    	{
-	    		isChecked: true,
-	    		isSku : true,
-	    		isDeleted : false,
-	    		isCollect : false,
-	    		thumb : './images/01.png',
-	    		title : '七匹狼男鞋',
-	    		num : 10,
-	    		gid:88888,
-	    		store : 100,
-	    		price : 45.37,
-	    		original : 999.99,
-	    		skuMap : ['颜色：红色','尺寸：30']
-	    	},
-	    	{
-	    		isChecked: false,
-	    		isSku : true,
-	    		isDeleted : true,
-	    		isCollect : true,
-	    		thumb : './images/02.png',
-	    		title : '拖把',
-	    		num : 1,
-	    		gid:88899,
-	    		store : 67,
-	    		price : 22.09,
-	    		original : 120.00,
-	    		skuMap : ['型号：中','尺寸：1.5米']
-	    	},
-	    	{
-	    		isChecked: true,
-	    		isSku : false,
-	    		isDeleted : true,
-	    		isCollect : false,
-	    		thumb : './images/03.png',
-	    		title : '这个太牛逼了',
-	    		num : 3,
-	    		gid:555555,
-	    		store : 20,
-	    		price : 99.78,
-	    		original : 21000.99,
-	    		skuMap : false
-	    	}
-	    ];
+    	/**
+    	 * [getCartData 获取购物车数据]
+    	 * @return {[type]} [description]
+    	 */
+	    function getCartData() {
+	    	return  new Promise(function(resolve, reject) {
+	    		setTimeout(function(){
+	    			resolve([{
+			    		isChecked: true,
+			    		isSku : true,
+			    		isDeleted : false,
+			    		isCollect : false,
+			    		thumb : './images/01.png',
+			    		title : '七匹狼男鞋',
+			    		num : 10,
+			    		gid:88888,
+			    		store : 100,
+			    		price : 45.37,
+			    		original : 999.99,
+			    		skuMap : ['颜色：红色','尺寸：30']
+			    	},
+			    	{
+			    		isChecked: false,
+			    		isSku : true,
+			    		isDeleted : true,
+			    		isCollect : true,
+			    		thumb : './images/02.png',
+			    		title : '拖把',
+			    		num : 1,
+			    		gid:88899,
+			    		store : 67,
+			    		price : 22.09,
+			    		original : 120.00,
+			    		skuMap : ['型号：中','尺寸：1.5米']
+			    	},
+			    	{
+			    		isChecked: true,
+			    		isSku : false,
+			    		isDeleted : true,
+			    		isCollect : false,
+			    		thumb : './images/03.png',
+			    		title : '这个太牛逼了',
+			    		num : 3,
+			    		gid:555555,
+			    		store : 20,
+			    		price : 99.78,
+			    		original : 21000.99,
+			    		skuMap : false
+			    	}
+			    ]);
+	    		} , 3000);
+	    	});
+	    };
 	    /**
 	     * [NumberInput   数量选择]
 	     */
@@ -78,7 +87,9 @@
 			},
     		render: function() {
     			return (
-    				<div className="op-box"><span className="op" onClick={this.numSub}>-</span><input className="buynum" type="text" value={this.props.state.num || 1} onChange={this.onChange} /><span className="op" onClick={this.numAdd}>+</span></div>
+    				<div className="op-box"><span className="op" onClick={this.numSub}>-</span>
+    				<input className="buynum" type="text" value={this.props.state.num || 1} onChange={this.onChange} />
+    				<span className="op" onClick={this.numAdd}>+</span></div>
     			);
     		}
     	});
@@ -160,7 +171,8 @@
 		var CartMenu = React.createClass({
 			render : function(){
 				return (<div className="cart-allpay">
-					<label><input type="checkbox" checked={this.props.isAll} onChange={this.props.isCheckAll} />全选</label><span className="num">{this.props.num}个</span> <span className="pay">{this.props.money}元</span><button onClick={this.props.onClick}>获取数据</button>
+					<label><input type="checkbox" checked={this.props.isAll} onChange={this.props.isCheckAll} />全选</label>
+					<span className="num">{this.props.num}个</span> <span className="pay">{this.props.money}元</span><button onClick={this.props.onClick}>获取数据</button>
 					</div>)
 			}
 		});
@@ -173,10 +185,16 @@
 				return {carts:[] , num : 0 , money: 0 ,isAll : false};
 			},
 			componentWillMount: function(){
-				var carts = this.props.carts;
+				var carts = this.state.carts;
 				var data = this.computed(carts);
 				data.carts = carts;
 				this.handleSet(data);
+			},
+			componentDidMount:function() {
+				var that = this;
+				getCartData().then(function(carts){
+					that.setState({carts: carts});
+				});
 			},
 			handleChange : function(key ,props, value){
 				var carts = this.state.carts;
@@ -213,15 +231,18 @@
 				 return {num : num >0 ? num : 0 , money : money > 0 ? money : 0.00 , isAll:isAll}
 			},
 			render: function(){
-				console.log('render start');
 				return (<div>
 						<CartItem carts={this.state.carts} onChange={this.handleChange} />
 						<CartMenu isAll={this.state.isAll} isCheckAll={this.isCheckAll} num={this.state.num} money={this.state.money} onClick={this.handleClick} />
 					</div>)
 			}
 		});
-		ReactDOM.render(<Cart carts={CART_INFO} /> , document.getElementById('cart'));
 
+		/**
+		 * [CART_INFO 渲染购物车]
+		 * @type {[type]}
+		 */
+		ReactDOM.render(<Cart /> , document.getElementById('cart'));
     </script>
 </body>
 </html>
