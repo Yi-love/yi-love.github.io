@@ -12,6 +12,7 @@ tags: [api]
 目录：
 
 *   [Buffer](https://github.com/Yi-love/node-api-docs/blob/master/docs/Buffer.md)
+*   [Events](https://github.com/Yi-love/node-api-docs/blob/master/docs/Events.md)
 
 
 参考：
