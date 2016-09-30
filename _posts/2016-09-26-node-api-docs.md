@@ -13,7 +13,7 @@ tags: [api]
 
 *   [Buffer](https://github.com/Yi-love/node-api-docs/blob/master/docs/Buffer.md)
 *   [Events](https://github.com/Yi-love/node-api-docs/blob/master/docs/Events.md)
-
+*   [File System](https://github.com/Yi-love/node-api-docs/blob/master/docs/FileSystem.md)
 
 参考：
 
