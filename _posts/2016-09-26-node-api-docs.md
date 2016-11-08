@@ -14,6 +14,8 @@ tags: [api]
 *   [Buffer](https://github.com/Yi-love/node-api-docs/blob/master/docs/Buffer.md)
 *   [Events](https://github.com/Yi-love/node-api-docs/blob/master/docs/Events.md)
 *   [File System](https://github.com/Yi-love/node-api-docs/blob/master/docs/FileSystem.md)
+*   [Stream](https://github.com/Yi-love/node-api-docs/blob/master/docs/Stream.md)
+*   [DNS](https://github.com/Yi-love/node-api-docs/blob/master/docs/dns.md)
 
 参考：
 
