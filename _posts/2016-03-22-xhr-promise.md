@@ -16,24 +16,27 @@ tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 >[https://github.com/github/fetch](https://github.com/github/fetch)
 
 ### 知识要点
-{%highlight js%}
+
+```js
    ajax
    jsonp
    ie8兼容
    Promise  //重点
-{%endhighlight%}
+```
 ### 文件url
 [https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js](https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js)
 
 ### xhr.promise依赖模块
 1.IE8兼容Array依赖
-{%highlight js%}
+
+```js
 <script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/fix.js"></script>
-{%endhighlight%}
+```
 2.IE系列Promise依赖
-{%highlight js%}
+
+```js
 <script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/npo.src.js"></script>
-{%endhighlight%}
+```
 
 ### 外部接口
 xhr.promise 提供3个接口
@@ -45,7 +48,8 @@ xhr.promise 提供3个接口
 >   abort : 中断请求 
 
 ### 1.参数说明
-{%highlight js%}
+
+```js
 {
   type :'GET',       //请求类型
   xhr : function(){  //xhr
@@ -60,24 +64,26 @@ xhr.promise 提供3个接口
   username: '',     //用户名
   password : ''     //密码
 }
-{%endhighlight%}
+```
 
 ### 2.XHRP使用
 
 #### 1.ajax调用
 普通的ajax请求。
 
-{%highlight js%}
+
+```js
    XHRP.ajax({
         type:'post',
         url : '/ajax/',
         data : {username:'jin',pwd:'123213213'}
    });
-{%endhighlight%}
+```
 
 #### 2.jsonp调用
 通过jsop接口调用，也可以通过ajax调用,凡是在参数列表中存在jsonp参数，都将会以jsonp的方式请求数据。
-{%highlight js%}
+
+```js
    XHRP.jsonp({
        url : 'www.exp.com/jsonp',
        data : {user:'jin'},
@@ -89,10 +95,11 @@ xhr.promise 提供3个接口
        data : {user:'jin'},
        jsonp : 'jsonp'//服务器接收跨域请求的参数
    });
-{%endhighlight%}
+```
 #### 3.abort中断
 手动想中断请求。可能设置在参数中传人*timeout*参数是一个更好的选择。
-{%highlight js%}
+
+```js
    var promise = XHRP.ajax({
         type:'post',
         url : '/ajax/',
@@ -108,13 +115,14 @@ xhr.promise 提供3个接口
         timeout : 2000 //2s后中断请求
    });
    
-{%endhighlight%}
+```
 
 ### 3.返回值
 XHRP返回的是一个Promise对象实例。
-{%highlight js%}
+
+```js
    var promise = XHRP.ajax({});
-{%endhighlight%}
+```
 
 ### 参考文档
 [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book)

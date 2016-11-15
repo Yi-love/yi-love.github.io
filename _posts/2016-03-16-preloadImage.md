@@ -4,14 +4,16 @@ title: JavaScript Promise对象处理图片预加载
 categories: [笔记,JavaScript,Promise]
 tags: [预处理,图片加载,前端]
 ---
->图片预加载。自己收集的Promise处理图片加载的库做一个分享。库比较小，所以直接上代码吧。
 
->大概的思路就是：
+图片预加载。自己收集的Promise处理图片加载的库做一个分享。库比较小，所以直接上代码吧。
+
+大概的思路就是：
 
 >     通过Promise的异步处理加载图片，当图片加载完成之后返回，接下来对图片要做的操作自己接着处理即可。
 
->### 库文件源代码
-{%highlight js%}
+### 库文件源代码
+
+```js
 (function (global) {
   'use strict';
   function defer() {
@@ -81,10 +83,11 @@ tags: [预处理,图片加载,前端]
   };
   global.ImagePreloader = ImagePreloader;
 }(window));
-{%endhighlight%}
+```
 
->### 测试
-{%highlight js%}
+### 测试
+
+```js
 function Deck(node, preloader, index) {
     var data = JSON.parse(node.getAttribute('data-images'));
     preloader.queue(data)
@@ -107,4 +110,4 @@ document.addEventListener('DOMContentLoaded', function () {
 	  console.log('All decks loaded.');
 	});
 });
-{%endhighlight%}
+```
