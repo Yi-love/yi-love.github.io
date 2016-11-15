@@ -473,6 +473,6 @@
     background: #f8f8f8;
     border-top: 0
 }
-.highlighter-rouge.language-* .highlight{
+[class*='language-'] .highlight{
 	background: #000;
 }
