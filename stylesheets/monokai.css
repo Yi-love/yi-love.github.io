@@ -62,10 +62,11 @@
 .highlight .gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
 .highlight .gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
 .highlight .gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
-.highlighter-rouge{padding: 0.2em;background-color: rgba(0,0,0,0.4);border-radius: 3px;}
+.highlighter-rouge{padding: 0.2em;background: rgba(0,0,0,0.06);border-radius: 3px;}
 .j-artclie-txt table tr {
     background-color: #fff;
-    border-top: 1px solid #ccc;
+    border: 1px solid #ccc;
+    border-bottom: none;
 }
 .j-artclie-txt table td {
     padding: 6px 13px;
