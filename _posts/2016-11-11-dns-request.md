@@ -303,3 +303,25 @@ var question = {};
   question.qclass = buf.slice(buf.length-2, buf.length);
 ```
 
+
+
+
+`qtype`协议类型. [查看详情](https://nodejs.org/dist/latest-v6.x/docs/api/dns.html#dns_dns_resolve_hostname_rrtype_callback)
+
+协议类型对应的列表：
+
+| 值 | 协议类型 | 描述 |
+| --- | --- | --- |
+| 1 | A | IPv4地址 |
+| 2 | NS | 名字服务器 |
+| 5 | CNAME | 规范名称定义主机的正式名字的别名 |
+| 6 | SOA | 开始授权标记一个区的开始 |
+| 11 | WKS | 熟知服务定义主机提供的网络服务 |
+| 12 | PTR | 指针把IP地址转化为域名 |
+| 13 | HINFO | 主机信息给出主机使用的硬件和操作系统的表述 |
+| 15 | MX | 邮件交换把邮件改变路由送到邮件服务器 |
+| 28 | AAAA | IPv6地址 |
+| 252 | AXFR | 传送整个区的请求 |
+| 255 | ANY | 对所有记录的请求 |
+
+`qclass`通常为1，指Internet数据.
