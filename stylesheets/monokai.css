@@ -61,7 +61,6 @@
 .highlight .gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
 .highlight .gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
 .highlight .gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
-
 .markdown-body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
@@ -473,4 +472,7 @@
     font-weight: bold;
     background: #f8f8f8;
     border-top: 0
+}
+.highlighter-rouge.language-* .highlight{
+	background: #000;
 }
