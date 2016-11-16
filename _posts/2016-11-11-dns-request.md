@@ -449,8 +449,8 @@ var question = {};
 
 ### 参考资料
 
-http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm
+[http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm](http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm)
 
-http://www.comptechdoc.org/independent/networking/terms/dns-message-format.html
+[http://www.comptechdoc.org/independent/networking/terms/dns-message-format.html](http://www.comptechdoc.org/independent/networking/terms/dns-message-format.html)
 
-http://www.iprotocolsec.com/2012/01/13/%E4%BD%BF%E7%94%A8wireshark%E5%AD%A6%E4%B9%A0dns%E5%8D%8F%E8%AE%AE%E5%8F%8Adns%E6%AC%BA%E9%AA%97%E5%8E%9F%E7%90%86/
+[http://www.iprotocolsec.com/2012/01/13/%E4%BD%BF%E7%94%A8wireshark%E5%AD%A6%E4%B9%A0dns%E5%8D%8F%E8%AE%AE%E5%8F%8Adns%E6%AC%BA%E9%AA%97%E5%8E%9F%E7%90%86/](http://www.iprotocolsec.com/2012/01/13/%E4%BD%BF%E7%94%A8wireshark%E5%AD%A6%E4%B9%A0dns%E5%8D%8F%E8%AE%AE%E5%8F%8Adns%E6%AC%BA%E9%AA%97%E5%8E%9F%E7%90%86/)
