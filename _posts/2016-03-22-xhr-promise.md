@@ -23,6 +23,7 @@ XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端aj
    ie8兼容
    Promise  //重点
 ```
+
 ### 文件url
 
 [https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js](https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js)
