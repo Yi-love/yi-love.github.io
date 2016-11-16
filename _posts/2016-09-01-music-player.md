@@ -18,7 +18,7 @@ tags: [Audio]
 
 项目地址
 
-[https://github.com/Yi-love/player](https://github.com/Yi-love/player)
+[https://github.com/Yi-love/audio-player-es6](https://github.com/Yi-love/audio-player-es6)
 
 
 eq:
