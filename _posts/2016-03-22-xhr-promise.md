@@ -5,15 +5,15 @@ categories: [笔记,JavaScript ,Promise]
 tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ---
 
->XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端ajax库)。目标就是脱离jquery，模块化。
+XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端ajax库)。目标就是脱离jquery，模块化。
 
->由于 XHRP API 是基于 Promise 设计，有必要先学习一下 Promise，推荐阅读 MDN Promise 教程 。旧浏览器不支持 Promise，可以使用 es6-promise 。
->以下我也给出了我的解决方法。
+由于 XHRP API 是基于 Promise 设计，有必要先学习一下 Promise，推荐阅读 MDN Promise 教程 。旧浏览器不支持 Promise，可以使用 es6-promise 。
+以下我也给出了我的解决方法。
 
->#### 参考：
->[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+#### 参考：
+[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
->[https://github.com/github/fetch](https://github.com/github/fetch)
+[https://github.com/github/fetch](https://github.com/github/fetch)
 
 ### 知识要点
 
@@ -29,23 +29,23 @@ tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ### xhr.promise依赖模块
 1.IE8兼容Array依赖
 
-```js
+```html
 <script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/fix.js"></script>
 ```
 2.IE系列Promise依赖
 
-```js
+```html
 <script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/npo.src.js"></script>
 ```
 
 ### 外部接口
 xhr.promise 提供3个接口
 
->   ajax ：普通的ajax处理普通的ajax请求
+*   `ajax` ：普通的ajax处理普通的ajax请求
 
->   jsonp : 处理跨域的jsonp请求
+*   `jsonp` : 处理跨域的jsonp请求
 
->   abort : 中断请求 
+*   `abort` : 中断请求 
 
 ### 1.参数说明
 
