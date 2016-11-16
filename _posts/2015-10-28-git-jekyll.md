@@ -5,19 +5,19 @@ categories: [笔记]
 tags: [github , gem , jekyll]
 ---
 
-## 前言 ##
-> 花了几个晚上才搞定的博客，非常的鸡冻。在github上终于有自己的博客了。
-> 下面我就来说如何从0开始来搭建自己免费的github博客。
+# 前言
+ 花了几个晚上才搞定的博客，非常的鸡冻。在github上终于有自己的博客了。
+ 下面我就来说如何从0开始来搭建自己免费的github博客。
 
 ## 目录 ##
->
->1.   申请Github帐号
->2.   新建仓库，并设为主页
->3.   安装ruby >= 1.9.3
->4.   安装Node.js
->5.   安装python >=2.7
->6.   gem install jekyll
->7.   安装git
+
+* 1.   申请Github帐号
+* 2.   新建仓库，并设为主页
+* 3.   安装ruby >= 1.9.3
+* 4.   安装Node.js
+* 5.   安装python >=2.7
+* 6.   gem install jekyll
+* 7.   安装git
 
 ### 1.申请github帐号 ###
 >废话不多说。有帐号的跳过上2楼，没有的点击*[GitHub][github]*.
@@ -26,19 +26,24 @@ tags: [github , gem , jekyll]
 
 ### 2.创建代码仓库，并设为主页 ###
 2.1.   创建一个代码库，如果原来就已经有的可以不用创建，但原有代码可能会与后面的冲突。
->如下图: ![创建代码]({{site.baseurl}}/images/2015/1028_01.jpg)
+
+如下图: ![创建代码]({{site.baseurl}}/images/2015/1028_01.jpg)
 
 2.2.   创建完成之后，点击设置。
->如下图: ![点击设置]({{site.baseurl}}/images/2015/1028_02.jpg)
+
+如下图: ![点击设置]({{site.baseurl}}/images/2015/1028_02.jpg)
 
 2.3.   点击设置完成之后就进入了设置页面，不用修改仓库名。找到页面的*launch automatic page generator*按钮.点击进入设置。
->如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_03.jpg)
+
+如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_03.jpg)
 
 2.4.   编辑个人主页，先跳过
->如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_04.jpg)
+
+如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_04.jpg)
 
 2.5.   选择github提供的个人主页模版，我是后面自己写的模版。所以随便选了一个，反正都要全部删除的。
->如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_05.jpg)
+
+如下图: ![点击设置为个人主页]({{site.baseurl}}/images/2015/1028_05.jpg)
 
 2.6.   到这里所有的基本都设置好了，是不是想先体验一下啊。访问路径就是： {用户名}.github.io/{仓库名}/。你如果不想用github提供的空间也可以自己去配置，这里我就不说了
 例如我的：[yi-love.github.io/blog/][yi]
