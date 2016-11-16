@@ -11,16 +11,16 @@ tags: [github , gem , jekyll]
 
 ## 目录 ##
 
-* 1.   申请Github帐号
-* 2.   新建仓库，并设为主页
-* 3.   安装ruby >= 1.9.3
-* 4.   安装Node.js
-* 5.   安装python >=2.7
-* 6.   gem install jekyll
-* 7.   安装git
+*   申请Github帐号
+*   新建仓库，并设为主页
+*   安装ruby >= 1.9.3
+*   安装Node.js
+*   安装python >=2.7
+*   gem install jekyll
+*   安装git
 
 ### 1.申请github帐号 ###
->废话不多说。有帐号的跳过上2楼，没有的点击*[GitHub][github]*.
+废话不多说。有帐号的跳过上2楼，没有的点击*[GitHub][github]*.
 
 [github]:https://github.com/
 
