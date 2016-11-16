@@ -8,13 +8,13 @@ tags: [Promise,js,异步,延迟]
 >Node.js等则规定在JavaScript的回调函数的第一个参数为 Error 对象，这也是它的一个惯例。
 >promise的功能是可以将复杂的异步处理轻松地进行模式化， 这也可以说得上是使用promise的理由之一。
 
->### *promise对象的调用总是异步进行的*
+### *promise对象的调用总是异步进行的*
 
 
->### Promise类型
+### Promise类型
 >目前大致分为3种类型
 
->### 1. Constructor
+### 1. Constructor
 >创建一个promise对象、可以使用 new 来调用 Promise 的构造器来进行实例化.
 
 ```js
@@ -24,7 +24,7 @@ tags: [Promise,js,异步,延迟]
   })
 ```
 
->### 2. Instance Method
+### 2. Instance Method
 >通过new生成的promise对象，可以通过promise.then()实例方法调用 resolve(成功) / reject(失败)时的回调函数。
 
 ```js
@@ -41,10 +41,10 @@ tags: [Promise,js,异步,延迟]
 ```
 >上面的任意一种都可以处理，但*promise.catch(onReject)*通常是更好的选择。
 
->### 3.Static Method
+### 3.Static Method
 >Promise.all() , Promise.resolve() ,主要都是一些对Promise进行操作的辅助方法。
 
->### Promise 工作流
+### Promise 工作流
 
 ```js
   function asyncFunction() {
@@ -63,7 +63,7 @@ tags: [Promise,js,异步,延迟]
   });
 ```
 
->### Promise 状态
+### Promise 状态
 
 >   1. Pending --- 创建时的初始状态
 >   2. Fulfilled --- resolve时，会调用onFulfilled
@@ -78,7 +78,7 @@ tags: [Promise,js,异步,延迟]
          -----------> Rejected
 ```
 
->### 创建 XHR 的 Promise对象
+### 创建 XHR 的 Promise对象
 
 ```js
   function getURL(url){
@@ -111,12 +111,12 @@ tags: [Promise,js,异步,延迟]
   })
 ```
 
->#### XMLHttpRequest
+#### XMLHttpRequest
 >*XMLHttpRequest 可以取回所有类型的数据资源,并不局限于XML. 而且除了HTTP ,它还支持file 和 ftp 协议*
 
->### Promise快捷方式
+### Promise快捷方式
 
->#### promise.resolve(value)
+#### promise.resolve(value)
 
 ```js
   promise.resolve(42) 
@@ -132,7 +132,7 @@ tags: [Promise,js,异步,延迟]
     console.log(value)
   })
 ```
->#### promise.reject(error)也是如此。
+#### promise.reject(error)也是如此。
 
 ```js
   new Promise(function(resolve,reject){
@@ -144,7 +144,7 @@ tags: [Promise,js,异步,延迟]
   })
 ```
 
->#### promise.catch兼容
+#### promise.catch兼容
 > IE < 9  调用方式。catch 在IE8是保留字
 
 ```js
@@ -163,10 +163,10 @@ tags: [Promise,js,异步,延迟]
 ```
 
 
->### Promise的为什么是异步
+### Promise的为什么是异步
 >同步调用和异步调用同时存在导致的混乱。
 
->#### 1.同步调用
+#### 1.同步调用
 
 ```js
   function onReady(fn){
@@ -187,7 +187,7 @@ tags: [Promise,js,异步,延迟]
 >2:如果在调用onReady之前DOM还没有载入的话,通过注册 DOMContentLoaded 事件监听器来对回调函数进行异步调用.
 >因此，如果这段代码在源文件中出现的位置不同，在控制台上打印的log消息顺序也会不同。
 
->#### 2.异步调用
+#### 2.异步调用
 
 ```js
   function onReady(fn){
@@ -204,7 +204,7 @@ tags: [Promise,js,异步,延迟]
   console.log('===Starting===')
 ```
 
->#### 注意：
+#### 注意：
 
 >   1.绝对不能对异步回调函数（即使在数据已经就绪）进行同步调用。
 
@@ -218,7 +218,7 @@ tags: [Promise,js,异步,延迟]
 
 >                                                   — David Herman
 
->### Promise异步
+### Promise异步
 >为了避免上述中同时使用同步、异步调用可能引起的混乱问题，Promise在规范上规定 Promise只能使用异步调用方式 。
 
 ```js
@@ -238,10 +238,10 @@ tags: [Promise,js,异步,延迟]
   console.log('==Starting==')
 ```
 
->### Promise的promise对象
+### Promise的promise对象
 >promise在每次调用then之后都会返回一个新的promise对象.
 
->#### promise误区
+#### promise误区
 
 ```js
   //误区
@@ -266,7 +266,7 @@ tags: [Promise,js,异步,延迟]
   })
 ```
 
->#### then 的错误使用
+#### then 的错误使用
 >下面是错误的使用promise,因为promise.then()返回的是一个新的promise对象，所以下面返回旧的对象是有问题的。
 
 ```js
@@ -280,7 +280,7 @@ tags: [Promise,js,异步,延迟]
   }
 ```
 
->#### then 的正确调用
+#### then 的正确调用
 >只要将上面错误的调用promise.then()方法直接return 即可。promise.then()返回一个新的promise对象。这就符合了Promise的链式调用。
 
 ```js
@@ -294,7 +294,7 @@ tags: [Promise,js,异步,延迟]
 ```
 
 
->#### Promise.all
+#### Promise.all
 >Promise.all 接收一个promise对象数组作为参数，当这个数组里面的所有promise全部变为resolve或者reject状态的时候，它会去调用.then方法。
 
 ```js
@@ -322,7 +322,7 @@ tags: [Promise,js,异步,延迟]
 
 >所有的promise都是同时开始，并行执行。
 
->#### Promise.race
+#### Promise.race
 >Promise.race 只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
 
 ```js
@@ -346,7 +346,7 @@ tags: [Promise,js,异步,延迟]
 ```
 
 
->#### Promise异常处理
+#### Promise异常处理
 >.then 中发生的异常，只有在该方法链后面出现的 catch 方法才能捕获。由于 .catch 方法是 .then 的别名，使用 .then 也能完成同样的工作。
 
 ```js
@@ -360,7 +360,7 @@ tags: [Promise,js,异步,延迟]
   Promise.resolve(42).then(throwError).then(null, onRejected);
 ```
 
->### 参考文档：
+### 参考文档：
 >[1][http://liubin.org/promises-book/][promise]
 
 [promise]:http://liubin.org/promises-book/

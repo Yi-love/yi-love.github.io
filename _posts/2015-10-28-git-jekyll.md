@@ -9,7 +9,7 @@ tags: [github , gem , jekyll]
 > 花了几个晚上才搞定的博客，非常的鸡冻。在github上终于有自己的博客了。
 > 下面我就来说如何从0开始来搭建自己免费的github博客。
 
->## 目录 ##
+## 目录 ##
 >
 >1.   申请Github帐号
 >2.   新建仓库，并设为主页
@@ -19,12 +19,12 @@ tags: [github , gem , jekyll]
 >6.   gem install jekyll
 >7.   安装git
 
->### 1.申请github帐号 ###
+### 1.申请github帐号 ###
 >废话不多说。有帐号的跳过上2楼，没有的点击*[GitHub][github]*.
 
 [github]:https://github.com/
 
->### 2.创建代码仓库，并设为主页 ###
+### 2.创建代码仓库，并设为主页 ###
 >2.1.   创建一个代码库，如果原来就已经有的可以不用创建，但原有代码可能会与后面的冲突。
 >如下图: ![创建代码]({{site.baseurl}}/images/2015/1028_01.jpg)
 
@@ -46,7 +46,7 @@ tags: [github , gem , jekyll]
 [yi]: http://yi-love.github.io/blog/
 
 
->### 3.安装ruby ###
+### 3.安装ruby ###
 >说起来真坑，本来一直想在ubuntu12.04里面弄的，结果就是因为ruby版本太低的原因搞的 gem install jekyll 上不去，当时就泪奔了。一看ubuntu12.04默认安装ruby1.8.7 < 1.9.3
 >自己想安装ruby1.9.3，但问题也是多多。最后还是算了，反正是虚拟机装个ubuntu14.04（因为在公司我就是装的ubuntu14.04）的吧。
 >通过命令安装ruby1.9.3:
@@ -58,7 +58,7 @@ tags: [github , gem , jekyll]
 
 [rubyinstaller]:http://rubyinstaller.org/
 
->### 4.Node.js ###
+### 4.Node.js ###
 >ubuntu 命令：
 
 ```sh
@@ -68,7 +68,7 @@ tags: [github , gem , jekyll]
 
 [nodejs]:https://nodejs.org/en/
 
->### 5.python ###
+### 5.python ###
 >ubuntu 命令：
 
 ```sh
@@ -81,7 +81,7 @@ tags: [github , gem , jekyll]
 >ruby,Node.js,python 都是为了后面 gem install jekyll 以及启动jekyll serve 做的。没有这个环境想要在本地预览项目是不行的。
 >所以以上的环境是必须的。
 
->### 6.gem install jekyll ###
+### 6.gem install jekyll ###
 >这个是问题最多的一步啦。假如上面的环境配置有误的话，会有很多的小问题。
 >ubuntu 最多的问题就是安装的ruby版本太低 , 最好是 ruby1.9.3以上版本，不然坑有的是。
 
@@ -96,7 +96,7 @@ tags: [github , gem , jekyll]
 
 
 
->### 7.git ###
+### 7.git ###
 >加入你有幸没掉坑里，那么你现在就可以安装git来clone你的项目到本地来了。
 >git最好安装bash版的。
 >通过命令[git clone] 将远程项目克隆到本地。
@@ -106,7 +106,7 @@ tags: [github , gem , jekyll]
 ```
 
 
->### 最后 ###
+### 最后 ###
 >进入项目目录 运行*jekyll serve* , 就可以通过 [127.0.0.1:4000/{仓库名}/] 进行访问了。
 
 ```sh
