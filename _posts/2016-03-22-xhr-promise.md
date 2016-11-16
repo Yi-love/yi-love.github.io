@@ -24,6 +24,7 @@ XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端aj
    Promise  //重点
 ```
 ### 文件url
+
 [https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js](https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js)
 
 ### xhr.promise依赖模块
@@ -96,7 +97,9 @@ xhr.promise 提供3个接口
        jsonp : 'jsonp'//服务器接收跨域请求的参数
    });
 ```
+
 #### 3.abort中断
+
 手动想中断请求。可能设置在参数中传人*timeout*参数是一个更好的选择。
 
 ```js
