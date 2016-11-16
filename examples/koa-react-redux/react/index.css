@@ -1,84 +1,84 @@
 
 /****数量选择********/
 .op-box{
-	width: 100%;
+    width: 100%;
 }
 .op-box:after,
 .op-box:before{
-	display: table;
-	content: '';
-	clear: both;
+    display: table;
+    content: '';
+    clear: both;
 }
 .op-box .op{
-	display: block;
-	width: 32px;
-	height: 32px;
-	float: left;
-	text-align: center;
-	line-height: 32px;
-	border: 1px solid #e1e1e1;
-	cursor: pointer;
+    display: block;
+    width: 32px;
+    height: 32px;
+    float: left;
+    text-align: center;
+    line-height: 32px;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
 }
 .op-box .buynum{
-	width: 60px;
-	height: 30px;
-	outline: none;
-	float: left;
-	text-align: center;
-	border: 1px solid #e1e1e1;
-	border-left: none;
-	border-right: none;
+    width: 60px;
+    height: 30px;
+    outline: none;
+    float: left;
+    text-align: center;
+    border: 1px solid #e1e1e1;
+    border-left: none;
+    border-right: none;
 }
 .op-box .buynum:focus{
-	outline: none;
+    outline: none;
 }
 
 /***********************/
 .item-opbox .op-i{
-	padding: 8px 16px;
-	margin-right: 4px;
-	cursor: pointer;
-	font-size: 14px;
-	background: #aaa;
-	border-radius: 2px;
-	color: #fff;
+    padding: 8px 16px;
+    margin-right: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background: #aaa;
+    border-radius: 2px;
+    color: #fff;
 }
 .item-opbox .collect{
-	background: #CE5207;
+    background: #CE5207;
 }
 .item-opbox .delete{
-	background: red;
+    background: red;
 }
 
 /**************/
 .cart{
-	font-size: 14px;
+    font-size: 14px;
 }
 .cart th , .cart td{
-	padding: 6px;
+    padding: 6px;
 }
 .cart-allpay{
-	padding: 6px;
+    padding: 6px;
 }
 .cart-allpay label{
-	color: #333;
+    color: #333;
 }
 .cart-allpay .num ,.cart-allpay .pay{
-	color: red;
-	font-size: 20px;
-	font-weight: 500;
-	margin-left: 20px;
+    color: red;
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 20px;
 }
 .cart-allpay button{
-	margin-left: 20px;
-	background: #D4092D;
-	text-align: center;
-	color: #fff;
-	border: none;
-	width: 120px;
-	height: 40px;
-	line-height: 40px;
-	font-size: 16px;
-	cursor: pointer;
-	border-radius: 2px;
+    margin-left: 20px;
+    background: #D4092D;
+    text-align: center;
+    color: #fff;
+    border: none;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 2px;
 }

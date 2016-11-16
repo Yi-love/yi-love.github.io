@@ -3,10 +3,10 @@ layout: normal
 title: list
 ---
 <div class="j-container j-all">
-	<h2 class="j-all-title">全部文章({{site.posts  |  size}})</h2>
-	<ul>
-	{% for post in site.posts %}
-		<li class="j-all-i"><a href="{{site.baseurl}}{{post.url}}">{{post.date | date_to_string}} {{post.title}}</a></li>
-	{% endfor %}
-	</ul>
+    <h2 class="j-all-title">全部文章({{site.posts  |  size}})</h2>
+    <ul>
+    {% for post in site.posts %}
+        <li class="j-all-i"><a href="{{site.baseurl}}{{post.url}}">{{post.date | date_to_long_string}} {{post.title}}</a></li>
+    {% endfor %}
+    </ul>
 </div>
