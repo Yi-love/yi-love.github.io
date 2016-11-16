@@ -146,6 +146,7 @@ DNS报文格式，不论是请求报文，还是DNS服务器返回的应答报�
 这是一个`Buffer`实例，看完后是不是一脸懵B，别紧张，先看解析后`console.log`大概的样子，是不是世界瞬间变美好了。
 
 下面是请求查询`www.apple.com`网站ip的DNS请求报文。
+
 ```
   //Header
   ID:  <Buffer 6d ca>
