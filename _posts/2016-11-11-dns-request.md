@@ -304,7 +304,7 @@ var question = {};
   question.qclass = buf.slice(buf.length-2, buf.length);
 ```
 
-`qname`使用的是`len+data`混合编码，以`0x00`结尾。每个字符串都以长度开始，然后后面接内容。
+`qname`使用的是`len+data`混合编码，以`0x00`结尾。每个字符串都以长度开始，然后后面接内容。`qname`长度必须以`8`字节为单位。
 
 例如`www.apple.com`(注意：中间的`.`是解析的时候自己添加上去的)，它的`buffer`实例表示为：
 
