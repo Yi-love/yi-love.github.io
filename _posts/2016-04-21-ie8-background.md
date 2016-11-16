@@ -8,14 +8,15 @@ tags: [ie8,background,rgba]
 IE8下不支持rgba,对背景设置透明度的时候必须进行透明度兼容。
 
 ### css兼容代码
-{%highlight css %}
+
+```css
 .className{
   /*一般的高级浏览器都支持*/
   background: rgba(255,255,255,0.1);
   /*IE8下*/
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#19ffffff,endColorstr=#19ffffff);   
 }
-{%endhighlight%}
+```
 
 原理：使用渐变来完成透明度兼容。
 
@@ -27,7 +28,8 @@ IE8下不支持rgba,对背景设置透明度的时候必须进行透明度兼容
 
 ### 阀值计算
 使用rgba下的透明度 ： alpha*255 取整然后转换为16进制即可。
-{%highlight txt%}
+
+```
   rgba     ie8filter
   
   0.1      0.1*255 = 25 转为16进制 ： 19 (16+9)
@@ -39,4 +41,4 @@ IE8下不支持rgba,对背景设置透明度的时候必须进行透明度兼容
   0.7      B2
   0.8      C8
   0.9      E5 
-{%endhighlight%}
+```

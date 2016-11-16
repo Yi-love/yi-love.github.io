@@ -12,19 +12,20 @@ tags: [react,组件化,redux,koa,同构]
 在编写代码过程中大量使用es6语法，所以没有接触过es6语法的可以先学习es6语法。
 
 下面是主要的知识点：
-{%highlight txt%}
+
+```
 koa :服务器
-	koa-route ： koa路由控制
-	koa-static : 静态文件目录
-	koa-logger: 日志
+  koa-route ： koa路由控制
+  koa-static : 静态文件目录
+  koa-logger: 日志
 
 swig ： html模版语言
 
 history ： 历史记录
 
 react : 组件管理
-	react-dom: reactdom插入
-	react-router：react路由
+  react-dom: reactdom插入
+  react-router：react路由
 
 webpack : 文件打包
 
@@ -33,11 +34,11 @@ isomorphic-fetch：同构数据请求
 recompose ：React的一个高阶功能组件
 
 redux : Redux 就是用来确保 state 变化的可预测性
-	
+  
 #babel
-	babel-cli :js编译
-	babel-preset-es2015-node5
-{%endhighlight%}
+  babel-cli :js编译
+  babel-preset-es2015-node5
+```
 
 这是一张服务器与客户端同构的结构图：
 
@@ -100,7 +101,8 @@ react要求为了避免多余属性的存在。所以第一步的任务就是划
 结论：这里使用props属性传递是最合适的。
 
 代码如下：
-{%highlight js %}
+
+```js
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,176 +163,176 @@ react要求为了避免多余属性的存在。所以第一步的任务就是划
     /**
      * [NumberInput   数量选择]
      */
-	var NumberInput = React.createClass({
-		numSub:function(op){
-			this.setBuyNum(this.props.state.num-1);
-		},
-		onChange: function(e){
-			this.setBuyNum(+(e.target.value.replace(/[^\d]/g ,'')));
-		},
-		numAdd : function(e){
-			this.setBuyNum(+this.props.state.num+1);
-		},
-		setBuyNum : function(num){
-			num = num >= this.props.state.min ? num : this.props.state.min;
-			num = num <= this.props.state.max ? num : this.props.state.max;
-			this.props.onChange(this.props.id,'num' , num);
-		},
-		shouldComponentUpdate: function(nextProps, nextState) {
-		  	return nextProps.state.num != this.props.state.num;
-		},
-		render: function() {
-			return (
+  var NumberInput = React.createClass({
+    numSub:function(op){
+      this.setBuyNum(this.props.state.num-1);
+    },
+    onChange: function(e){
+      this.setBuyNum(+(e.target.value.replace(/[^\d]/g ,'')));
+    },
+    numAdd : function(e){
+      this.setBuyNum(+this.props.state.num+1);
+    },
+    setBuyNum : function(num){
+      num = num >= this.props.state.min ? num : this.props.state.min;
+      num = num <= this.props.state.max ? num : this.props.state.max;
+      this.props.onChange(this.props.id,'num' , num);
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return nextProps.state.num != this.props.state.num;
+    },
+    render: function() {
+      return (
               <div className="op-box"><span className="op" onClick={this.numSub}>-</span>
               <input className="buynum" type="text" value={this.props.state.num || 1} onChange={this.onChange} /><span className="op" onClick={this.numAdd}>+</span></div>
-			);
-		}
-	});
-	/**
+      );
+    }
+  });
+  /**
      * [Operater   操作]
      */
-	var Operater = React.createClass({
-		handleCollect : function(){
-			this.props.onChange(this.props.id, 'isCollect', !this.props.isCollect);
-		},
-		handleDelete : function(){
-			this.props.onChange(this.props.id, 'isDeleted', !this.props.isDeleted);
-		},
-		// shouldComponentUpdate: function(nextProps, nextState) {
-		//   	return nextProps.isCollect != this.props.isCollect || nextProps.isDeleted != this.props.isDeleted;
-		// },
-		render : function(){
-			var collecttxt= '收藏', collectcss = 'collect' ,  deletetxt = '删除' , delectcss='delete';
-			this.props.isCollect ? (collecttxt = '取消'+collecttxt , collectcss = 'discollect') : null;
-			this.props.isDeleted ? (deletetxt = '取消' , delectcss = 'disdelete' ) : null;
-			return (<div className="item-opbox">
-						<span className={'op-i '+collectcss} onClick={this.handleCollect}>{collecttxt}</span>
-						<span className ={'op-i '+delectcss} onClick={this.handleDelete}>{deletetxt}</span>
-					</div>)
-		}
-	});
-	/**
-	 * [SkuContainer sku渲染 ]
-	 */
-	var SkuContainer = React.createClass({
-		render : function(){
-			return (<div className="sku-box">
-					{ this.props.isSku && this.props.skuMap.map(function(sku , key){ 
-						return (<span key={key}>{sku}</span>)
-						})
-					}
-				   </div>)
-		}
-	});
-	/**
-	 * [CheckBox 选中]
-	 */
-	var CheckBox = React.createClass({
-		handleChecked:function(e){
-			this.props.onChange(this.props.id, 'isChecked', !this.props.isChecked);
-		},
-		// shouldComponentUpdate: function(nextProps, nextState) {
-		//   	return nextProps.isChecked != this.props.isChecked;
-		// },
-		render : function(){
-			return (<input type="checkbox" checked={this.props.isChecked} onChange={this.handleChecked} />);
-		}
-	});
-	/**
-	 * [CartItem 单个商品渲染]
-	 */
-	var CartItem = React.createClass({
-		render : function(){
-			var that = this;
-			return (<div><table className="cart"><thead><tr><td>选择</td><td></td><td>名称</td><td>价格</td><td>原价</td><td>描述</td><td>数量</td><td>操作</td></tr></thead><tbody>
-					{this.props.carts && this.props.carts.map(function(car , key){
-						return (<tr key={key}>
-								<td><CheckBox isChecked={car.isChecked} id={key} onChange={that.props.onChange} /></td>
-								<td><img src={car.thumb} width="60" height="60" /></td>
-								<td><h4>{car.title}</h4></td>
-								<td><div>{car.price}</div></td>
-								<td><div>{car.original}</div></td>
-								<td><SkuContainer isSku={car.isSku} skuMap={car.skuMap} /></td>
-								<td><NumberInput state ={ {num : car.num,max:car.store , min : 1}} id={key} onChange={that.props.onChange} /></td>
-								<td><Operater isDeleted={car.isDeleted} isCollect={car.isCollect} id={key} onChange={that.props.onChange} /></td>
-							</tr>)
-						})
-					}</tbody></table></div>)
-		}
-	});
-	/**
-	 * [CartMenu 提交bar]
-	 */
-	var CartMenu = React.createClass({
-		render : function(){
-			return (<div className="cart-allpay">
-				<label><input type="checkbox" checked={this.props.isAll} onChange={this.props.isCheckAll} />全选</label>
-				<span className="num">{this.props.num}个</span> <span className="pay">{this.props.money}元</span><button onClick={this.props.onClick}>获取数据</button>
-				</div>)
-		}
-	});
+  var Operater = React.createClass({
+    handleCollect : function(){
+      this.props.onChange(this.props.id, 'isCollect', !this.props.isCollect);
+    },
+    handleDelete : function(){
+      this.props.onChange(this.props.id, 'isDeleted', !this.props.isDeleted);
+    },
+    // shouldComponentUpdate: function(nextProps, nextState) {
+    //    return nextProps.isCollect != this.props.isCollect || nextProps.isDeleted != this.props.isDeleted;
+    // },
+    render : function(){
+      var collecttxt= '收藏', collectcss = 'collect' ,  deletetxt = '删除' , delectcss='delete';
+      this.props.isCollect ? (collecttxt = '取消'+collecttxt , collectcss = 'discollect') : null;
+      this.props.isDeleted ? (deletetxt = '取消' , delectcss = 'disdelete' ) : null;
+      return (<div className="item-opbox">
+            <span className={'op-i '+collectcss} onClick={this.handleCollect}>{collecttxt}</span>
+            <span className ={'op-i '+delectcss} onClick={this.handleDelete}>{deletetxt}</span>
+          </div>)
+    }
+  });
+  /**
+   * [SkuContainer sku渲染 ]
+   */
+  var SkuContainer = React.createClass({
+    render : function(){
+      return (<div className="sku-box">
+          { this.props.isSku && this.props.skuMap.map(function(sku , key){ 
+            return (<span key={key}>{sku}</span>)
+            })
+          }
+           </div>)
+    }
+  });
+  /**
+   * [CheckBox 选中]
+   */
+  var CheckBox = React.createClass({
+    handleChecked:function(e){
+      this.props.onChange(this.props.id, 'isChecked', !this.props.isChecked);
+    },
+    // shouldComponentUpdate: function(nextProps, nextState) {
+    //    return nextProps.isChecked != this.props.isChecked;
+    // },
+    render : function(){
+      return (<input type="checkbox" checked={this.props.isChecked} onChange={this.handleChecked} />);
+    }
+  });
+  /**
+   * [CartItem 单个商品渲染]
+   */
+  var CartItem = React.createClass({
+    render : function(){
+      var that = this;
+      return (<div><table className="cart"><thead><tr><td>选择</td><td></td><td>名称</td><td>价格</td><td>原价</td><td>描述</td><td>数量</td><td>操作</td></tr></thead><tbody>
+          {this.props.carts && this.props.carts.map(function(car , key){
+            return (<tr key={key}>
+                <td><CheckBox isChecked={car.isChecked} id={key} onChange={that.props.onChange} /></td>
+                <td><img src={car.thumb} width="60" height="60" /></td>
+                <td><h4>{car.title}</h4></td>
+                <td><div>{car.price}</div></td>
+                <td><div>{car.original}</div></td>
+                <td><SkuContainer isSku={car.isSku} skuMap={car.skuMap} /></td>
+                <td><NumberInput state ={ {num : car.num,max:car.store , min : 1}} id={key} onChange={that.props.onChange} /></td>
+                <td><Operater isDeleted={car.isDeleted} isCollect={car.isCollect} id={key} onChange={that.props.onChange} /></td>
+              </tr>)
+            })
+          }</tbody></table></div>)
+    }
+  });
+  /**
+   * [CartMenu 提交bar]
+   */
+  var CartMenu = React.createClass({
+    render : function(){
+      return (<div className="cart-allpay">
+        <label><input type="checkbox" checked={this.props.isAll} onChange={this.props.isCheckAll} />全选</label>
+        <span className="num">{this.props.num}个</span> <span className="pay">{this.props.money}元</span><button onClick={this.props.onClick}>获取数据</button>
+        </div>)
+    }
+  });
 
-	/**
-	 * [cart  购物车]
-	 */
-	var Cart = React.createClass({
-		getInitialState:function(){
-			return {carts:[] , num : 0 , money: 0 ,isAll : false};
-		},
-		componentWillMount: function(){
-			var carts = this.props.carts;
-			var data = this.computed(carts);
-			data.carts = carts;
-			this.handleSet(data);
-		},
-		handleChange : function(key ,props, value){
-			var carts = this.state.carts;
-			carts[key][props] = value;
-			var data = this.computed(carts);
-			data.carts = carts;
-			this.handleSet(data);
-		},
-		handleClick: function(){
-			console.log(this.state);
-		},
-		handleSet : function(obj){
-			this.setState({carts:obj.carts , num:obj.num , money:obj.money , isAll:obj.isAll})
-		},
-		isCheckAll : function(e){
-			var isall = !this.state.isAll , carts = this.state.carts; 
-			for (var i = 0; i < carts.length; i++) {
-			 	carts[i].isChecked = isall;
-			};
-			var data = this.computed(carts);
-			data.carts = carts;
-			this.handleSet(data);
-		},
-		computed : function(carts){
-			 var num = 0 , money = 0 , isAll = true;
-			 for (var i = 0; i < carts.length; i++) {
-			 	if ( carts[i].isChecked ){
-			 		num += carts[i].num;
-			 		money += carts[i].num*carts[i].price;
-			 	}else{
-			 		isAll = false;
-			 	}
-			 };
-			 return {num : num >0 ? num : 0 , money : money > 0 ? money : 0.00 , isAll:isAll}
-		},
-		render: function(){
-			console.log('render start');
-			return (<div>
-					<CartItem carts={this.state.carts} onChange={this.handleChange} />
-					<CartMenu isAll={this.state.isAll} isCheckAll={this.isCheckAll} num={this.state.num} money={this.state.money} onClick={this.handleClick} />
-				</div>)
-		}
-	});
-	ReactDOM.render(<Cart carts={CART_INFO} /> , document.getElementById('cart'));
+  /**
+   * [cart  购物车]
+   */
+  var Cart = React.createClass({
+    getInitialState:function(){
+      return {carts:[] , num : 0 , money: 0 ,isAll : false};
+    },
+    componentWillMount: function(){
+      var carts = this.props.carts;
+      var data = this.computed(carts);
+      data.carts = carts;
+      this.handleSet(data);
+    },
+    handleChange : function(key ,props, value){
+      var carts = this.state.carts;
+      carts[key][props] = value;
+      var data = this.computed(carts);
+      data.carts = carts;
+      this.handleSet(data);
+    },
+    handleClick: function(){
+      console.log(this.state);
+    },
+    handleSet : function(obj){
+      this.setState({carts:obj.carts , num:obj.num , money:obj.money , isAll:obj.isAll})
+    },
+    isCheckAll : function(e){
+      var isall = !this.state.isAll , carts = this.state.carts; 
+      for (var i = 0; i < carts.length; i++) {
+        carts[i].isChecked = isall;
+      };
+      var data = this.computed(carts);
+      data.carts = carts;
+      this.handleSet(data);
+    },
+    computed : function(carts){
+       var num = 0 , money = 0 , isAll = true;
+       for (var i = 0; i < carts.length; i++) {
+        if ( carts[i].isChecked ){
+          num += carts[i].num;
+          money += carts[i].num*carts[i].price;
+        }else{
+          isAll = false;
+        }
+       };
+       return {num : num >0 ? num : 0 , money : money > 0 ? money : 0.00 , isAll:isAll}
+    },
+    render: function(){
+      console.log('render start');
+      return (<div>
+          <CartItem carts={this.state.carts} onChange={this.handleChange} />
+          <CartMenu isAll={this.state.isAll} isCheckAll={this.isCheckAll} num={this.state.num} money={this.state.money} onClick={this.handleClick} />
+        </div>)
+    }
+  });
+  ReactDOM.render(<Cart carts={CART_INFO} /> , document.getElementById('cart'));
 
 </script>
 </body>
 </html>
-{%endhighlight%}
+```
 
 
 
