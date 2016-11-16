@@ -303,7 +303,33 @@ var question = {};
   question.qclass = buf.slice(buf.length-2, buf.length);
 ```
 
+`qname`使用的是`len+data`混合编码，以`0x00`结尾。每个字符串都以长度开始，然后后面接内容。
 
+例如`www.apple.com`(注意：中间的`.`是解析的时候自己添加上去的)，它的`buffer`实例表示为：
+
+```
+  03 77 77 77 05 61 70 70 6c 65 03 63 6f 6d 00
+  //约等于
+  3www5apple3com
+```
+
+也就是第一位表示的是长度，后面跟随相同长度的数据，依此类推。
+
+```js
+  var domainify = function(qname) {
+    var parts = [];
+
+    for (var i = 0; i < qname.length && qname[i];) {
+      var len = qname[i] , offset = i+1;//获取每一块域名长度
+
+      parts.push(qname.slice(offset,offset+len).toString());//获取每一块域名
+
+      i = offset+len;
+    }
+
+    return parts.join('.');//拼凑成完整域名
+  };
+```
 
 
 `qtype`协议类型. [查看详情](https://nodejs.org/dist/latest-v6.x/docs/api/dns.html#dns_dns_resolve_hostname_rrtype_callback)
@@ -325,3 +351,106 @@ var question = {};
 | 255 | ANY | 对所有记录的请求 |
 
 `qclass`通常为1，指Internet数据.
+
+
+### dns请求代理
+将以下代码保存为`.js`文件，然后使用`Node.js`执行，使用相同局域网内的机器配置DNS到这台机器即可。
+
+以下代码仅供参考：
+
+```js
+  'use strict';
+
+  const dgram = require('dgram');
+  const dns = require('dns');
+  const fs = require('fs');
+  const server = dgram.createSocket('udp4');
+
+  var bitSlice = function(b, offset, length) {
+      return (b >>> (7-(offset+length-1))) & ~(0xff << length);
+  };
+
+  var domainify = function(qname) {
+      var parts = [];
+
+      for (var i = 0; i < qname.length && qname[i];) {
+          var length = qname[i];
+          var offset = i+1;
+
+          parts.push(qname.slice(offset,offset+length).toString());
+
+          i = offset+length;
+      }
+
+      return parts.join('.');
+  };
+
+  var parse = function(buf) {
+      var header = {};
+      var question = {};
+      var b = buf.slice(2,3).toString('binary', 0, 1).charCodeAt(0);
+      console.log('b：',b,buf.slice(2,3));
+      header.id = buf.slice(0,2);
+      header.qr = bitSlice(b,0,1);
+      header.opcode = bitSlice(b,1,4);
+      header.aa = bitSlice(b,5,1);
+      header.tc = bitSlice(b,6,1);
+      header.rd = bitSlice(b,7,1);
+
+      b = buf.slice(3,4).toString('binary', 0, 1).charCodeAt(0);
+
+      header.ra = bitSlice(b,0,1);
+      header.z = bitSlice(b,1,3);
+      header.rcode = bitSlice(b,4,4);
+
+      header.qdcount = buf.slice(4,6);
+      header.ancount = buf.slice(6,8);
+      header.nscount = buf.slice(8,10);
+      header.arcount = buf.slice(10, 12);
+
+      question.qname = buf.slice(12, buf.length-4);
+      question.qtype = buf.slice(buf.length-4, buf.length-2);
+      question.qclass = buf.slice(buf.length-2, buf.length);
+
+      return {header:header, question:question};
+  };
+
+  server.on('error' , (err)=>{
+      console.log(`server error: ${err.stack}`);
+  });
+
+  server.on('message' , (msg , rinfo)=>{
+      //fs.writeFile('dns.json' ,msg, {flag:'w',endcoding:'utf-8'} ,(err)=>{
+      //    console.log(err);
+      //});
+      var query = parse(msg);
+      console.log('标识ID: ' ,query.header.id);
+      console.log('标识FLAG: ' , 'QR: ',query.header.qr , 'opcode: ',query.header.opcode , 'AA: ',query.header.aa , 'TC: ',query.header.tc,'RD: ',query.header.rd);
+      
+      console.log('RA: ',query.header.ra , 'zero: ',query.header.z , 'recode: ',query.header.rcode);
+
+      console.log('QDCOUNT: ',query.header.qdcount , 'ANCOUNT: ' , query.header.ancount, 'NSCOUNT: ' , query.header.nscount,'ARCOUNT: ',query.header.arcount);
+          
+      console.log('QNAME: ',query.question.qname , 'QTYPE: ', query.question.qtype ,'QCLASS: ' , query.question.qclass);
+
+      console.log('QUESTION STRING: ' ,domainify(query.question.qname));
+
+      server.close();
+  });
+
+  server.on('listening' , ()=>{
+      var address = server.address();
+      console.log(`server listening ${address.address}:${address.port}`);
+  });
+
+  server.bind({port:53,address:'8.8.8.8'});//address需要指定到你要用于进行代理的机器ip
+
+```
+
+### 参考资料
+
+http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm
+
+http://www.comptechdoc.org/independent/networking/terms/dns-message-format.html
+
+http://www.iprotocolsec.com/2012/01/13/%E4%BD%BF%E7%94%A8wireshark%E5%AD%A6%E4%B9%A0dns%E5%8D%8F%E8%AE%AE%E5%8F%8Adns%E6%AC%BA%E9%AA%97%E5%8E%9F%E7%90%86/
