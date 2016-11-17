@@ -2,10 +2,10 @@
 layout: page
 title: DNS 响应报文详解
 categories: [Node.js,JavaScript,DNS]
-tags: [dns,dgram,http/s]
+tags: [dns,dgram,http/s,响应报文解析]
 ---
 
-上一篇我已经解释了DNS请求报文怎么解析,不会的自己坐飞机([飞机入口]({{site.baseurl}}/2016-11-11-dns-request.md))。
+上一篇我已经解释了DNS请求报文怎么解析,不会的自己坐飞机([飞机入口]({{site.baseurl}}/node.js/javascript/dns/2016/11/11/dns-request.html))。
 
 这一篇主要从DNS服务的角度来解释，如何自己创建响应报文返回给客户端。
 
@@ -78,10 +78,11 @@ tags: [dns,dgram,http/s]
   header.qdcount = 1;
   header.nscount = 0;
   header.arcount = 0;
-  header.ancount = 1;
+  header.ancount = 1;//这里answer为一个，所以设置为1.如果有多个answer那么就要考虑多个answer
 ```
 
 ### Question 请求数据
+将请求数据原样返回。
 
 ```js
   var question = response.question = {};
@@ -91,6 +92,10 @@ tags: [dns,dgram,http/s]
 ```
 
 ### Answer应答报文数据
+这个部分的内容就是dns服务器要返回的数据报。
+
+`RDDATA`为数据字段。长度不固定。
+
 格式：
 
 ```
@@ -123,3 +128,82 @@ tags: [dns,dgram,http/s]
   answer.rdlength = 4;
   answer.rdata = rdata;//数据记录
 ```
+
+### Authority/Additional 数据
+自己处理的请求没有授权应答和附加数据。
+
+
+## `Buffer`类型响应报文
+得到了想要的一切响应数据之后，下一步就是将这些数据转换为客户端可以解析的`Buffer`类型。
+
+那这一步的工作正好与`request`请求报文解析的工作恰好相反。报上面的数据一一拼凑为`response`响应报文格式数据。
+
+### Buffer长度确定
+返回一段`Buffer`报文，总得先创建一定长度的`Buffer`。
+
+根据字段分析，除了`Question.qname`字段和`Answer.name`字段是长度不固定的，其它的字段都是可以计算出来。
+
+通过带入数据可以得到需要创建的`Buffer`的大小。
+
+```
+  len = Header + Question + Answer
+      = 12 + (Question.qname.length+4) + (Answer.name.length + 14)
+      = 30 + Question.qname.length + Answer.name.length
+```
+
+确定需要创建的`Buffer`实例的长度为`30 + Question.qname.length + Answer.name.length`后，就可以进行参数转换了。
+
+### `Buffer`实例参数转换
+`response`数据大概分为了3中类型：
+
+* 普通完整字节类别
+* 需要按位拼接成一个字节的类别
+* 无符号整数类别
+
+#### 普通完整字节类别
+这种往往是最好处理的了，直接`copy`过来就可以了。
+
+使用`buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])`函数进行拷贝.
+
+例如拷贝`header.id`:
+
+```js
+  header.id.copy(buf,0,0,2);
+```
+
+通过这种方式即可将其它参数进行一一转换。
+
+#### 需要按位拼接成一个字节的类别
+这种主要数针对`Header`的第`[3,4]`个字节。应为这2个字节的数据是按位的长度区分，现在需要拼凑成完整字节。
+
+首先需要确定的是字节长度，以及默认值，然后确定位操作符。
+
+`1byte = 8bit`
+
+默认值为：`0 = 0x00`
+
+操作符：
+
+```
+  &: 不行,因为任何数&0 == 0
+  |: ok ,任何数 | 0 都等于这个数
+```
+
+通过`|`可以得到想要的结果：
+
+```js
+  buf[2] = 0x00 | header.qr << 7 | header.opcode << 3 | header.aa << 2 | header.tc << 1 | header.rd;
+  buf[3] = 0x00 | header.ra << 7 | header.z << 4 | header.rcode;
+```
+
+#### 无符号整数类别
+假如你看过`Buffer`的api或使用`Buffer`创建过`buf`无符号整数，那么这个问题就可以很容易解决了。
+
+`buf.writeUInt16BE(value, offset[, noAssert])`和`buf.writeUInt32BE(value, offset[, noAssert])`，一看就知道一个是创建`16`位，一个是`32`位。
+
+```js
+ buf.writeUInt16BE(header.ancount, 6);
+ buf.writeUInt32BE(answer.rdata, len-4);
+```
+
+## 应用场景
