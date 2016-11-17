@@ -59,7 +59,7 @@ tags: [dns,dgram,http/s,响应报文解析]
 * 客户端请求ID是为了保证收到DNS服务器返回报文时能正确知道是哪一个请求的响应报文。所以一个完整的DNS请求和响应，里面`request`和`response`的`ID`
 必须保持一致。
 *  `header.qr = 1`，表示响应报文
-*  `header.ancoubt`,这个牵涉到应答记录条目，所以要根据应答字段`Answer`计算。
+*  `header.ancount`,这个牵涉到应答记录条目，所以要根据应答字段`Answer`计算。
 
 ```js
   var response = {};
@@ -94,7 +94,9 @@ tags: [dns,dgram,http/s,响应报文解析]
 ### Answer应答报文数据
 这个部分的内容就是dns服务器要返回的数据报。
 
-`RDDATA`为数据字段。长度不固定。
+`RDDATA`为数据字段。
+
+`name`为域名，长度不固定。
 
 格式：
 
