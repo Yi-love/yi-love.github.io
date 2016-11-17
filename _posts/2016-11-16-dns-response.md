@@ -131,6 +131,26 @@ tags: [dns,dgram,http/s,响应报文解析]
   answer.rdata = rdata;//数据记录
 ```
 
+`rdata`存放的是`ip`地址,ip必须经过转换客户端才能识别：
+
+```js
+  var numify = function(ip) {
+      ip = ip.split('.').map(function(n) {
+          return parseInt(n, 10);
+      });
+
+      var result = 0;
+      var base = 1;
+
+      for (var i = ip.length-1; i >= 0; i--) {
+          result += ip[i]*base;
+          base *= 256;
+      }
+      return result;
+  };
+```
+
+
 ### Authority/Additional 数据
 自己处理的请求没有授权应答和附加数据。
 
@@ -216,93 +236,75 @@ tags: [dns,dgram,http/s,响应报文解析]
 以下代码仅供参考：
 
 ```js
-  var responseBuffer = function(response) {
-    var question = response.question;
-    var header = response.header;
-    var qname = question.qname;
-    var offset = 16+qname.length;
-    var length = offset;
+  var responseBuffer = function(response){
+      var buf = Buffer.alloc(30+response.question.qname.length +response.answer.name.length) ,
+          offset = response.question.qname.length;
 
-      for (var i = 0; i < response.rr.length; i++) {
-      length += response.rr[i].qname.length+14;
-      }
+      response.header.id.copy(buf,0,0,2);
 
-    var buf = new Buffer(length);
+      buf[2] = 0x00 | response.header.qr << 7 | response.header.opcode << 3 | response.header.aa << 2 | response.header.tc << 1 | response.header.rd;
+      buf[3] = 0x00 | response.header.ra << 7 | response.header.z << 4 | response.header.rcode;
 
-    header.id.copy(buf, 0, 0, 2);
+      buf.writeUInt16BE(response.header.qdcount, 4);
+      buf.writeUInt16BE(response.header.ancount, 6);
+      buf.writeUInt16BE(response.header.nscount, 8);
+      buf.writeUInt16BE(response.header.arcount, 10);
 
-    buf[2] = 0x00 | header.qr << 7 | header.opcode << 3 | header.aa << 2 | header.tc << 1 | header.rd;
-    buf[3] = 0x00 | header.ra << 7 | header.z << 4 | header.rcode;
+      response.question.qname.copy(buf,12);
+      response.question.qtype.copy(buf,12+offset,0,2);
+      response.question.qclass.copy(buf,14+offset,0,2);
 
-    buf.writeUInt16BE(header.qdcount, 4);
-    buf.writeUInt16BE(header.ancount, 6);
-    buf.writeUInt16BE(header.nscount, 8);
-    buf.writeUInt16BE(header.arcount, 10);
+      offset += 16;
+      response.answer.name.copy(buf,offset);
 
-      qname.copy(buf, 12);
-
-    question.qtype.copy(buf, 12+qname.length, question.qtype, 2);
-    question.qclass.copy(buf, 12+qname.length+2, question.qclass, 2);
-
-    for (var i = 0; i < query.rr.length; i++) {
-      var rr = query.rr[i];
-
-      rr.qname.copy(buf, offset);
-
-      offset += rr.qname.length;
-
-      buf.writeUInt16BE(rr.qtype, offset);
-      buf.writeUInt16BE(rr.qclass, offset+2);
-      buf.writeUInt32BE(rr.ttl, offset+4);
-      buf.writeUInt16BE(rr.rdlength, offset+8);
-      buf.writeUInt32BE(rr.rdata, offset+10);
-
-      offset += 14;
-      }
+      offset += response.answer.name.length;
+      buf.writeUInt16BE(response.answer.type , offset);
+      buf.writeUInt16BE(response.answer.class , offset+2);
+      buf.writeUInt32BE(response.answer.ttl , offset+4);
+      buf.writeUInt16BE(response.answer.rdlength , offset+8);
+      buf.writeUInt32BE(response.answer.rdata , offset+10);
 
       return buf;
   };
 
-  var response = function(query, ttl, to) {
-    var response = {};
-    var header = response.header = {};
-    var question = response.question = {};
-    var rrs = resolve(query.question.qname, ttl, to);
+  var response = function(request , ttl , rdata){
+      var response = {};
+      response.header = {};
+      response.question = {};
+      response.answer = resolve(request.question.qname , ttl , rdata);
 
-    header.id = query.header.id;
-    header.ancount = rrs.length;
+      response.header.id = request.header.id;
 
-    header.qr = 1;
-    header.opcode = 0;
-    header.aa = 0;
-    header.tc = 0;
-    header.rd = 1;
-    header.ra = 0;
-    header.z = 0;
-    header.rcode = 0;
-    header.qdcount = 1;
-    header.nscount = 0;
-    header.arcount = 0;
+      response.header.qr = 1;
+      response.header.opcode = 0;
+      response.header.aa = 0;
+      response.header.tc = 0;
+      response.header.rd = 1;
+      response.header.ra = 0;
+      response.header.z = 0;
+      response.header.rcode = 0;
+      response.header.qdcount = 1;
+      response.header.ancount = 1;
+      response.header.nscount = 0;
+      response.header.arcount = 0;
 
-    question.qname = query.question.qname;
-    question.qtype = query.question.qtype;
-    question.qclass = query.question.qclass;
+      response.question.qname = request.question.qname;
+      response.question.qtype = request.question.qtype;
+      response.question.qclass = request.question.qclass;
 
-    response.rr = rrs;
+      return responseBuffer(response);
 
-    return responseBuffer(response);
   };
+  var resolve = function(qname , ttl , rdata){
+      var answer = {};
 
-  var resolve = function(qname, ttl, rdata) {
-    var r = {};
+      answer.name = qname;
+      answer.type = 1;
+      answer.class = 1;
+      answer.ttl = ttl;
+      answer.rdlength = 4;
+      answer.rdata = rdata;
 
-    r.name = qname;
-    r.qtype = 1;
-    r.qclass = 1;
-    r.ttl = ttl;
-    r.rdlength = 4;
-    r.rdata = to;
-
-    return r;
+      return answer;
   };
 ```

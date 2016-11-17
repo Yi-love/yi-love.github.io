@@ -449,6 +449,8 @@ var question = {};
 
 ```
 
+[DNS 响应报文详解]({{site.baseurl}}/node.js/javascript/dns/2016/11/16/dns-response.html)
+
 ### 参考资料
 
 [http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm](http://docstore.mik.ua/orelly/networking_2ndEd/dns/appa_02.htm)
