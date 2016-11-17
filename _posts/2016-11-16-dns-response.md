@@ -135,7 +135,7 @@ tags: [dns,dgram,http/s,响应报文解析]
 自己处理的请求没有授权应答和附加数据。
 
 
-## `Buffer`类型响应报文
+## Buffer类型响应报文
 得到了想要的一切响应数据之后，下一步就是将这些数据转换为客户端可以解析的`Buffer`类型。
 
 那这一步的工作正好与`request`请求报文解析的工作恰好相反。报上面的数据一一拼凑为`response`响应报文格式数据。
@@ -155,8 +155,8 @@ tags: [dns,dgram,http/s,响应报文解析]
 
 确定需要创建的`Buffer`实例的长度为`30 + Question.qname.length + Answer.name.length`后，就可以进行参数转换了。
 
-### `Buffer`实例参数转换
-`response`数据大概分为了3中类型：
+### Buffer实例参数转换
+`response`数据大概分为了3中类别：
 
 * 普通完整字节类别
 * 需要按位拼接成一个字节的类别
@@ -209,3 +209,100 @@ tags: [dns,dgram,http/s,响应报文解析]
 ```
 
 ## 应用场景
+除了`Answer`数据的`ttl`报文有效跳数和`rdata`，需要真的从其它地方获取过来。其它数据基本可以通过计算或从`request`中得到。
+
+封装成函数的话，只需要传入`(request,ttl,rdata)`就可以了。
+
+以下代码仅供参考：
+
+```js
+  var responseBuffer = function(response) {
+    var question = response.question;
+    var header = response.header;
+    var qname = question.qname;
+    var offset = 16+qname.length;
+    var length = offset;
+
+      for (var i = 0; i < response.rr.length; i++) {
+      length += response.rr[i].qname.length+14;
+      }
+
+    var buf = new Buffer(length);
+
+    header.id.copy(buf, 0, 0, 2);
+
+    buf[2] = 0x00 | header.qr << 7 | header.opcode << 3 | header.aa << 2 | header.tc << 1 | header.rd;
+    buf[3] = 0x00 | header.ra << 7 | header.z << 4 | header.rcode;
+
+    buf.writeUInt16BE(header.qdcount, 4);
+    buf.writeUInt16BE(header.ancount, 6);
+    buf.writeUInt16BE(header.nscount, 8);
+    buf.writeUInt16BE(header.arcount, 10);
+
+      qname.copy(buf, 12);
+
+    question.qtype.copy(buf, 12+qname.length, question.qtype, 2);
+    question.qclass.copy(buf, 12+qname.length+2, question.qclass, 2);
+
+    for (var i = 0; i < query.rr.length; i++) {
+      var rr = query.rr[i];
+
+      rr.qname.copy(buf, offset);
+
+      offset += rr.qname.length;
+
+      buf.writeUInt16BE(rr.qtype, offset);
+      buf.writeUInt16BE(rr.qclass, offset+2);
+      buf.writeUInt32BE(rr.ttl, offset+4);
+      buf.writeUInt16BE(rr.rdlength, offset+8);
+      buf.writeUInt32BE(rr.rdata, offset+10);
+
+      offset += 14;
+      }
+
+      return buf;
+  };
+
+  var response = function(query, ttl, to) {
+    var response = {};
+    var header = response.header = {};
+    var question = response.question = {};
+    var rrs = resolve(query.question.qname, ttl, to);
+
+    header.id = query.header.id;
+    header.ancount = rrs.length;
+
+    header.qr = 1;
+    header.opcode = 0;
+    header.aa = 0;
+    header.tc = 0;
+    header.rd = 1;
+    header.ra = 0;
+    header.z = 0;
+    header.rcode = 0;
+    header.qdcount = 1;
+    header.nscount = 0;
+    header.arcount = 0;
+
+    question.qname = query.question.qname;
+    question.qtype = query.question.qtype;
+    question.qclass = query.question.qclass;
+
+    response.rr = rrs;
+
+    return responseBuffer(response);
+  };
+
+  var resolve = function(qname, ttl, rdata) {
+    var r = {};
+
+    r.name = qname;
+    r.qtype = 1;
+    r.qclass = 1;
+    r.ttl = ttl;
+    r.rdlength = 4;
+    r.rdata = to;
+
+    return r;
+  };
+```

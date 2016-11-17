@@ -391,7 +391,7 @@ var question = {};
       var header = {};
       var question = {};
       var b = buf.slice(2,3).toString('binary', 0, 1).charCodeAt(0);
-      console.log('b：',b,buf.slice(2,3));
+
       header.id = buf.slice(0,2);
       header.qr = bitSlice(b,0,1);
       header.opcode = bitSlice(b,1,4);
