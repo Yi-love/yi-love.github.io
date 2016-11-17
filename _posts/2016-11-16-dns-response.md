@@ -5,7 +5,7 @@ categories: [Node.js,JavaScript,DNS]
 tags: [dns,dgram,http/s,响应报文解析]
 ---
 
-上一篇我已经解释了DNS请求报文怎么解析,不会的自己坐飞机([飞机入口]({{site.baseurl}}/node.js/javascript/dns/2016/11/11/dns-request.html))。这一篇主要从DNS服务的角度来解释，如何自己创建响应报文返回给客户端。
+上一篇我已经解释了DNS请求报文怎么解析,不会的自己坐飞机([飞机入口]({{site.baseurl}}/node.js/javascript/dns/2016/11/11/dns-request.html))。这一篇主要从DNS服务器的角度来解释，如何自己创建响应报文返回给客户端。
 
 <!-- more -->
 
