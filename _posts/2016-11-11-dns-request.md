@@ -449,7 +449,7 @@ var question = {};
 
 ```
 
-[DNS 响应报文详解]({{site.baseurl}}/node.js/javascript/dns/2016/11/16/dns-response.html)
+下一篇： [DNS 响应报文详解]({{site.baseurl}}/node.js/javascript/dns/2016/11/16/dns-response.html)
 
 ### 参考资料
 
