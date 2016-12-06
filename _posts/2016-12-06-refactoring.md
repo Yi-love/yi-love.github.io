@@ -217,3 +217,10 @@ tags: [读后感,笔记]
 
 ### 10.总结
 “我不是个伟大的程序员，我只是个有着一些优秀习惯的好程序员”。 ---Kent Beck
+
+
+### 参考文档
+
+[Refactoring Improving the Design of Existing Code](https://www.csie.ntu.edu.tw/~r95004/Refactoring_improving_the_design_of_existing_code.pdf)
+
+[改善既有代码的设计](https://book.douban.com/subject/1229923/)
