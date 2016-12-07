@@ -5,7 +5,7 @@ categories: [JavaScript]
 tags: [笔记,函数式，组合]
 ---
 
-周末看了一下函数式编程，代码组合(compose)是个好家伙。
+周末看了一下函数式编程，代码组合(`compose`)是个好家伙。
 
 ### 组合：compose
 下面的这个就是一个简单的组合。
@@ -68,6 +68,7 @@ poitfree -- Pointfree style means never having to say your data.
 
 ### compose实现
 `compose`遵循的是从右向左运行，而不是由内而外运行。也就是说`compose`是从最后一个函数开始执行。
+
 ```js
     var compose = function() {
         var args = arguments;
