@@ -2,7 +2,7 @@
 layout: page
 title: JavaScript函数式编程--代码组合(compose)
 categories: [JavaScript]
-tags: [笔记,函数式，组合]
+tags: [笔记,函数式,组合]
 ---
 
 周末看了一下函数式编程，代码组合(`compose`)是个好家伙。
