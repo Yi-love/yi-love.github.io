@@ -67,6 +67,9 @@ poitfree -- Pointfree style means never having to say your data.
 ```
 
 ### compose实现
+下面是`compose`函数的实现代码。思路就是先把传入的函数都缓存起来，然后在传入数据的时候，再挨个的使用`apply`执行函数，
+上一个函数的输出数据，作为下一个函数的输入数据。
+
 `compose`遵循的是从右向左运行，而不是由内而外运行。也就是说`compose`是从最后一个函数开始执行。
 
 ```js
@@ -81,6 +84,21 @@ poitfree -- Pointfree style means never having to say your data.
       };
   };
 ```
+
+使用：
+
+```js
+  var head = function(x) { return x[0]; };
+  var reverse = reduce(function(acc, x){ return [x].concat(acc); }, []);
+  var last = compose(head, reverse);
+
+  last(['jumpkick', 'roundhouse', 'uppercut']);//=> 'uppercut'
+```
+
+先定义做什么，然后在传入数据，就可以得到想要的结果。
+
+### 总结
+组合像一系列管道那样把不同的函数联系在一起，数据就可以也必须在其中流动。组合让我们的代码简单而富有可读性。
 
 ### 参考资料
 
