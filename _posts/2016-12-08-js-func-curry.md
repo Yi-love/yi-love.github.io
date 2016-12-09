@@ -11,17 +11,17 @@ tags: [笔记,函数式,柯里化]
 一个案例：
 
 ```js
-    var add = function(x) {
-      return function(y) {
-        return x + y;
-      };
+  var add = function(x) {
+    return function(y) {
+      return x + y;
     };
-    var increment = add(1);
-    var addTen = add(10);
+  };
+  var increment = add(1);
+  var addTen = add(10);
 
-    increment(2);// 3
+  increment(2);// 3
 
-    addTen(2);// 12
+  addTen(2);// 12
 ```
 
 第一次调用`add`函数的时候并没有返回`x+y`，而是返回一个函数。只有当再次执行的时候才会得到`x+y`的值。
@@ -32,17 +32,17 @@ tags: [笔记,函数式,柯里化]
 永远不会执行。除非参数满足2个。
 
 ```js
-    var curry = require('lodash').curry;
+  var curry = require('lodash').curry;
 
-    var match = curry(function(what, str) {
-      return str.match(what);
-    });
-    
-    //方法 1
-    match(/\s+/g, "hello world");  // [ ' ' ]
-    
-    //方法2
-    match(/\s+/g)("hello world");  // [ ' ' ]
+  var match = curry(function(what, str) {
+    return str.match(what);
+  });
+  
+  //方法 1
+  match(/\s+/g, "hello world");  // [ ' ' ]
+  
+  //方法2
+  match(/\s+/g)("hello world");  // [ ' ' ]
 ```
 
 换一种思路理解就是，`curry`函数就是保证参数不够的时候一直返回一个函数，用来接受参数，
@@ -56,41 +56,40 @@ tags: [笔记,函数式,柯里化]
 以下代码仅供参考：
 
 ```js
-    function curry(func , thisArg){
-        if ( !Array.isArray(thisArg) ) {
-            thisArg = [];
-        }
-        return function(){
-            let args = Array.prototype.slice.call(arguments);
-            if ( (args.length+thisArg.length) < func.length ) {
-                return curry(func , thisArg.concat(args));
-            }
-            return func.apply(this , thisArg.concat(args));
-        };
-    }
+  function curry(func , thisArg){
+      if ( !Array.isArray(thisArg) ) {
+          thisArg = [];
+      }
+      return function(){
+          let args = Array.prototype.slice.call(arguments);
+          if ( (args.length+thisArg.length) < func.length ) {
+              return curry(func , thisArg.concat(args));
+          }
+          return func.apply(this , thisArg.concat(args));
+      };
+  }
 ```
 
 使用的方式跟上面的一样。
 
 ```js
-   var add = curry(function(x,y){
-        return x+y; 
-   });
+  var add = curry(function(x,y){
+      return x+y; 
+  });
 
-   var increment = add(1);
-   var addTen = add(10);
+  var increment = add(1);
+  var addTen = add(10);
 
-   increment(2);// 3
+  increment(2);// 3
 
-   addTen(2);// 12
+  addTen(2);// 12
 ```
 
 ### 总结
 以上的这个函数只是用于说明`curry`化函数的思路，并不能直接使用，虽然现在看来一切正常，但除答案以为的状态都没有考虑。比如`func`执行`apply`函数的时候，
 第一个参数该传入什么(这里默认传入`this`，也就是当前作用域)。
 
-
-至此，要写出一个功能完备的`curry`化函数，还得进行重构和打磨。
+至此，要写出一个功能完备的`curry`化函数，还得进行重构和打磨，但通过简单地传递几个参数，就能动态创建实用的新函数，很爽。
 
 ### 参考资料
 
