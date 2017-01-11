@@ -94,6 +94,7 @@ int main(int argc, char *argv[]) {
 
 
 函数大概功能代码如下：
+
 ```cpp
 /**
  * [Start 开始执行平台初始化]
@@ -132,3 +133,5 @@ int Start(int argc, char** argv) {
   v8_platform.Dispose();
 }
 ```
+
+待续...
