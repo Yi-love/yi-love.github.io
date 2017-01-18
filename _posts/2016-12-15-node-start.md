@@ -206,3 +206,94 @@ atexit([] () { uv_tty_reset_mode(); });
 ```
 
 #### 2.2.2 __POSIX__平台兼容初始化
+
+```cpp
+//node.cc
+/**
+ * [PlatformInit 平台初始化]
+ * 针对 __POSIX__
+ */
+inline void PlatformInit() {
+  sigset_t sigmask;
+  //设置信号集
+  sigemptyset(&sigmask);
+  //添加信号
+  sigaddset(&sigmask, SIGUSR1);
+  //多线程设置信号屏蔽集
+  const int err = pthread_sigmask(SIG_SETMASK, &sigmask, nullptr);
+
+  // Make sure file descriptors 0-2 are valid before we start logging anything.
+  // 保证 stdin/stdout/stderr 有效
+  for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
+    struct stat ignored;
+    if (fstat(fd, &ignored) == 0)
+      continue;
+    // Anything but EBADF means something is seriously wrong.  We don't
+    // have to special-case EINTR, fstat() is not interruptible.
+    if (errno != EBADF)
+      ABORT();
+    if (fd != open("/dev/null", O_RDWR)) //写入/dev/null的东西会被系统丢掉
+      ABORT();
+  }
+
+  CHECK_EQ(err, 0);
+
+  // Restore signal dispositions, the parent process may have changed them.
+  // 查询或设置信号处理方式
+  /**
+   * struct sigaction
+    {
+        void (*sa_handler) (int);
+        sigset_t sa_mask;
+        int sa_flags;
+        void (*sa_restorer) (void);
+    }
+   */
+  struct sigaction act;
+  memset(&act, 0, sizeof(act));
+
+  for (unsigned nr = 1; nr < kMaxSignal; nr += 1) {
+    if (nr == SIGKILL || nr == SIGSTOP)//指定SIGKILL 和SIGSTOP 以外的所有信号
+      continue;
+    //sa_handler 代表新的信号处理函数
+    //SIG_DFL：默认信号处理程序
+    //SIG_IGN：忽略信号的处理程序
+    //意在解决SIGPIPE信号关闭进程的问题
+    act.sa_handler = (nr == SIGPIPE) ? SIG_IGN : SIG_DFL;
+    CHECK_EQ(0, sigaction(nr, &act, nullptr));
+  }
+  //2          SIGINT    进程终端，CTRL+C
+  //15         SIGTERM   请求中断
+  RegisterSignalHandler(SIGINT, SignalExit, true);
+  RegisterSignalHandler(SIGTERM, SignalExit, true);
+
+  // Raise the open file descriptor limit.
+  // 限制打开文件描述符的个数
+  /**
+   * struct rlimit {
+      rlim_t rlim_cur;
+      rlim_t rlim_max;
+      };
+   */
+  struct rlimit lim;
+  // RLIMIT_NOFILE(一个进程能打开的最大文件 数，内核默认是1024)
+  if (getrlimit(RLIMIT_NOFILE, &lim) == 0 && lim.rlim_cur != lim.rlim_max) {
+    // Do a binary search for the limit.
+    rlim_t min = lim.rlim_cur;
+    rlim_t max = 1 << 20;
+    // But if there's a defined upper bound, don't search, just set it.
+    if (lim.rlim_max != RLIM_INFINITY) {
+      min = lim.rlim_max;
+      max = lim.rlim_max;
+    }
+    do {
+      lim.rlim_cur = min + (max - min) / 2;
+      if (setrlimit(RLIMIT_NOFILE, &lim)) {
+        max = lim.rlim_cur;
+      } else {
+        min = lim.rlim_cur;
+      }
+    } while (min + 1 < max);
+  }
+}
+```
