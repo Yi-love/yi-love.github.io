@@ -476,3 +476,6 @@
 [class*='language-'] .highlight{
 	background: #444444;
 }
+[class*='language-sh'] code{
+    color: #fff;
+}
