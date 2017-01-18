@@ -185,13 +185,12 @@ else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
 ### 2.2 初始化
 在启动`V8`引擎之前还需要对平台进行一些相关信息的初始化，因为各个平台的不同，要针对特定平台进行初始化。
 
-初始化包括：
+初始化主要包括：
 
 1. 程序退出后对终端状态进行还原事件绑定
 2. `__POSIX__`平台兼容初始化
 3. cmd参数分类(转：2.1.2 )
-4. 全球化
-5. v8解析输出
+4. 其它初始化
 
 `__POSIX__`平台要而外初始化的主要是：信号处理 ，`stdin/stdout/stderr`可用 , 打开文件描述符限制设置上线。
 
@@ -264,7 +263,7 @@ for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
 
 一个进程不能无限的打开文件.必须进行限制。
 
-`RLIMIT_NOFILE`(一个进程能打开的最大文件 数，内核默认是1024)
+`RLIMIT_NOFILE`(一个进程能打开的最大文件 数，内核默认是1024)。
 
 ```cpp
   if (getrlimit(RLIMIT_NOFILE, &lim) == 0 && lim.rlim_cur != lim.rlim_max) {
@@ -286,4 +285,11 @@ for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
   }
 ```
 
-#### 2.2.3 全球化
+#### 2.2.3 其它初始化
+1.获取准确的时间
+
+`Node.js`启动的起始时间。
+
+```cpp
+  prog_start_time = static_cast<double>(uv_now(uv_default_loop()));
+```
