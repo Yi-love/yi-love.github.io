@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
 
 #### 2.1.2 cmd参数分类
 最开始的参数都是在`argv`里面，`exec_argv`和`v8_argv`都是没有值的，`Node.js`为了进行区分参数的含义。
-就要对`argv`参数进行拆分。
+就要对`argv`参数进行拆分，基本上`--`开头的都会被保存到`execArgv`里面，除了个别例外的(例如：`node -v`)。
 
 ```cpp
 //node.cc
@@ -145,14 +145,15 @@ int main(int argc, char *argv[]) {
  * @param v8_argc   [v8参数个数]
  * @param v8_argv   [v8参数数组]
  */
-static void ParseArgs(int* argc,const char** argv,int* exec_argc,const char*** exec_argv,int* v8_argc,const char*** v8_argv)
+static void ParseArgs(int* argc,const char** argv,int* exec_argc,
+                    const char*** exec_argv,int* v8_argc,const char*** v8_argv)
 ```
 
 例如在命令行输入`node -v`时 ，当`Node.js`执行到`ParseArgs`函数的时候，`while`循环判断每个`argv[i]`是不是等于`-v`,如果等于就执行
 查看`Node.js`版本号的语句，然后结束`Node.js`.由此可知 执行`node --version` 等价于`node -v`.
 
 ```cpp
-//循环判断每个参数的含义
+//循环判断每个参数的含义 , 必须保证--开头的参数是在node之后,无-开头参数之前。
 while (index < nargs && argv[index][0] == '-' && !short_circuit) {
   const char* const arg = argv[index];
   //...
@@ -162,8 +163,6 @@ while (index < nargs && argv[index][0] == '-' && !short_circuit) {
   }
   //...
   //还有很多else if
-```
-
 ```
 
 如果输入以下命令`node --v8-pool-size=6 argv.js   'hello' 'world'`，上文的输出就会变成：
