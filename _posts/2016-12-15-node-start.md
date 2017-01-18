@@ -34,18 +34,18 @@ Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`J
 
 大的方向可以分为：
 
-*  参数处理
-*  初始化
-*  安全通讯
-*  `V8`引擎启动
-*  Loading `Node.js`环境
-*  开始`Node.js`旅程
-*  退出
+1. 参数处理
+2. 初始化
+3. 安全通讯
+4. `V8`引擎启动
+5. Loading `Node.js`环境
+6. 开始`Node.js`旅程
+7. 退出
 
 ![NODE_START]({{site.baseurl}}/images/2016/1215_01.png)
 
 每个`C/C++`程序都有一个入口`main`，`Node.js`从`node_main.cc`开始执行`C++`核心模块。
-在第11步以前，都是启动`Node.js`的`C++`部分，直到`LoadEnvironment()`函数的调用，
+在第11步以前，都是启动`Node.js`的`C++`核心模块，直到`LoadEnvironment()`函数的调用，
 才真正的加载`Node.js`的`JavaScript`模块，`JavaScript`模块的`main`函数就是`boot_strap.js`文件。
 第14步`uv_run`是`libuv`的事件轮询函数。`Node.js`从第15步开始便是销毁过程，最后恢复终端状态。
 
@@ -58,7 +58,7 @@ Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`J
 ### 2.1 参数处理
 顾名思义，就是处理`cmd`命令行传入参数进行处理,然后挂载到`process`对象上面。
 
-执行`Node.js`命令行:
+命令行执行`Node.js`的方式:
 
 ```sh
 node | node test.js  | node -v
@@ -88,8 +88,8 @@ node --harmony  argv.js  'hello' 'world'
 那如何才能把这些参数正确的挂载到`process`对象上呢。
 
 
-*  `_WIN32`操作系统中参数的宽字符到多字节字符转换
-*  参数分类
+1.  `_WIN32`操作系统中参数的宽字符到多字节字符转换
+2. 参数分类
 
 ### 2.1.1 `_WIN32`操作系统中参数的宽字符到多字节字符转换
 为了在启动`Node.js`的时候，参数的字节编码是相同的。
