@@ -245,7 +245,7 @@ for (unsigned nr = 1; nr < kMaxSignal; nr += 1) {
 }
 ```
 
-3. 保证`stdin/stdout/stderr`可用
+3.保证`stdin/stdout/stderr`可用
 
 保证在使用标准输入/输出/错误的时候，这3个文件描述符是可用的。
 
@@ -260,14 +260,13 @@ for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
 }
 ```
 
-4. 限制打开文件描述符的个数
+4.限制打开文件描述符的个数
 
 一个进程不能无限的打开文件.必须进行限制。
 
 `RLIMIT_NOFILE`(一个进程能打开的最大文件 数，内核默认是1024)
 
 ```cpp
-  // 
   if (getrlimit(RLIMIT_NOFILE, &lim) == 0 && lim.rlim_cur != lim.rlim_max) {
     rlim_t min = lim.rlim_cur;
     rlim_t max = 1 << 20;
