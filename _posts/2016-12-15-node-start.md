@@ -17,25 +17,113 @@ tags: [node_main.cc,node.cc,global,process,env.cc,boot_starp.js]
 *  `C++`是编译型语言，`JavaScript`解释型语言，请去查查再继续往下看；
 *  `JavaScript`不能像`C`或`C++`能通过操作系统直接访问文件,`Node.js`它的这种能力也是来自于底层`C`和`C++`的支持；
 *  `Node.js`实际上是一个`C++`程序,这就是为什么可以命令行执行`node`的原因；
-*  `Node.js`的`JS`部分只提供api,`C++`才执行`JavaScript`(实际上目前是`Node.js`里面依赖的基础模块`V8`引擎执行的)。
+*  `Node.js`的`JavaScript`模块绝大部分只提供api,通过`V8`引擎解释执行，调用`C++`核心模块。
 
 ## 1. Node.js 结构
 要理解Node.js的启动，就必须了解`Node.js`的层级关系。
 
 ![NODE.JS]({{site.baseurl}}/images/2016/1215_02.png)
 
-Node的api分为`JavaScript`部分和`C++`部分，也就是我们经常说的`JavaScript`模块和`C++`核心模块。
-一般我们只会使用`JavaScript`模块，因为`JavaScript`模块基本上就是`C++`核心模块的`JS`版。
-使用方式就是通过`require('module_name')`这样引入使用。
+Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`JavaScript`模块(下文统一使用)和`C++`核心模块(下文统一使用)。
+一般我们只会使用`JavaScript`模块，`JavaScript`模块依赖于底层的`C++`核心模块。
+`JavaScript`模块可以通过`require('module_name')`这样引入使用。
+如果已经暴露再全局作用域则可以直接使用（`Buffer`模块就可以直接使用）。
 
-## 2. Node.js启动
-启动`Node.js`最关键的就是启动`V8`引擎来解释`JavaScript`代码。其它就是一些围点打援的工作。
+## 2. Node.js 启动
+启动`Node.js`最关键的就是启动`V8`引擎来解释`JavaScript`模块。其它就是一些围点打援的工作。
 
-![NODE——START]({{site.baseurl}}/images/2016/1215_01.png)
+大的方向可以分为：
+
+*  参数处理
+*  初始化
+*  安全通讯
+*  `V8`引擎启动
+*  Loading `Node.js`环境
+*  开始`Node.js`旅程
+*  退出
+
+![NODE_START]({{site.baseurl}}/images/2016/1215_01.png)
+
+每个`C/C++`程序都有一个入口`main`，`Node.js`从`node_main.cc`开始执行`C++`核心模块。
+在第11步以前，都是启动`Node.js`的`C++`部分，直到`LoadEnvironment()`函数的调用，
+才真正的加载`Node.js`的`JavaScript`模块，`JavaScript`模块的`main`函数就是`boot_strap.js`文件。
+第14步`uv_run`是`libuv`的事件轮询函数。`Node.js`从第15步开始便是销毁过程，最后恢复终端状态。
+
+一句话总结`Node.js`：提供一个解释`JavaScript`的引擎，让`JavaScript`有能访问操作系统相关资源的能力，
+能力的范围就由`Node.js`的`C++`核心模块决定，毕竟`JavaScript`模块只是个`lib`库。
+
+> 下面会基本按照图2-1来讲述整个`Node.js`的启动。由于里面有很多细节，可能再整体感觉上会比较难以理解。
 
 
-每个`C/C++`程序都有一个入口`main`，`Node.js`也不例外，`node_main.cc`就是入口。在第11步以前，都是启动`Node.js`的`C++`部分，
-直到`LoadEnvironment()`函数的调用，才真正的加载`Node.js`的`JavaScript`部分，
-也就是说`JavaScript`部分的`main`函数就是`boot_strap.js`文件。第14步`uv_run`是`libuv`的事件轮询函数。结束`Node.js`从第15步开始。
-最后恢复终端状态。
+### 2.1 参数处理
+顾名思义，就是处理`cmd`命令行传入参数进行处理,然后挂载到`process`对象上面。
 
+执行`Node.js`命令行:
+
+```sh
+node | node test.js  | node -v
+```
+
+先看一个`Node.js`的例子，这个例子是获取`process.argv` 和 `process.execArgv`。
+
+```js
+//argv.js
+'use strict';
+console.log(process.argv , process.execArgv);
+```
+
+`cmd`命令行执行:
+
+```sh
+node --harmony  argv.js  'hello' 'world'
+```
+
+输出得到(环境:`_WIN32`)：
+
+```js
+[ 'C:\\Program Files\\nodejs\\node.exe','E:\\node\\node\\argv.js','\'hello\'','\'world\'' ] //process.argv
+[ '--harmony' ] //process.execArgv
+```
+
+那如何才能把这些参数正确的挂载到`process`对象上呢。
+
+
+*  `_WIN32`操作系统中参数的宽字符到多字节字符转换
+*  参数分类
+
+### 2.1.1 `_WIN32`操作系统中参数的宽字符到多字节字符转换
+为了在启动`Node.js`的时候，参数的字节编码是相同的。
+
+在图2-1中的第1步实现：
+
+```cpp
+//node_main.cc
+#ifdef _WIN32
+int wmain(int argc, wchar_t *wargv[]) {
+  if (!IsWindows7OrGreater()) {
+    exit(ERROR_EXE_MACHINE_TYPE_MISMATCH);
+  }
+  // Convert argv to to UTF8
+  char** argv = new char*[argc + 1];
+  for (int i = 0; i < argc; i++) {
+    // 宽字节转多字节 ，获取大小
+    DWORD size = WideCharToMultiByte(CP_UTF8,0,wargv[i],-1,nullptr,0,nullptr,nullptr);
+    // 重新根据大小计算数据
+    argv[i] = new char[size];
+    DWORD result = WideCharToMultiByte(CP_UTF8,0, wargv[i], -1, argv[i], size, nullptr, nullptr);
+  }
+  return node::Start(argc, argv);
+}
+#else// UNIX
+int main(int argc, char *argv[]) {
+  // 设置为不缓存   setvbuf 为c函数
+  setvbuf(stdout, nullptr, _IONBF, 0);
+  setvbuf(stderr, nullptr, _IONBF, 0);
+  return node::Start(argc, argv);
+}
+#endif
+```
+
+`WideCharToMultiByte`是宽字符到多字节字符转换函数 ，使用`CP_UTF8`把`Unicode`转换为`UTF-8`编码。
+思路：就是首先通过`WideCharToMultiByte`函数获取每个参数的`size`,然后根据size把宽字节的`wargv[i]`拷贝到`argv[i]`,
+这也就是源码中，`WideCharToMultiByte`函数每次循环都执行2次的原因。
