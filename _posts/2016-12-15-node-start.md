@@ -201,99 +201,44 @@ else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
 ```cpp
 //node.cc
 //程序退出后对终端状态进行还原
-//To be called when the program exits. Resets TTY settings to default values for the next process to take over.
+//To be called when the program exits. 
+//Resets TTY settings to default values for the next process to take over.
 atexit([] () { uv_tty_reset_mode(); });
 ```
 
 #### 2.2.2 __POSIX__平台兼容初始化
+1.信号处理这里牵涉到多线程信号处理，这里`Node.js`主要是为了屏蔽信号，已经对特殊信号进行特殊处理。
+
+首先了解一下多线程的信号处理原则：：将对信号的异步处理，转换成同步处理，
+也就是说用一个线程专门的来“同步等待”信号的到来，而其它的线程可以完全不被该信号中断/打断(interrupt)。
+这样就在相当程度上简化了在多线程环境中对信号的处理。而且可以保证其它的线程不受信号的影响。
+这样我们对信号就可以完全预测，因为它不再是异步的，而是同步的（我们完全知道信号会在哪个线程中的哪个执行点到来而被处理！）。
+而同步的编程模式总是比异步的编程模式简单。
+其实多线程相比于多进程的其中一个优点就是：多线程可以将进程中异步的东西转换成同步的来处理。
+
+`Node.js`在这里设置信号屏蔽集，屏蔽对某些信号的响应处理。
 
 ```cpp
-//node.cc
-/**
- * [PlatformInit 平台初始化]
- * 针对 __POSIX__
- */
-inline void PlatformInit() {
   sigset_t sigmask;
-  //设置信号集
-  sigemptyset(&sigmask);
-  //添加信号
-  sigaddset(&sigmask, SIGUSR1);
-  //多线程设置信号屏蔽集
-  const int err = pthread_sigmask(SIG_SETMASK, &sigmask, nullptr);
+  sigemptyset(&sigmask);//设置信号集
+  sigaddset(&sigmask, SIGUSR1);//添加信号
+  const int err = pthread_sigmask(SIG_SETMASK, &sigmask, nullptr);//多线程设置信号屏蔽集
+```
 
-  // Make sure file descriptors 0-2 are valid before we start logging anything.
-  // 保证 stdin/stdout/stderr 有效
-  for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
-    struct stat ignored;
-    if (fstat(fd, &ignored) == 0)
-      continue;
-    // Anything but EBADF means something is seriously wrong.  We don't
-    // have to special-case EINTR, fstat() is not interruptible.
-    if (errno != EBADF)
-      ABORT();
-    if (fd != open("/dev/null", O_RDWR)) //写入/dev/null的东西会被系统丢掉
-      ABORT();
-  }
+`pthread_sigmask`函数来屏蔽某个线程对某些信号的响应处理，仅留下需要处理该信号的线程来处理指定的信号。
+实现方式是：利用线程信号屏蔽集的继承关系(在主进程中对sigmask进行设置后，主进程创建出来的线程将继承主进程的掩码).
 
-  CHECK_EQ(err, 0);
+2.解决`SIGPIPE`信号关闭进程的问题
 
-  // Restore signal dispositions, the parent process may have changed them.
-  // 查询或设置信号处理方式
-  /**
-   * struct sigaction
-    {
-        void (*sa_handler) (int);
-        sigset_t sa_mask;
-        int sa_flags;
-        void (*sa_restorer) (void);
-    }
-   */
-  struct sigaction act;
-  memset(&act, 0, sizeof(act));
-
-  for (unsigned nr = 1; nr < kMaxSignal; nr += 1) {
-    if (nr == SIGKILL || nr == SIGSTOP)//指定SIGKILL 和SIGSTOP 以外的所有信号
-      continue;
-    //sa_handler 代表新的信号处理函数
-    //SIG_DFL：默认信号处理程序
-    //SIG_IGN：忽略信号的处理程序
-    //意在解决SIGPIPE信号关闭进程的问题
-    act.sa_handler = (nr == SIGPIPE) ? SIG_IGN : SIG_DFL;
-    CHECK_EQ(0, sigaction(nr, &act, nullptr));
-  }
-  //2          SIGINT    进程终端，CTRL+C
-  //15         SIGTERM   请求中断
-  RegisterSignalHandler(SIGINT, SignalExit, true);
-  RegisterSignalHandler(SIGTERM, SignalExit, true);
-
-  // Raise the open file descriptor limit.
-  // 限制打开文件描述符的个数
-  /**
-   * struct rlimit {
-      rlim_t rlim_cur;
-      rlim_t rlim_max;
-      };
-   */
-  struct rlimit lim;
-  // RLIMIT_NOFILE(一个进程能打开的最大文件 数，内核默认是1024)
-  if (getrlimit(RLIMIT_NOFILE, &lim) == 0 && lim.rlim_cur != lim.rlim_max) {
-    // Do a binary search for the limit.
-    rlim_t min = lim.rlim_cur;
-    rlim_t max = 1 << 20;
-    // But if there's a defined upper bound, don't search, just set it.
-    if (lim.rlim_max != RLIM_INFINITY) {
-      min = lim.rlim_max;
-      max = lim.rlim_max;
-    }
-    do {
-      lim.rlim_cur = min + (max - min) / 2;
-      if (setrlimit(RLIMIT_NOFILE, &lim)) {
-        max = lim.rlim_cur;
-      } else {
-        min = lim.rlim_cur;
-      }
-    } while (min + 1 < max);
-  }
+```cpp
+for (unsigned nr = 1; nr < kMaxSignal; nr += 1) {
+  if (nr == SIGKILL || nr == SIGSTOP)//指定SIGKILL 和SIGSTOP 以外的所有信号
+    continue;
+  //sa_handler 代表新的信号处理函数
+  //SIG_DFL：默认信号处理程序
+  //SIG_IGN：忽略信号的处理程序
+  //意在解决SIGPIPE信号关闭进程的问题
+  act.sa_handler = (nr == SIGPIPE) ? SIG_IGN : SIG_DFL;
+  CHECK_EQ(0, sigaction(nr, &act, nullptr)); //sigaction:设置信号处理方式
 }
 ```
