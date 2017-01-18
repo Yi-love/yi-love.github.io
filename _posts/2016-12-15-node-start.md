@@ -182,3 +182,27 @@ else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
 
 总之，最后会通过`memcpy`函数把数据保存到对应的数组里面。
 
+### 2.2 初始化
+在启动`V8`引擎之前还需要对平台进行一些相关信息的初始化，因为各个平台的不同，要针对特定平台进行初始化。
+
+初始化包括：
+
+1. 程序退出后对终端状态进行还原事件绑定
+2. `__POSIX__`平台兼容初始化
+3. cmd参数分类(转：2.1.2 )
+4. 全球化
+5. v8解析输出
+
+`__POSIX__`平台要而外初始化的主要是：信号处理 ，`stdin/stdout/stderr`可用 , 打开文件描述符限制设置上线。
+
+#### 2.2.1 程序退出后对终端状态进行还原事件绑定
+当整个`Node.js`退出后，不管是异常还是进程安全结束。都要对执行命令的终端恢复原始状态。也就是图2-1的第20步。
+
+```cpp
+//node.cc
+//程序退出后对终端状态进行还原
+//To be called when the program exits. Resets TTY settings to default values for the next process to take over.
+atexit([] () { uv_tty_reset_mode(); });
+```
+
+#### 2.2.2 __POSIX__平台兼容初始化
