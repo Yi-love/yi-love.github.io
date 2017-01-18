@@ -207,10 +207,12 @@ atexit([] () { uv_tty_reset_mode(); });
 ```
 
 #### 2.2.2 __POSIX__平台兼容初始化
-1.信号处理这里牵涉到多线程信号处理，这里`Node.js`主要是为了屏蔽信号，已经对特殊信号进行特殊处理。
+1.信号处理这里牵涉到多线程信号处理，这里`Node.js`主要是为了屏蔽信号，以及对特殊信号进行特殊处理。
 
-首先了解一下多线程的信号处理原则：：将对信号的异步处理，转换成同步处理，
-也就是说用一个线程专门的来“同步等待”信号的到来，而其它的线程可以完全不被该信号中断/打断(interrupt)。
+首先了解一下多线程的信号处理原则：
+
+将对信号的异步处理，转换成同步处理，也就是说用一个线程专门的来“同步等待”信号的到来，
+而其它的线程可以完全不被该信号中断/打断(interrupt)。
 这样就在相当程度上简化了在多线程环境中对信号的处理。而且可以保证其它的线程不受信号的影响。
 这样我们对信号就可以完全预测，因为它不再是异步的，而是同步的（我们完全知道信号会在哪个线程中的哪个执行点到来而被处理！）。
 而同步的编程模式总是比异步的编程模式简单。
@@ -242,3 +244,47 @@ for (unsigned nr = 1; nr < kMaxSignal; nr += 1) {
   CHECK_EQ(0, sigaction(nr, &act, nullptr)); //sigaction:设置信号处理方式
 }
 ```
+
+3. 保证`stdin/stdout/stderr`可用
+
+保证在使用标准输入/输出/错误的时候，这3个文件描述符是可用的。
+
+```cpp
+// 保证 stdin/stdout/stderr 有效
+for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
+  struct stat ignored;
+  if (fstat(fd, &ignored) == 0)
+    continue;
+  if (fd != open("/dev/null", O_RDWR)) //写入/dev/null的东西会被系统丢掉
+    ABORT();
+}
+```
+
+4. 限制打开文件描述符的个数
+
+一个进程不能无限的打开文件.必须进行限制。
+
+`RLIMIT_NOFILE`(一个进程能打开的最大文件 数，内核默认是1024)
+
+```cpp
+  // 
+  if (getrlimit(RLIMIT_NOFILE, &lim) == 0 && lim.rlim_cur != lim.rlim_max) {
+    rlim_t min = lim.rlim_cur;
+    rlim_t max = 1 << 20;
+    // But if there's a defined upper bound, don't search, just set it.
+    if (lim.rlim_max != RLIM_INFINITY) {
+      min = lim.rlim_max;
+      max = lim.rlim_max;
+    }
+    do {
+      lim.rlim_cur = min + (max - min) / 2;
+      if (setrlimit(RLIMIT_NOFILE, &lim)) {
+        max = lim.rlim_cur;
+      } else {
+        min = lim.rlim_cur;
+      }
+    } while (min + 1 < max);
+  }
+```
+
+#### 2.2.3 全球化
