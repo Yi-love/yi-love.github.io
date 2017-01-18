@@ -56,7 +56,7 @@ Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`J
 
 
 ### 2.1 参数处理
-顾名思义，就是处理`cmd`命令行传入参数进行处理,然后挂载到`process`对象上面。
+顾名思义，就是处理`cmd`命令行传入参数进行处理,然后挂载到`process`对象上面，主要的两个参数是`argv`和`execArgv`。
 
 命令行执行`Node.js`的方式:
 
@@ -87,12 +87,11 @@ node --harmony  argv.js  'hello' 'world'
 
 那如何才能把这些参数正确的挂载到`process`对象上呢。
 
-
 1.  `_WIN32`操作系统中参数的宽字符到多字节字符转换
-2. 参数分类
+2. cmd参数分类
 
-### 2.1.1 `_WIN32`操作系统中参数的宽字符到多字节字符转换
-为了在启动`Node.js`的时候，参数的字节编码是相同的。
+#### 2.1.1 _WIN32操作系统中参数的宽字符到多字节字符转换
+目的为了在启动`Node.js`的时候，参数的字节编码是相同的。
 
 在图2-1中的第1步实现：
 
@@ -125,5 +124,62 @@ int main(int argc, char *argv[]) {
 ```
 
 `WideCharToMultiByte`是宽字符到多字节字符转换函数 ，使用`CP_UTF8`把`Unicode`转换为`UTF-8`编码。
+
 思路：就是首先通过`WideCharToMultiByte`函数获取每个参数的`size`,然后根据size把宽字节的`wargv[i]`拷贝到`argv[i]`,
 这也就是源码中，`WideCharToMultiByte`函数每次循环都执行2次的原因。
+
+`node::Start(argc, argv)` 为执行`node`命名空间下的`Start()`方法(该方法在`node.cc`中实现)。
+
+#### 2.1.2 cmd参数分类
+最开始的参数都是在`argv`里面，`exec_argv`和`v8_argv`都是没有值的，`Node.js`为了进行区分参数的含义。
+就要对`argv`参数进行拆分。
+
+```cpp
+//node.cc
+/**
+ * [ParseArgs 解析参数列表进行参数分类]
+ * @param argc      [命令行参数个数]
+ * @param argv      [命令行参数数组]
+ * @param exec_argc [执行参数个数]
+ * @param exec_argv [执行参数数组]
+ * @param v8_argc   [v8参数个数]
+ * @param v8_argv   [v8参数数组]
+ */
+static void ParseArgs(int* argc,const char** argv,int* exec_argc,const char*** exec_argv,int* v8_argc,const char*** v8_argv)
+```
+
+例如在命令行输入`node -v`时 ，当`Node.js`执行到`ParseArgs`函数的时候，`while`循环判断每个`argv[i]`是不是等于`-v`,如果等于就执行
+查看`Node.js`版本号的语句，然后结束`Node.js`.由此可知 执行`node --version` 等价于`node -v`.
+
+```cpp
+//循环判断每个参数的含义
+while (index < nargs && argv[index][0] == '-' && !short_circuit) {
+  const char* const arg = argv[index];
+  //...
+  if (strcmp(arg, "--version") == 0 || strcmp(arg, "-v") == 0) {//查看版本号
+    printf("%s\n", NODE_VERSION);
+    exit(0);
+  }
+  //...
+  //还有很多else if
+```
+
+```
+
+如果输入以下命令`node --v8-pool-size=6 argv.js   'hello' 'world'`，上文的输出就会变成：
+
+```js
+ [ 'C:\\Program Files\\nodejs\\node.exe','E:\\node\\node\\argv.js','\'hello\'','\'world\'' ] 
+ [ '--v8-pool-size=6' ] //process.execArgv
+```
+
+`--v8-pool-size=6`是设置`V8`线程池大小。这个参数会在初始化`V8`的时候用到。
+
+```cpp
+else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
+  v8_thread_pool_size = atoi(arg + 15);
+}
+```
+
+总之，最后会通过`memcpy`函数把数据保存到对应的数组里面。
+
