@@ -44,9 +44,11 @@ Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`J
 
 ![NODE_START]({{site.baseurl}}/images/2016/1215_01.png)
 
+> 第3步图中没有给出，安全通讯在第3步和第4步之间。
+
 每个`C/C++`程序都有一个入口`main`，`Node.js`从`node_main.cc`开始执行`C++`核心模块。
 在第11步以前，都是启动`Node.js`的`C++`核心模块，直到`LoadEnvironment()`函数的调用，
-才真正的加载`Node.js`的`JavaScript`模块，`JavaScript`模块的`main`函数就是`boot_strap.js`文件。
+才真正的加载`Node.js`的`JavaScript`模块，`JavaScript`模块的`main`函数就是`bootstrap_node.js`文件。
 第14步`uv_run`是`libuv`的事件轮询函数。`Node.js`从第15步开始便是销毁过程，最后恢复终端状态。
 
 一句话总结`Node.js`：提供一个解释`JavaScript`的引擎，让`JavaScript`有能访问操作系统相关资源的能力，
@@ -336,6 +338,8 @@ V8::SetFlagsFromString(NODE_V8_OPTIONS, sizeof(NODE_V8_OPTIONS) - 1);
 
 总结：`Node.js`的所有加密算法都是基于这个库，包括(`HTTPS`的`SSL`与`TLS`协议).一旦这个库存在漏洞就会影响全站。
 
+这也就是为什么大家一听到`OPENSSL`有漏洞，就捉鸡的原因了。
+
 >  以下的`HAVE_OPENSSL` 和 `NODE_FIPS_MODE`  都在`node.gyp`构建文件中定义。
 
 ```cpp
@@ -379,14 +383,344 @@ inline const char* secure_getenv(const char* key) {
 }
 ```
 
-如果有就设置`CA`证书。这个和开启`HTTPS`的有所不同。
+如果有就设置`CA`证书。这里的`CA`与开启`HTTPS`时需要设置的`CA`有区别。
 
-2.设置`V8`引擎随机源生成器
+2.设置V8引擎随机源生成器
 
-因为我们所说的随机数其实也算通过一定的算法计算出来的，这里面最重要的就是随机数的种子。
+我们所说的随机数其实也算通过一定的算法计算出来的(也就是：伪随机数)，这里面最重要的就是随机数的种子。
 也就是这里的随机源（熵）。
 
-要不然随机数也会被推导计算处理的。虽然这里不一定能保证随机数能做到正在的随机但是也应该竟可能的
-保证随机数的质量。
+某种情况下的随机数是可以被推导计算出来的。虽然这里不一定能保证随机数能做到正在的随机。
+但是也应该竟可能的保证随机数的质量。
 
 ### 2.4 V8引擎启动
+到了这一步（图2-1的第4步），说明我们需要开始创建一个平台，在上面搭建一个环境来解释执行`JavaScript`代码。
+
+基本的工作有：
+
+1. 设置线程池大小，并创建工作线程
+2. 初始化V8
+3. 创建V8实例`isolate`,并初始化
+
+
+#### 2.4.1 设置线程池大小，并创建工作线程
+首先会根据处理器的数量与需要设置的线程大小是否合理，最大线程池为`kMaxThreadPoolSize = 8`。
+
+```cpp
+//default-platform.cc
+/**
+ * [DefaultPlatform::SetThreadPoolSize 设置线程池大小]
+ * @param thread_pool_size [线程数量]
+ */
+void DefaultPlatform::SetThreadPoolSize(int thread_pool_size) {
+  base::LockGuard<base::Mutex> guard(&lock_);
+  DCHECK(thread_pool_size >= 0);
+  if (thread_pool_size < 1) {
+    //获取处理器当前数量然后-1
+    thread_pool_size = base::SysInfo::NumberOfProcessors() - 1;
+  }
+  thread_pool_size_ =
+      std::max(std::min(thread_pool_size, kMaxThreadPoolSize), 1);//不能超过最大线程数限制
+}
+```
+
+然后根据线程池大小`thread_pool_size`创建工作线程，并添加到队列里面。
+
+```cpp
+//default-platform.cc
+/**
+ * [DefaultPlatform::EnsureInitialized 确认平台已经初始化]
+ */
+void DefaultPlatform::EnsureInitialized() {
+  base::LockGuard<base::Mutex> guard(&lock_);//guard：守护的意思
+  if (initialized_) return;
+  initialized_ = true;
+  //添加工作线程到线程池
+  //std::vector<WorkerThread*> thread_pool_;
+  for (int i = 0; i < thread_pool_size_; ++i)
+    thread_pool_.push_back(new WorkerThread(&queue_));
+}
+```
+
+#### 2.4.2 初始化V8
+`V8`初始化这里，大概就是初始化了一些底层的东西（暂时没有看明白，后期补上）。
+
+```cpp
+//v8.cc
+/**
+ * [V8::InitializeOncePerProcessImpl v8初始化]
+ */
+void V8::InitializeOncePerProcessImpl() {
+  FlagList::EnforceFlagImplications();
+
+  if (FLAG_predictable && FLAG_random_seed == 0) {
+    // Avoid random seeds in predictable mode.
+    FLAG_random_seed = 12347;
+  }
+
+  if (FLAG_stress_compaction) {
+    FLAG_force_marking_deque_overflows = true;
+    FLAG_gc_global = true;
+    FLAG_max_semi_space_size = 1;
+  }
+
+  if (FLAG_turbo && strcmp(FLAG_turbo_filter, "~~") == 0) {
+    const char* filter_flag = "--turbo-filter=*";
+    FlagList::SetFlagsFromString(filter_flag, StrLength(filter_flag));
+  }
+  //初始化 node_os.cc
+  //主要是把操作系统方面的操作绑定到当前环境
+  base::OS::Initialize(FLAG_random_seed, FLAG_hard_abort, FLAG_gc_fake_mmap);
+  //v8初始化
+  Isolate::InitializeOncePerProcess();
+  sampler::Sampler::SetUp();
+  CpuFeatures::Probe(false);
+  ElementsAccessor::InitializeOncePerProcess();
+  LOperand::SetUpCaches();
+  SetUpJSCallerSavedCodeData();
+  ExternalReference::SetUp();
+  Bootstrapper::InitializeOncePerProcess();
+}
+```
+
+#### 2.4.3 创建V8引擎实例,并初始化
+`V8`平台的创建与初始化之后，进一步（图2-1的第6步）就是需要创建一个`V8`引擎实例来跑我们的`JavaScript`模块。
+`V8`引擎原本是用在chrome浏览器的，我们使用chrome时，每打开一个页面其实就是创建一个`V8`引擎实例。
+
+```cpp
+/**
+ * [Start 开始执行]
+ * @param  event_loop [uv_default_loop()]
+ * @param  argc       [description]
+ * @param  argv       [description]
+ * @param  exec_argc  [description]
+ * @param  exec_argv  [description]
+ * @return            [description]
+ */
+inline int Start(uv_loop_t* event_loop,
+                 int argc, const char* const* argv,
+                 int exec_argc, const char* const* exec_argv) {
+  //v8引擎初始化参数
+  Isolate::CreateParams params;
+  //容器
+  ArrayBufferAllocator allocator;
+  params.array_buffer_allocator = &allocator;
+//性能分析器
+#ifdef NODE_ENABLE_VTUNE_PROFILING
+  params.code_event_handler = vTune::GetVtuneCodeEventHandler();
+#endif
+  //Isolate表示一个独立的v8引擎实例
+  //E:\git\node-master\deps\v8\src\api.cc#Isolate* Isolate::New
+  Isolate* const isolate = Isolate::New(params);
+  if (isolate == nullptr)
+    return 12;  // Signal internal error.
+  //设置消息监听函数
+  isolate->AddMessageListener(OnMessage);
+  //设置异常中断监听函数
+  isolate->SetAbortOnUncaughtExceptionCallback(ShouldAbortOnUncaughtException);
+  //设置自动运行小任务
+  isolate->SetAutorunMicrotasks(false);
+  //设置错误回调
+  isolate->SetFatalErrorHandler(OnFatalError);
+  //跟踪堆对象分配堆快照。
+  if (track_heap_objects) {
+    isolate->GetHeapProfiler()->StartTrackingHeapObjects(true);
+  }
+  //互斥锁
+  {
+    Mutex::ScopedLock scoped_lock(node_isolate_mutex);
+    CHECK_EQ(node_isolate, nullptr);
+    node_isolate = isolate;
+  }
+
+  int exit_code;
+  {
+    //锁住
+    Locker locker(isolate);
+    //v8上下文
+    Isolate::Scope isolate_scope(isolate);
+    //v8对象指针的数组
+    HandleScope handle_scope(isolate);
+    //v8数据集
+    IsolateData isolate_data(isolate, event_loop, allocator.zero_fill_field());
+    //执行node.js
+    exit_code = Start(isolate, &isolate_data, argc, argv, exec_argc, exec_argv);
+  }
+
+  {
+    Mutex::ScopedLock scoped_lock(node_isolate_mutex);
+    CHECK_EQ(node_isolate, isolate);
+    node_isolate = nullptr;
+  }
+
+  isolate->Dispose();
+
+  return exit_code;
+}
+```
+
+创建整个`isolate`实例，然后监听相关的事件。
+
+比如：
+
+1. 设置消息监听函数
+2. 设置异常中断监听函数
+3. 设置自动运行小任务
+4. 跟踪堆对象分配堆快照
+
+> 互斥锁（英语：英语：Mutual exclusion，缩写 `Mutex`）是一种用于多线程编程中，防止两条线程同时对同一公共资源（比如全局变量）进行读写的机制。
+该目的通过将代码切片成一个一个的临界区域（critical section）达成。临界区域指的是一块对公共资源进行访问的代码，并非一种机制或是算法。
+一个程序、进程、线程可以拥有多个临界区域，但是并不一定会应用互斥锁。
+
+
+### 2.5 Loading Node.js环境
+`isolate`实例创建之后，就需要把整个`Node.js`的环境搭建起来，在这一步之前基本上都是在为启动`Node.js`做准备。
+
+
+### 2.6 开始Node.js旅程
+
+1.加载`bootstrap_node.js`，开始`Node.js`的`JavaScript`模块。
+
+```cpp
+Local<String> script_name = FIXED_ONE_BYTE_STRING(env->isolate(),
+                                                    "bootstrap_node.js");
+```
+
+2.把global加到全局
+
+```cpp
+global->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "global"), global);
+```
+
+3.绑定`process`到全局
+
+```cpp
+Local<Value> arg = env->process_object();
+//执行bootstrap_node.js  arg === process
+//执行boot_strap，并把process传递进去
+f->Call(Null(env->isolate()), 1, &arg);
+```
+
+4.加载所有的`JavaScript`模块，之后，执行`startup`函数.
+
+`startup`最重要的就是`else`里面的代码，这就是开始执行用户代码的开始。也就是整个项目真正开始执行用户代码的开始的地方。
+
+```js
+// There is user code to be run
+
+// If this is a worker in cluster mode, start up the communication
+// channel. This needs to be done before any user code gets executed
+// (including preload modules).
+if (process.argv[1] && process.env.NODE_UNIQUE_ID) {
+  const cluster = NativeModule.require('cluster');
+  cluster._setupWorker();
+
+  // Make sure it's not accidentally inherited by child processes.
+  delete process.env.NODE_UNIQUE_ID;
+}
+
+if (process._eval != null && !process._forceRepl) {
+  // User passed '-e' or '--eval' arguments to Node without '-i' or
+  // '--interactive'
+  preloadModules();
+
+  const internalModule = NativeModule.require('internal/module');
+  internalModule.addBuiltinLibsToObject(global);
+  run(() => {
+    evalScript('[eval]');
+  });
+} else if (process.argv[1]) {
+  // make process.argv[1] into a full path
+  const path = NativeModule.require('path');
+  process.argv[1] = path.resolve(process.argv[1]);
+
+  const Module = NativeModule.require('module');
+
+  // check if user passed `-c` or `--check` arguments to Node.
+  if (process._syntax_check_only != null) {
+    const vm = NativeModule.require('vm');
+    const fs = NativeModule.require('fs');
+    const internalModule = NativeModule.require('internal/module');
+    // read the source
+    const filename = Module._resolveFilename(process.argv[1]);
+    var source = fs.readFileSync(filename, 'utf-8');
+    // remove shebang and BOM
+    source = internalModule.stripBOM(source.replace(/^#!.*/, ''));
+    // wrap it
+    source = Module.wrap(source);
+    // compile the script, this will throw if it fails
+    new vm.Script(source, {filename: filename, displayErrors: true});
+    process.exit(0);
+  }
+
+  preloadModules();
+  run(Module.runMain);
+} else {
+  preloadModules();
+  // If -i or --interactive were passed, or stdin is a TTY.
+  if (process._forceRepl || NativeModule.require('tty').isatty(0)) {
+    // REPL
+    const cliRepl = NativeModule.require('internal/repl');
+    cliRepl.createInternalRepl(process.env, function(err, repl) {
+      if (err) {
+        throw err;
+      }
+      repl.on('exit', function() {
+        if (repl._flushing) {
+          repl.pause();
+          return repl.once('flushHistory', function() {
+            process.exit();
+          });
+        }
+        process.exit();
+      });
+    });
+
+    if (process._eval != null) {
+      // User passed '-e' or '--eval'
+      evalScript('[eval]');
+    }
+  } else {
+    // Read all of stdin - execute it.
+    process.stdin.setEncoding('utf8');
+
+    var code = '';
+    process.stdin.on('data', function(d) {
+      code += d;
+    });
+
+    process.stdin.on('end', function() {
+      process._eval = code;
+      evalScript('[stdin]');
+    });
+  }
+}
+```
+
+执行了之后，进入了事件循环，也就是`libuv`库的事件轮询机制。
+
+```cpp
+{
+  SealHandleScope seal(isolate);
+  bool more;
+  do {
+    //反复的询问任务是否完成
+    v8_platform.PumpMessageLoop(isolate);
+    more = uv_run(env.event_loop(), UV_RUN_ONCE);//事件循环
+
+    if (more == false) { //没有事件活跃
+      v8_platform.PumpMessageLoop(isolate);
+      EmitBeforeExit(&env); //准备退出
+
+      // Emit `beforeExit` if the loop became alive either after emitting
+      // event, or after running some callbacks.
+      more = uv_loop_alive(env.event_loop());
+      if (uv_run(env.event_loop(), UV_RUN_NOWAIT) != 0)
+        more = true;
+    }
+  } while (more == true);
+}
+```
+
+### 2.7 退出
+从第15步开始，`Node.js`将会开始退出。
