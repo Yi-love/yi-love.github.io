@@ -194,6 +194,8 @@ else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
 
 `__POSIX__`平台要而外初始化的主要是：信号处理 ，`stdin/stdout/stderr`可用 , 打开文件描述符限制设置上线。
 
+>  初始化主要在图2-1的第3步中实现。
+
 #### 2.2.1 程序退出后对终端状态进行还原事件绑定
 当整个`Node.js`退出后，不管是异常还是进程安全结束。都要对执行命令的终端恢复原始状态。也就是图2-1的第20步。
 
@@ -286,10 +288,105 @@ for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd += 1) {
 ```
 
 #### 2.2.3 其它初始化
-1.获取准确的时间
+1.获取准确的启动时间
 
-`Node.js`启动的起始时间。
+`Node.js`启动的起始时间。`uv_default_loop`全局的事件循环.
 
 ```cpp
   prog_start_time = static_cast<double>(uv_now(uv_default_loop()));
 ```
+
+2.尝试设置所有的代开的文件描述符为自动关闭
+
+```cpp
+ uv_disable_stdio_inheritance();
+```
+
+3.检测注册的异步debug消息队列(跨线程)
+
+```cpp
+uv_async_init(uv_default_loop(),
+                            &dispatch_debug_messages_async,
+                            DispatchDebugMessagesAsyncCallback)
+```
+
+4.删除异步debug消息的handle引用
+> 不会对callback函数造成影响.
+
+```cpp
+uv_unref(reinterpret_cast<uv_handle_t*>(&dispatch_debug_messages_async))
+```
+
+5.全球化
+
+```cpp
+V8::SetFlagsFromString(icu_case_mapping, sizeof(icu_case_mapping) - 1);
+V8::SetFlagsFromString(NODE_V8_OPTIONS, sizeof(NODE_V8_OPTIONS) - 1);
+```
+
+
+### 2.3 安全通讯
+把基本的底层初始化和兼容都做好了以后，就要考虑安全通讯。因为网络传输容易被窃听。
+比如网站的登录服务，如果登录的的密码不加密，很容易造成密码泄漏，没有加密过的密码会通过明文进行传输。
+假如你加密了，但是可能使用的是`HTTP`协议，也一样有可能被劫持。居于上面的种种情况，
+服务器开启安全通讯是必不可少的（虽然可以不开启，那就相当于裸奔）。
+
+`Node.js`为了进行安全通讯而引入了`OPENSSL`，`OPENSSL`是一个是一个开放源代码的软件库包。
+目前广泛被应用在互联网的网页服务器上。可以使用这个包来进行安全通信，避免窃听，同时确认另一端连接者的身份。
+
+总结：`Node.js`的所有加密算法都是基于这个库，包括(`HTTPS`的`SSL`与`TLS`协议).一旦这个库存在漏洞就会影响全站。
+
+>  以下的`HAVE_OPENSSL` 和 `NODE_FIPS_MODE`  都在`node.gyp`构建文件中定义。
+
+```cpp
+//node.cc#Start()
+//应用程序可以使用OPENSSL来进行安全通信，避免窃听，同时确认另一端连接者的身份.
+#if HAVE_OPENSSL
+  //获取CA证书文件
+  if (const char* extra = secure_getenv("NODE_EXTRA_CA_CERTS"))
+    //设置CA证书
+    crypto::UseExtraCaCerts(extra);
+#ifdef NODE_FIPS_MODE
+  //FIPS构建的情况下,我们应该确保先初始化随机源。
+  OPENSSL_init();
+#endif  // NODE_FIPS_MODE
+  // V8 on Windows doesn't have a good source of entropy. Seed it from
+  // OpenSSL's pool.
+  // 允许主机应用程序提供一个回调可作为随机数生成器的熵的来源。
+  V8::SetEntropySource(crypto::EntropySource);
+#endif
+```
+
+1.从环境变量中获取参数`NODE_EXTRA_CA_CERTS`
+
+例如，linux下可以通过命令：
+
+```sh
+ export | env 
+```
+
+```cpp
+// 查看环境变量 , 在设置了uid的情况下，
+inline const char* secure_getenv(const char* key) {
+#ifndef _WIN32
+  //geteuid()用来取得执行目前进程有效的用户识别码。
+  //getuid()用来取得执行目前进程的用户识别码。
+  if (getuid() != geteuid() || getgid() != getegid())
+    return nullptr;
+#endif
+  //获取环境变量
+  return getenv(key);
+}
+```
+
+如果有就设置`CA`证书。这个和开启`HTTPS`的有所不同。
+
+2.设置`V8`引擎随机源生成器
+
+因为我们所说的随机数其实也算通过一定的算法计算出来的，这里面最重要的就是随机数的种子。
+也就是这里的随机源（熵）。
+
+要不然随机数也会被推导计算处理的。虽然这里不一定能保证随机数能做到正在的随机但是也应该竟可能的
+保证随机数的质量。
+
+### 2.4 V8引擎启动
