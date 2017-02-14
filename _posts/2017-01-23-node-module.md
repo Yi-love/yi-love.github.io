@@ -40,7 +40,7 @@ Module.prototype.require = function(path) {
 
 ```
 
-模块加载会先获取到模块的对应文件路径，然后会先查看`Module`缓存中是否有该模块,没有再查看是不是原生模块，最后才算尝试加载模块。
+模块加载会先获取到模块的对应文件路径，然后会先查看`Module`缓存中是否有该模块,没有再查看是不是原生模块，最后才尝试加载模块。
 最终会返回`exports`暴露的外部接口。
 
 ```js
@@ -77,11 +77,11 @@ Module._load = function(request, parent, isMain) {
 
 `_load`函数有3个参数
 
-`path` 当前加载的模块名称
-`parent` 父亲模块
-`isMain` 是不是主入口文件
+* `path` 当前加载的模块名称
+* `parent` 父亲模块
+* `isMain` 是不是主入口文件
 
-这样就保证了我们的项目到最后其实模块的结构是树状结构,入口文件就是树根。
+通过`require`进来的模块都会指定引入该模块的文件为父亲模块，这样就保证了我们的项目到最后其实模块的结构是树状结构,入口文件就是树根。
 
 ```js
 //module.js
@@ -114,12 +114,16 @@ function Module(id, parent) {
 ```js
 //module.js
 Module._resolveFilename = function(request, parent, isMain) {
+  if (NativeModule.nonInternalExists(request)) { //原生模块直接返回
+    return request;
+  }
   //获取模块文件夹相关信息
   var resolvedModule = Module._resolveLookupPaths(request, parent);
   //获取文件路径
   return Module._findPath(request, resolvedModule[1], isMain);;
 };
 ```
+会通过`NativeModule.nonInternalExists(request)`判断是不是原生模块，如果是则返回原生模块。原生模块通过`ativeModule.require(request)`加载。
 
 `Module._resolveLookupPaths(request, parent)`函数返回一个数组`[id , paths]`。 
 
@@ -172,6 +176,8 @@ for (var i = 0; i < paths.length; i++) {
 }
 ```
 
+`stat`函数会调用原生的`c/c++`方法来判断路径类型。然后根据类型来决定按哪种方式来加载。
+
 ## 2.根据路径加载文件执行
 根据不同的文件类型，Node.js会进行不同的处理和执行。
 
@@ -201,10 +207,8 @@ Module._extensions['.node'] = function(module, filename) {
 
 对于`.js`的文件会，先同步读取文件，然后通过`module._compile`解释执行。
 
-所谓 BOM，全称是Byte Order Mark，它是一个Unicode字符，
-通常出现在文本的开头，用来标识字节序 （Big/Little Endian），
-除此以外还可以标识编码（UTF-8/16/32），如果出现在文本中间，
-则解释为zero width no-break space。
+所谓`BOM`，全称是(Byte Order Mark)，它是一个Unicode字符，通常出现在文本的开头，用来标识字节序 （Big/Little Endian），
+除此以外还可以标识编码（UTF-8/16/32），如果出现在文本中间，则解释为zero width no-break space。
 
 ```js
 function stripBOM(content) {
@@ -252,6 +256,7 @@ return result;
 ```
 
 我们都知道我们的代码都是要通过头尾包装的。`Module.wrap === NativeModule.wrap`。
+
 ```js
 //给用户 的代码添加头和尾
 NativeModule.wrap = function(script) {
@@ -263,7 +268,6 @@ NativeModule.wrapper = [
   '\n});'
 ];
 ```
-
 
 现实中我们使用的`require`包装函数：
 
@@ -281,11 +285,9 @@ function makeRequireFunction() {
       exports.requireDepth -= 1;
     }
   }
-
   function resolve(request) {
     return Module._resolveFilename(request, self);
   }
-
   require.resolve = resolve;
 
   require.main = process.mainModule;
