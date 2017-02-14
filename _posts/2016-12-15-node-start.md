@@ -1,8 +1,8 @@
 ---
 layout: page
 title: Node.js源码解析--启动Node.js
-categories: [Node]
-tags: [node_main.cc,node.cc,global,process,env.cc,boot_starp.js]
+categories: [Node.js]
+tags: [node_main.cc,node.cc,global,process,env.cc,bootstarp_node.js]
 ---
 
 `Node.js`一直以来都是我工作中不可缺少的一部分，但对于它的了解却知之甚少。
