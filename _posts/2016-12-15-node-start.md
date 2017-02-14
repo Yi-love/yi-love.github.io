@@ -606,93 +606,98 @@ f->Call(Null(env->isolate()), 1, &arg);
 `startup`最重要的就是`else`里面的代码，这就是开始执行用户代码的开始。也就是整个项目真正开始执行用户代码的开始的地方。
 
 ```js
-// There is user code to be run
+else {
+  // 用户代码
 
-// If this is a worker in cluster mode, start up the communication
-// channel. This needs to be done before any user code gets executed
-// (including preload modules).
-if (process.argv[1] && process.env.NODE_UNIQUE_ID) {
-  const cluster = NativeModule.require('cluster');
-  cluster._setupWorker();
+  // If this is a worker in cluster mode, start up the communication
+  // channel. This needs to be done before any user code gets executed
+  // (including preload modules).
+  if (process.argv[1] && process.env.NODE_UNIQUE_ID) {
+    const cluster = NativeModule.require('cluster');
+    cluster._setupWorker();
 
-  // Make sure it's not accidentally inherited by child processes.
-  delete process.env.NODE_UNIQUE_ID;
-}
-
-if (process._eval != null && !process._forceRepl) {
-  // User passed '-e' or '--eval' arguments to Node without '-i' or
-  // '--interactive'
-  preloadModules();
-
-  const internalModule = NativeModule.require('internal/module');
-  internalModule.addBuiltinLibsToObject(global);
-  run(() => {
-    evalScript('[eval]');
-  });
-} else if (process.argv[1]) {
-  // make process.argv[1] into a full path
-  const path = NativeModule.require('path');
-  process.argv[1] = path.resolve(process.argv[1]);
-
-  const Module = NativeModule.require('module');
-
-  // check if user passed `-c` or `--check` arguments to Node.
-  if (process._syntax_check_only != null) {
-    const vm = NativeModule.require('vm');
-    const fs = NativeModule.require('fs');
-    const internalModule = NativeModule.require('internal/module');
-    // read the source
-    const filename = Module._resolveFilename(process.argv[1]);
-    var source = fs.readFileSync(filename, 'utf-8');
-    // remove shebang and BOM
-    source = internalModule.stripBOM(source.replace(/^#!.*/, ''));
-    // wrap it
-    source = Module.wrap(source);
-    // compile the script, this will throw if it fails
-    new vm.Script(source, {filename: filename, displayErrors: true});
-    process.exit(0);
+    // Make sure it's not accidentally inherited by child processes.
+    // 确保不是子进程
+    delete process.env.NODE_UNIQUE_ID; //cluster.fork()
   }
 
-  preloadModules();
-  run(Module.runMain);
-} else {
-  preloadModules();
-  // If -i or --interactive were passed, or stdin is a TTY.
-  if (process._forceRepl || NativeModule.require('tty').isatty(0)) {
-    // REPL
-    const cliRepl = NativeModule.require('internal/repl');
-    cliRepl.createInternalRepl(process.env, function(err, repl) {
-      if (err) {
-        throw err;
-      }
-      repl.on('exit', function() {
-        if (repl._flushing) {
-          repl.pause();
-          return repl.once('flushHistory', function() {
-            process.exit();
-          });
-        }
-        process.exit();
-      });
-    });
+  if (process._eval != null && !process._forceRepl) { //命令行
+    // User passed '-e' or '--eval' arguments to Node without '-i' or
+    // '--interactive'
+    preloadModules();
 
-    if (process._eval != null) {
-      // User passed '-e' or '--eval'
+    const internalModule = NativeModule.require('internal/module');
+    internalModule.addBuiltinLibsToObject(global); //加载模块到global对象
+    run(() => {
       evalScript('[eval]');
+    });
+  } else if (process.argv[1]) {  //主要分支
+    // make process.argv[1] into a full path
+    const path = NativeModule.require('path');
+    //获取模块的完整路径
+    process.argv[1] = path.resolve(process.argv[1]);
+
+    const Module = NativeModule.require('module');
+
+    // check if user passed `-c` or `--check` arguments to Node.
+    // js语法校验
+    if (process._syntax_check_only != null) {
+      const vm = NativeModule.require('vm');
+      const fs = NativeModule.require('fs');
+      const internalModule = NativeModule.require('internal/module');
+      // read the source
+      const filename = Module._resolveFilename(process.argv[1]);
+      var source = fs.readFileSync(filename, 'utf-8');
+      // remove shebang and BOM
+      source = internalModule.stripBOM(source.replace(/^#!.*/, ''));
+      // wrap it
+      source = Module.wrap(source);
+      // compile the script, this will throw if it fails
+      new vm.Script(source, {filename: filename, displayErrors: true});
+      process.exit(0);
     }
+    //--require 加载预加载模块
+    preloadModules();
+    run(Module.runMain); //执行模块
   } else {
-    // Read all of stdin - execute it.
-    process.stdin.setEncoding('utf8');
+    preloadModules();
+    // If -i or --interactive were passed, or stdin is a TTY.
+    if (process._forceRepl || NativeModule.require('tty').isatty(0)) {
+      // REPL
+      const cliRepl = NativeModule.require('internal/repl');
+      cliRepl.createInternalRepl(process.env, function(err, repl) {
+        if (err) {
+          throw err;
+        }
+        repl.on('exit', function() {
+          if (repl._flushing) {
+            repl.pause();
+            return repl.once('flushHistory', function() {
+              process.exit();
+            });
+          }
+          process.exit();
+        });
+      });
 
-    var code = '';
-    process.stdin.on('data', function(d) {
-      code += d;
-    });
+      if (process._eval != null) {
+        // User passed '-e' or '--eval'
+        evalScript('[eval]');
+      }
+    } else {
+      // Read all of stdin - execute it.
+      process.stdin.setEncoding('utf8');
 
-    process.stdin.on('end', function() {
-      process._eval = code;
-      evalScript('[stdin]');
-    });
+      var code = '';
+      process.stdin.on('data', function(d) {
+        code += d;
+      });
+
+      process.stdin.on('end', function() {
+        process._eval = code;
+        evalScript('[stdin]');
+      });
+    }
   }
 }
 ```
