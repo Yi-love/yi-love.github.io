@@ -339,4 +339,4 @@ function hasOwnProperty(obj, prop) {
 
 ### 4.参考
 
-https://github.com/Yi-love/node
+[Node.js注释](https://github.com/Yi-love/node)
