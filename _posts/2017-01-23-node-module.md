@@ -107,7 +107,7 @@ function Module(id, parent) {
 2. 根据路径加载文件执行。
 
 
-## 1. 路径分析,获取文件路径
+### 1. 路径分析,获取文件路径
 使用`require`加载模块时，可以传入模块别名，也可以是相对路径，或是文件夹路径，参数类型繁多。
 只有将传入的模块名称转换成真正能对应到实际文件的路径时，才能根据文件类型按对应的方法处理。
 
@@ -123,9 +123,29 @@ Module._resolveFilename = function(request, parent, isMain) {
   return Module._findPath(request, resolvedModule[1], isMain);;
 };
 ```
-会通过`NativeModule.nonInternalExists(request)`判断是不是原生模块，如果是则返回原生模块。原生模块通过`ativeModule.require(request)`加载。
+会通过`NativeModule.nonInternalExists(request)`判断是不是原生模块，如果是则返回原生模块。原生模块通过`NativeModule.require(request)`加载。
 
 `Module._resolveLookupPaths(request, parent)`函数返回一个数组`[id , paths]`。 
+
+例如在代码里`require('tree-worker')`这个模块，`paths`参数会返回一个可能包含这个模块的文件夹数组。
+换句话说：最后的模块加载成不成功就看`paths`数组里面的文件夹里有没有`tree-worker`这个模块文件存在。
+
+```js
+var res =Module._resolveLookupPaths('tree-worker', module);
+console.log(res);
+/**
+[ 'tree-worker',[ 'E:\\node\\node\\node_modules',
+                  'E:\\node\\node_modules',
+                  'E:\\node_modules',
+                  'C:\\Users\\Administrator\\.node_modules',
+                  'C:\\Users\\Administrator\\.node_libraries',
+                  'C:\\Program Files\\lib\\node' ] 
+]
+*/
+```
+
+`Module._nodeModulePaths(from)`方法就是主要决定`paths`参数的值的方法。
+
 
 `Module._findPath(request, paths, isMain)`会使用`paths`来尝试去读取文件状态，根据状态返回文件路径。
 
@@ -178,7 +198,7 @@ for (var i = 0; i < paths.length; i++) {
 
 `stat`函数会调用原生的`c/c++`方法来判断路径类型。然后根据类型来决定按哪种方式来加载。
 
-## 2.根据路径加载文件执行
+### 2.根据路径加载文件执行
 根据不同的文件类型，Node.js会进行不同的处理和执行。
 
 下面是默认的3中文件的处理方式：
@@ -300,3 +320,23 @@ function makeRequireFunction() {
   return require;
 }
 ```
+
+### 3.总结
+通过阅读module.js模块的源码，可以看清楚Node.js的模块加载机制以及模块相互引用的结构。对以后进行模块分析有很大的帮助。
+
+#### 3.1 hasOwnProperty 引起的服务器退出
+
+```js
+// If obj.hasOwnProperty has been overridden, then calling
+// obj.hasOwnProperty(prop) will break.
+// See: https://github.com/joyent/node/issues/1707
+// 防止被覆盖
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+```
+
+
+### 4.参考
+
+https://github.com/Yi-love/node
