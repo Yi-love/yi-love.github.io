@@ -580,51 +580,58 @@ body{
 }
 /********me*********/
 .j-me-box{
-    text-align: center;
-    height: 100%;
+  text-align: center;
+  height: 100%;
 }
 .j-me-pic{
-    max-width: 300px;
-    line-height: 1;
-    vertical-align: middle;
+  max-width: 300px;
+  line-height: 1;
+  vertical-align: middle;
 }
 /*******小屏适配**********/
 @media  only screen and (max-width: 640px ) {
-    .j-header{
-        height: auto;
-    }
-    .j-header .j-logo img{
-        height: 34px;
-        width: auto;
-        margin-top: 2px;
-    }
-    .j-header .j-nav{
-        margin-top: 0;
-    }
-    .j-header .j-nav a{
-       font-size: 16px;
-       padding: 8px .5rem;
-    }
-    .j-i-title{
-        line-height: 32px;
-    }
-    .j-i-title a{
-        white-space:normal;
-        font-size: 20px;
-    }
-    .j-list-i ,.j-content{
-        margin-top:.5rem;
-        padding:.5rem;
-    }
-    .j-artclie-txt{
-        font-size: 14px;
-    }
-    .j-tips-max-box{
-      display: none;
-    }
+  ::-webkit-scrollbar {
+    width:0px;
+    height:0px;
+  }
+  .j-header{
+      height: auto;
+  }
+  .j-header .j-logo img{
+      height: 34px;
+      width: auto;
+      margin-top: 2px;
+  }
+  .j-header .j-nav{
+      margin-top: 0;
+  }
+  .j-header .j-nav a{
+     font-size: 16px;
+     padding: 8px .5rem;
+  }
+  .j-i-title{
+      line-height: 32px;
+  }
+  .j-i-title a{
+    white-space:normal;
+    font-size: 20px;
+  }
+  .j-list-i ,.j-content{
+    margin-top:.5rem;
+    padding:.5rem;
+  }
+  .j-artclie-txt{
+      font-size: 14px;
+  }
+  .j-tips-max-box{
+    display: none;
+  }
+  .j-tips-max-box, .j-tips-top-box {
+    border-radius: 20px;
+  }
 }
 
-@media only screen and (min-width:640px ) {
+@media only screen and (min-width:641px ) {
   /* 设置滚动条的样式 */
   ::-webkit-scrollbar {
     width:6px;
