@@ -25,7 +25,7 @@ XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端aj
 
 ### 文件url
 
-https://github.com/Yi-love/xhrp
+[https://github.com/Yi-love/xhrp](https://github.com/Yi-love/xhrp)
 
 ### xhrp
 组件已经更新，组件使用的是原生的Promise对象。不在支持`ie8`.
@@ -45,7 +45,7 @@ https://github.com/Yi-love/xhrp
 npm install --save xhrp
 ```
 
-组件使用文档可以参考：https://github.com/Yi-love/xhrp
+组件使用文档可以参考：[https://github.com/Yi-love/xhrp](https://github.com/Yi-love/xhrp)
 
 ### 参考文档
 [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book)
