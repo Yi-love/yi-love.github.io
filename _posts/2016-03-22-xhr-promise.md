@@ -20,113 +20,32 @@ XHRP就好比jquery的ajax模块一样,但是他更贴近：fetch(一个前端aj
 ```js
    ajax
    jsonp
-   ie8兼容
    Promise  //重点
 ```
 
 ### 文件url
 
-[https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js](https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/xhr.promise.js)
+https://github.com/Yi-love/xhrp
 
-### xhr.promise依赖模块
-1.IE8兼容Array依赖
+### xhrp
+组件已经更新，组件使用的是原生的Promise对象。不在支持`ie8`.
 
-```html
-<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/fix.js"></script>
+主要功能：
+
+1. get
+2. post
+3. jsonp
+4. abort
+
+使用`abort`方法时，需要传入的promise对象要是最开始的对象。
+
+组件可以通过npm安装使用：
+
 ```
-2.IE系列Promise依赖
-
-```html
-<script src="https://github.com/Yi-love/xhr-promise/blob/master/public/javascripts/npo.src.js"></script>
-```
-
-### 外部接口
-xhr.promise 提供3个接口
-
-*   `ajax` ：普通的ajax处理普通的ajax请求
-
-*   `jsonp` : 处理跨域的jsonp请求
-
-*   `abort` : 中断请求 
-
-### 1.参数说明
-
-```js
-{
-  type :'GET',       //请求类型
-  xhr : function(){  //xhr
-	return new window.XMLHttpRequest()
-  },
-  crossDomain: false,//是否跨域
-  timeout: 0,        //超时设置默认不超时
-  processData: true, //数据需要被序列化
-  cache: true,       //对get请求数据进行缓存
-  data ： {} ,       //数据
-  jsonp : 'callback',//跨域请求默认参数
-  username: '',     //用户名
-  password : ''     //密码
-}
+npm install --save xhrp
 ```
 
-### 2.XHRP使用
-
-#### 1.ajax调用
-普通的ajax请求。
-
-
-```js
-   XHRP.ajax({
-        type:'post',
-        url : '/ajax/',
-        data : {username:'jin',pwd:'123213213'}
-   });
-```
-
-#### 2.jsonp调用
-通过jsop接口调用，也可以通过ajax调用,凡是在参数列表中存在jsonp参数，都将会以jsonp的方式请求数据。
-
-```js
-   XHRP.jsonp({
-       url : 'www.exp.com/jsonp',
-       data : {user:'jin'},
-       jsonp : 'jsonp'//服务器接收跨域请求的参数
-   });
-   //or
-   XHRP.ajax({
-       url : 'www.exp.com/jsonp',
-       data : {user:'jin'},
-       jsonp : 'jsonp'//服务器接收跨域请求的参数
-   });
-```
-
-#### 3.abort中断
-
-手动想中断请求。可能设置在参数中传人*timeout*参数是一个更好的选择。
-
-```js
-   var promise = XHRP.ajax({
-        type:'post',
-        url : '/ajax/',
-        data : {username:'jin',pwd:'123213213'}
-   });
-   promise.abort();//手动中断
-   
-   //设置timeout参数
-   var promise = XHRP.ajax({
-        type:'post',
-        url : '/ajax/',
-        data : {username:'jin',pwd:'123213213'},
-        timeout : 2000 //2s后中断请求
-   });
-   
-```
-
-### 3.返回值
-XHRP返回的是一个Promise对象实例。
-
-```js
-   var promise = XHRP.ajax({});
-```
+组件使用文档可以参考：https://github.com/Yi-love/xhrp
 
 ### 参考文档
 [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book)
