@@ -220,7 +220,7 @@ $closureVar: 50px; // local variable
 }
 ```
 
-这是第一个巨大的差异：如果你重现给一个自定义属性赋值，浏览器会重新计算所有的变量并且`calc()`表达式会被调用。
+这是第一个巨大的差异：如果你重新给一个自定义属性赋值，浏览器会重新计算所有的变量并且`calc()`表达式会被调用。
 
 ### 预处理器不会和DOM结构有关联关系
 假设我们想要使用的默认`font-size`字体大小,除了`highlighted`class存在的地方。
@@ -334,7 +334,7 @@ CSS自定义属性是服从相同的CSS规则在使用CSS自定义属性的时�
 
 这里有很多: `translateX/Y/Z`,`background-repeat-x/y`(还没有跨浏览器兼容的),`box-shadow-color`。
 
-让我们试着做最后一个工作。在我们的案例中，当鼠标放上去的时候改变盒子的影子的颜色。我们只想遵循DRY原则（不重复`boxshadw`属性），所以不会改变`:hover`部分的整个`box-shadow`的值，我们只需要修改自定义属性的值：
+让我们试着让最后一个属性工作。在我们的案例中，当鼠标放上去的时候改变盒子的影子的颜色。我们只想遵循DRY原则（不重复`boxshadw`属性），所以不会改变`:hover`部分的整个`box-shadow`的值，我们只需要修改自定义属性的值：
 
 ```css
 .test {
@@ -408,7 +408,7 @@ CSS自定义属性,解决方案是尽可能的干净,避免复制和粘贴,因�
 
 现在,我们可以很容易地使用JavaScript读取CSS变量，分别使用我们熟知的`.getPropertyValue()`方法和`.setProperty()`方法进行读取和写入，像平常的CSS属性一样使用:
 
-```css
+```js
 /**
 * Gives a CSS custom property value applied at the element
 * element {Element}
@@ -474,7 +474,7 @@ JavaScript如何操控自定义属性,我创建了一个交互式3D的CSS立方�
 }
 ```
 
-唯一缺少的是交互性。demo在鼠标移动的时候需要改变X和Y视角（`--rotateX` 和 `--rotateY`)并且鼠标移动和鼠标滚动时要放大和缩小(`--translateZ`)。
+唯一缺少的是交互性。demo在鼠标移动的时候需要改变X和Y视角（`--rotateX` 和 `--rotateY`)并且鼠标滚动时要放大和缩小(`--translateZ`)。
 
 这是JavaScript的代码:
 
@@ -550,7 +550,7 @@ if (isSupported) {
 
 我们看到,CSS自定义属性仍然不支持所有的浏览器。知道了这一点,你可以逐步提高你的应用程序通过检查它们是否支持CSS自定义属性。
 
-例如，你可以生成2份CSS文件：一份保护CSS自定义属性另一份不包含它们，在内联属性中(不久我们将讨论)。
+例如，你可以生成2份CSS文件：一份包含CSS自定义属性另一份不包含它们，在内联属性中(不久我们将讨论)。
 
 
 默认加载没有包含CSS自定义属性的样式的文件。然后通过JavaScript判断是否支持CSS自定义属性来进行切换版本：
@@ -689,5 +689,6 @@ $css-vars-debug-log: true;
 原文：[https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/](https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/)
 
 译者：[Jin](https://github.com/Yi-love)
+
 作者：[Serg Hospodarets](https://www.smashingmagazine.com/author/serghospodarets/)
 
