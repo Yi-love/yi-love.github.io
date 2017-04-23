@@ -300,7 +300,7 @@ CSS自定义属性是服从相同的CSS规则在使用CSS自定义属性的时�
 }
 ```
 
-考虑其它案例。假设你想创建一个足迹并且想确认没有其它的样式或自定义属性被无意的应用到这里（一个模块化的CSS解决方案在这种情况下通常被用于样式）
+考虑其它案例。假设你想创建一个组件并且想确认没有其它的样式或自定义属性被无意的应用到这里（一个模块化的CSS解决方案在这种情况下通常被用于样式）
 
 但是现在这里有另外的方式：使用`all`[CSS属性](https://developer.mozilla.org/en/docs/Web/CSS/all)。这可以快速重置CSS属性。
 
@@ -686,56 +686,8 @@ $css-vars-debug-log: true;
 
 这是正确的时间开始使用CSS自定义属性和准备在浏览器中使用它们。
 
+原文：[https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/](https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/)
 
 译者：[Jin](https://github.com/Yi-love)
 作者：[Serg Hospodarets](https://www.smashingmagazine.com/author/serghospodarets/)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
