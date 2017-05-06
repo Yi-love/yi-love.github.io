@@ -5,7 +5,7 @@ categories: [翻译,JavaScript]
 tags: [异步,async/await]
 ---
 
-[Async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)使得像`for`循环，`if`表达式和`try/catch`等这样的块级命令结构可以很容易的结合异步行为。不同的是，它对功能结构的处理与`forEach`，`map`，`reduce`和`filter`等函数不同。`async`异步功能结构的行为是乎令人费解。
+[Async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)使得像[`for`循环，`if`表达式和`try/catch`等这样的块级命令结构可以很容易的结合异步行为](http://thecodebarbarian.com/common-async-await-design-patterns-in-node.js.html)。不同的是，它对功能结构的处理与`forEach`，`map`，`reduce`和`filter`等函数不同。`async`异步功能结构的行为是乎令人费解。
 这篇文章，我将向你展示在JavaScript的内置数组函数封装为`async`异步函数时遇到的一些陷阱以及如何解决它。
 
 > 注意：以下的代码只在Node v.7.6.0+版本测试通过，以下例子只供参考和学习。我不建议在生产中使用它。
