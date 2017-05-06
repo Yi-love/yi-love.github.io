@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 下一代CSS--CSS自定义属性(CSS变量)使用
+title: 【译】下一代CSS--CSS自定义属性(CSS变量)使用
 categories: [翻译,CSS]
 tags: [css ,技术]
 ---
