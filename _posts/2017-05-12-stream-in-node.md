@@ -124,25 +124,52 @@ process.stdin
 
 **幸运的是,`Gulp`同时为你创建一个新的输入源和一个对你当前数据流非常有用的数据类型:虚拟文件对象。**
 
+`Gulp`中流一旦打开，文件的所有原始信息，物理信息都会被打包到一个虚拟的文件对象中并且保存到虚拟文件系统中，或者`Vinyl`中，好让`Gulp`中相应的软件进行调用。
+
+`Vinyl`对象，文件对象是你的虚拟文件系统，内容包含两种类型的信息：根据文件名称和路径可以定位文件的位置，以及流里面传输的文件内容。虚拟文件保存在计算机内存中，这样处理数据时更加的快速。
+
+通常所有的修改可能最终都会保存到硬盘上。把所有的东西都放在内存中进程之间在处理数据的时候就不用再执行昂贵的读写操作了，`Gulp`改变非常迅速。
 
 
+在内部，`Gulp`使用对象流去一个个的触发文件到处理管道中。对象流和普通的流行为类似，而不是`Buffer`和`String`。
+
+我们可以使用[readable-stream](https://www.npmjs.com/package/readable-stream)包来创建我们自己的可读对象流。
+
+```js
+const through2 = require('through2');  
+const Readable = require('readable-stream').Readable;
+
+const stream = Readable({objectMode: true});   /* 1 */  
+stream._read = () => {};                       /* 2 */
+
+setInterval(() => {                            /* 3 */  
+  stream.push({
+    x: Math.random()
+  });
+}, 100);
+
+const getX = through2.obj((data, enc, cb) => { /* 4 */  
+  cb(null, `${data.x.toString()}\n`);
+});
+
+stream.pipe(getX).pipe(process.stdout);        /* 5 */  
+```
+
+* 最重要的是在创建可读对象流的时候要将`objectMode`设置为`true`。在这样做时，流能够通过管道传递JavaScript对象。不然它会认为是`Buffer`或者`String`。
+* 每个流都需要一个`_read`函数。这个函数会在数据块到达的时候触发。这是其它机制开始的位置，并将新内容推送到流。由于我们从外部推送数据，所以我们不需要这个功能，可以使它无效。 然而，可读流需要实现这一点，否则我们会报错误。
+* 在这里，我们正在使用演示数据填充流。 每100毫秒，我们将一个随机数的另一个对象推送到我们的流。
+* 由于我们想将对象流的结果传递给`process.stdout`，而`process.stdout`只接受字符串，所以我们需要做个小的变换，我们从传递的JavaScript对象中提取属性。
+* 我们创建一个管道。 我们可读的对象流将其所有数据传输到`getX`，最后传输到`process.stdout`。
+
+### Node.js中流包的注意事项
+您可能已经注意到，我们使用可通过NPM安装的不同流包。 不是很奇怪吗？
+
+“Streams对于异步IO来说至关重要，它们不应该成为@nodejs核心的一部分吗？ 是的没错。”
+
+然而，流核心在Node的旧的0.x版本的时候是不断变化的，这就是为什么社区在基本软件包的基础上加入并创建了一个坚实稳定的API。 使用语义版本控制，您可以确保流媒体生态系统与您的应用程序一起很好地移动。
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 足够的Demo演示，然我们正真的做些事
 
 
 
