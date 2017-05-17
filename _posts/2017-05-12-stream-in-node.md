@@ -170,23 +170,107 @@ stream.pipe(getX).pipe(process.stdout);        /* 5 */
 
 
 ## 足够的Demo演示，然我们正真的做些事
+好！让我们做一个app去读取`CVS`数据并且保存到`JSON`中。我们想要使用对象流，因为在某些时候，我们可能需要根据用例来更改数据。由于流很强大，我们希望能够将结果以不同的格式输出。
 
 
+首先我们先安装几个软件包：
+
+```js
+const through2 = require('through2');  
+const fs = require('fs');  
+const split = require('split2');  
+```
+
+* 我们已经了解了`through2`。现在我们使用这个来创建转换。
+* `fs`包显然是用来读写文件的。厉害的是：它允许我们创建一个**可读的流**，这正是我们需要的。
+* 可能你不知道`fs.createReadStream`的数据如何被拉入到内存中，所以`split2`包确保您可以逐行处理数据。 注意这个可变形的名称中的“2”。 它告诉你，它是语义版本的包装生态系统的一部分。
 
 
+### 解析CVS
+CSV非常适用于解析，因为它遵循非常容易理解的格式：逗号表示新的单元格。 一行表示新行。
+
+简单。
+
+在这个例子中，第一行始终是数据的标题。 所以我们想以一种特殊的方式对待第一行：它将为我们的`JSON`对象提供字段。
+
+```js
+const parseCSV = () => {  
+  let templateKeys = [];
+  let parseHeadline = true;
+  return through2.obj((data, enc, cb) => {       /* 1 */
+    if (parseHeadline) {
+      templateKeys = data.toString().split(',');
+      parseHeadline = false;
+      return cb(null, null);                     /* 2 */
+    }
+
+    const entries = data.toString().split(',');
+    const obj = {};
+
+    templateKeys.forEach((el, index) => {       /* 3 */
+      obj[el] = entries[index];
+    });
+
+    return cb(null, obj);                       /* 4 */
+  });
+};
+```
+
+* 我们创建一个可变对象流。 注意`.obj`方法。 即使您的输入数据只是字符串，如果要进一步触发对象，则需要对象流进行转换。
+* 在这个代码块中，我们解析标题（逗号分隔）。 这将是我们的字段模板。 我们从流中删除这一行，这就是为什么我们传递的两个参数都是`null`。
+* 对于所有其他行，我们通过我们先前解析的字段来帮助创建一个对象。
+* 我们将这个对象传递到下一个阶段。
+
+### 更改和调整数据
+一旦我们拥有可用的对象，我们可以更容易地转换数据。 删除属性，添加新的属性; 过滤，映射和缩小。 你喜欢的都可以。 对于这个例子，我们想保持简单：选择前10个条目：
+
+```js
+const pickFirst10 = () => {  
+  let cnt = 0;
+  return through2.obj((data, enc, cb) => {
+    if (cnt++ < 10) {
+      return cb(null, data);
+    }
+    return cb(null, null);
+  });
+};
+```
+
+再次像前面的例子一样：传递回调的第二个参数的数据意味着我们将元素保留在流中。 传递null表示我们将数据丢弃。 这对过滤器至关重要！
+
+### 保存到JSON
+你知道JSON是什么意思？JavaScript对象。这太好了，因为我们有JavaScript对象，我们可以用字符串表示法来形容它们！
+
+所以，我们想要处理流中通过的对象保存为一个对象，并将它们存储为一个字符串表示形式。 最先考虑到的是：`JSON.stringify`。
+
+**使用流时必须知道的一件重要的事情是，一旦对象（或`Buffer`数据）通过可转换到下一个阶段，那么这个阶段就已经消失了。**
+
+这也意味着您可以将对象传递给一个可写流，不需要太多。 然而，有一种方法来收集数据并且与之做不同的事情。 如果流中没有更多数据，每个转换会调用一次`flush`方法。
+
+> 想想一个充满流体的水槽。
+
+你不能选择它的每块数据块来进行再次分析。 但是，您可以将整个数据冲刷到下一个阶段。 这是我们正在做的下一个可变换到JSON：
+
+```js
+const toJSON = () => {  
+  let objs = [];
+  return through2.obj(function(data, enc, cb) {
+    objs.push(data);                              /* 1 */
+    cb(null, null);
+  }, function(cb) {                               /* 2 */
+    this.push(JSON.stringify(objs));
+    cb();
+  });
+};
+```
+
+* 我们把传递过来的所有数据存放到数组里。 我们从我们的流中删除对象。
+* 在第二个回调方法中，`flush`方法，我们将收集的数据转换为`JSON`字符串。 使用`this.push`（注意经典函数符号），我们将这个新对象推送到我们的流进入下一个阶段。 在这个例子中，新的“对象”只是一个字符串。 与标准可写性兼容的东西！
 
 
+例如，`Gulp`在使用链式调用行为时。 读取第一阶段的所有文件，然后将一个文件刷新到下一个阶段。
 
-
-
-
-
-
-
-
-
-
-
+### 结合一切
 
 
 
