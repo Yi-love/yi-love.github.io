@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 【译】Node.js之Stream（流）对象权威指南
-categories: [翻译,CSS]
-tags: [css ,技术]
+categories: [翻译,JavaScript,Node.js]
+tags: [nodejs,tutorial,gulp.js,object streams]
 ---
 
 `Stream`流对象为Node.js带来了强大的力量：你可以使用异步的方式处理输入和输出，可以根据所依赖的步骤来对数据进行输送。**本教程中，我将带你熟悉理论，并教你如何灵活使用`Stream`对象，就像使用`Gulp`一样。**
@@ -271,6 +271,72 @@ const toJSON = () => {
 例如，`Gulp`在使用链式调用行为时。 读取第一阶段的所有文件，然后将一个文件刷新到下一个阶段。
 
 ### 结合一切
+到这里我又想到了函数式编程:后面的转换函数都是按行分开写的。它们完全可重用的不同场景,无论输入数据和输出格式。
+
+唯一约束是CSV格式的(第一行是字段名),`pickFirst10`和`toJSON`需要JavaScript对象作为输入。并且把前10项转为JSON格式输出到控制台:
+
+
+```js
+const stream = fs.createReadStream('sample.csv');
+
+stream  
+  .pipe(split())
+  .pipe(parseCSV())
+  .pipe(pickFirst10())
+  .pipe(toJSON())
+  .pipe(process.stdout);
+```
+
+完美！我们可以传输不同的可写流。在Node.js里，IO的核心是依赖流的。下面是一个`HTTP`服务器并把所有数据传输到互联网的例子：
+
+```js
+const http = require('http');
+
+// All from above
+const stream = fs.createReadStream('sample.csv')  
+  .pipe(split())
+  .pipe(parseCSV())
+  .pipe(pickFirst10())
+  .pipe(toJSON())
+
+const server = http.createServer((req, res) => {  
+  stream.pipe(res);
+});
+
+server.listen(8000);  
+```
+
+这是Node.js流的一大优势所在。你可以异步的处理输入和输出，并且可以根据以依赖的步骤转换处理数据。对于对象流，你可以利用自己知道的部分去转换你的数据。
+
+
+这是`Gulp`作为一个以流为基础的构建系统，但也是一个日常开发的好工具。
+
+
+## 进一步阅读
+如果你想深入了解流,我可以推荐一些资源:
+
+* [《前端工具之Gulo,Bower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a)。书中有一些章节是讲流工具的像合并流以及后面有章节讲转移流。
+* [Fettblog](https://fettblog.eu/) 我的博客有很多关于`Gulp`和`Gulp`插件的文章。因为所有`Gulp`插件被编写为对象,你可以学习写一个或从中学习到其它东西。
+* [Substack' 的一本关于流的电子书](https://github.com/substack/stream-handbook)。了解流的原理。
+* [Rod Vagg 对流核心的讲解](https://r.va.gg/2014/06/why-i-dont-use-nodes-core-stream-module.html)。有点老，但是依然是很不错的：Rod Vagg 解释为什么使用流类型的NPM包。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
