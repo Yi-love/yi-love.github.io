@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 【译】Node.js之Stream（流）对象权威指南
+title: 【译】Node.js之对象流（Stream）权威指南
 categories: [翻译,JavaScript,Node.js]
 tags: [nodejs,tutorial,gulp.js,object streams]
 ---
