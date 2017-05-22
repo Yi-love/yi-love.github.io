@@ -5,18 +5,17 @@ categories: [翻译,JavaScript,Node.js]
 tags: [nodejs,tutorial,gulp.js,object streams]
 ---
 
-`Stream`流对象为Node.js带来了强大的力量：你可以使用异步的方式处理输入和输出，可以根据所依赖的步骤来对数据进行转换。**本教程中，我将带你熟悉理论，并教你如何灵活使用`Stream`对象，就像使用`Gulp`一样。**
+Node.js的`Srtream`具有强大的功能：你可以使用异步的方式处理输入和输出，可以根据所依赖的步骤来对数据进行转换。**本教程中，我将带你熟悉理论，并教你如何灵活使用`Stream`对象，就像使用`Gulp`一样。**
 
 ***
 
-当我在写一本名为 [《前端工具之Gulp，Brower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a) 的书时，我决定不仅要展示API和使用案例，还需要关注底层的实现思想。
+当我在写一本名为 [《前端工具之Gulp，Brower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a) 的书时，我决定不仅要展示API和使用案例，还需要关注以下的概念。
 
 
-你要知道特别是在JavaScript中，工具和框架的更新换代比你为它们注册域名和Github团队的速度还要快。**例如[Gulp.js](http://gulpjs.com/)，最重要的一个概念是流！**
-
+你要知道特别是在JavaScript中，工具和框架的更新换代比你为它们注册域名和创建Github团队的速度还要快。**例如[Gulp.js](http://gulpjs.com/)，最重要的一个概念是流！**
 
 ## 约50年的流
-在`Gulp`里，你想要读取一些文件数据转换为指定的数据输出，加载一些`JavaScript`文件并打包成一个文件。这些操作`Gulp`的API已经提供了一些方法来读取，转换，和写入文件，所有的这些方法都是基于流来实现的。
+在`Gulp`里，你想要读取一些文件的数据转换为指定的数据输出，加载一些`JavaScript`文件并打包成一个文件。这些操作`Gulp`的API已经提供了一些方法来读取，转换，和写入文件，所有的这些方法都是基于流来实现的。
 
 >  在计算机中流是一个很老的概念，,源自1960年代早期Unix。
 
@@ -34,7 +33,7 @@ tags: [nodejs,tutorial,gulp.js,object streams]
 
 它们统称为**输出流值**，意味着它们存储来着流的数据。下图说明了流是如何工作的。
 
-![流]({{site.baseurl}}/images/2017/0512_01.jpg)
+![流](/images/2017-05-21-object-streams-in-nodejs/01.jpg)
 
 数据是由一组可用的元素组成的序列（就像字符或者字节）。
 
@@ -71,7 +70,7 @@ request('https://fettblog.eu').pipe(process.stdout);
 这是流其中的一个最大的优势所在。流一旦打开你就可以一块块的读取数据，你可以在程序的不同位置进行操作。下图说明了这个过程。
 
 
-![转换数据]({{site.baseurl}}/images/2017/0512_02.jpg)
+![转换数据](/images/2017-05-21-object-streams-in-nodejs/02.jpg)
 
 对于修改数据，你只需要在输入和输出之间添加对应的程序转换代码块。
 
@@ -315,9 +314,9 @@ server.listen(8000);
 ## 进一步阅读
 如果你想深入了解流,我可以推荐一些资源:
 
-* [《前端工具之Gulo,Bower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a)。书中有一些章节是讲流工具的像合并流以及后面有章节讲转移流。
+* [《前端工具之Gulo,Bower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a)书中有一些章节是讲流工具的像合并流以及后面有章节讲转移流。
 * [Fettblog](https://fettblog.eu/) 我的博客有很多关于`Gulp`和`Gulp`插件的文章。因为所有`Gulp`插件被编写为对象,你可以学习写一个或从中学习到其它东西。
-* [Substack' 的一本关于流的电子书](https://github.com/substack/stream-handbook)。了解流的原理。
+* [Substack的一本关于流的电子书](https://github.com/substack/stream-handbook)。了解流的原理。
 * [Rod Vagg 对流核心的讲解](https://r.va.gg/2014/06/why-i-dont-use-nodes-core-stream-module.html)。有点老，但是依然是很不错的：Rod Vagg 解释为什么使用流类型的NPM包。
 
 
@@ -326,8 +325,3 @@ server.listen(8000);
 译者：[Jin](https://github.com/Yi-love)
 
 作者：[Stefan Baumgartner](https://community.risingstack.com/author/stefan/)
-
-
-
-
-
