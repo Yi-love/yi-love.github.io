@@ -9,8 +9,8 @@ tags: [node_main.cc,node.cc,global,process,env.cc,bootstarp_node.js]
 平常的时候只会用`Node.js`来写写工具,组件。偶尔会用它来写写项目（原谅我是个FE），
 所以并没有对`Node.js`进行过深入的学习。
 
-从最开始的`Node.js 6+`文档翻译,到工具模块的编写(例如：`dns-proxy-server` 一个dns代理工具)，
-再到`Node.js`源码的解读，我都在试着一步一步的把`Node.js`读透。
+从最开始的`Node.js 6+`文档翻译,到工具模块的编写(例如：[dns-proxy-server](https://github.com/Yi-love/dns-proxy-server) 一个dns代理工具)，
+再到`Node.js`源码的解读，我都在试着一步一步的去了解`Node.js`。
 
 了解`Node.js`启动流程之前，还必须明白：
 
@@ -87,7 +87,7 @@ node --harmony  argv.js  'hello' 'world'
 [ '--harmony' ] //process.execArgv
 ```
 
-那如何才能把这些参数正确的挂载到`process`对象上呢。
+那如何才能把这些参数正确的挂载到`process`对象上呢？
 
 1.  `_WIN32`操作系统中参数的宽字符到多字节字符转换
 2. cmd参数分类
@@ -131,6 +131,8 @@ int main(int argc, char *argv[]) {
 这也就是源码中，`WideCharToMultiByte`函数每次循环都执行2次的原因。
 
 `node::Start(argc, argv)` 为执行`node`命名空间下的`Start()`方法(该方法在`node.cc`中实现)。
+
+参考：[WideCharToMultiByte](http://www.cnblogs.com/gakusei/articles/1585211.html)
 
 #### 2.1.2 cmd参数分类
 最开始的参数都是在`argv`里面，`exec_argv`和`v8_argv`都是没有值的，`Node.js`为了进行区分参数的含义。
