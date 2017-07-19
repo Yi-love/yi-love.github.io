@@ -455,6 +455,9 @@ body{
   text-align: right;
 }
 /*******index.html**********/
+.j-list-i{
+  border-bottom: 2px dashed #C0C0C0;
+}
 .j-list-i ,.j-content{
     margin-top:1rem;
     padding:1rem;
@@ -464,7 +467,6 @@ body{
     padding: 8px 0 16px 0;
     width: 100%;
     font-weight: 500;
-    border-bottom: 1px dashed #C0C0C0;
 }
 .j-i-title a{
     width: 100%;
