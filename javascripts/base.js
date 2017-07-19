@@ -39,3 +39,11 @@ function fullScreen(){
     }
     return body.className = 'j-fluid';
 }
+/**
+ * [scrollToWindowTop 返回顶部]
+ * @return {[type]} [description]
+ */
+function scrollToWindowTop(){
+    var bodyDom = document.getElementById('J_body');
+    bodyDom.scrollTo(0,0);
+}

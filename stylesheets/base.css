@@ -458,6 +458,9 @@ body{
 .j-list-i{
   border-bottom: 2px dashed #C0C0C0;
 }
+.j-list-i:last-child{
+  border-bottom: none;
+}
 .j-list-i ,.j-content{
     margin-top:1rem;
     padding:1rem;
