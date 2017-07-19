@@ -4,12 +4,13 @@
     {% include base.html %}
 </head>
 <body>
-    {% include header.html %}
-    <div class="j-container">
-        <div class="j-row">
-            <div class="j-col-xs-12 j-col-sm-12 j-col-md-12">
-                <div class="j-container j-content">
-                    <h2 class="j-i-title"><a href="javascript:void(0)" title="{{page.title}}">{{page.title}}</a></h2>
+    <div class="j-body-container">
+        {% include header.html %}
+        <div class="j-container">
+            <div class="j-row">
+                <div class="j-col-xs-12 j-col-sm-12 j-col-md-12">
+                    <div class="j-container j-content">
+                        <h2 class="j-i-title"><a href="javascript:void(0)" title="{{page.title}}">{{page.title}}</a></h2>
                         <p class="j-i-time">{{page.date | date_to_long_string}}</p>
                         <p class="j-i-tags">
                             {%for tag in page.tags %}
@@ -19,10 +20,11 @@
                         <div class="j-container">
                             <div class="j-row j-artclie-txt markdown-body">{{content}}</div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
+        {% include footer.html %}
     </div>
-    {% include footer.html %}
 </body>
 </html>

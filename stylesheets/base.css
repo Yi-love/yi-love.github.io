@@ -341,6 +341,11 @@ body{
 body{
     background: #efefef;
 }
+.j-body-container{
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+}
 /*****fluid*******/
 .j-fluid .j-container{
     max-width:100%;
@@ -452,11 +457,10 @@ body{
 .j-list-i ,.j-content{
     margin-top:1rem;
     padding:1rem;
-    /*box-shadow: 0px 0px 10px #C0C0C0;*/
-    /*background: #fff;*/
 }
 .j-i-title{
     line-height: 48px;
+    padding: 8px 0 16px 0;
     width: 100%;
     font-weight: 500;
     border-bottom: 1px dashed #C0C0C0;
@@ -474,7 +478,7 @@ body{
     text-decoration: underline;
 }
 .j-i-time , .j-i-tags{
-    margin: .5rem 0;
+    margin: 1rem 0;
 }
 .j-i-tag{
     padding: 2px 10px;
@@ -488,7 +492,6 @@ body{
     height: auto;
     margin-top: 1rem;
     padding: 1rem;
-    /*background: #fff;*/
     box-shadow: 0px 0px 10px #C0C0C0;
 }
 .j-user {
