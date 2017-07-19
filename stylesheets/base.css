@@ -347,10 +347,9 @@ body{
 }
 .j-tips-box{
     position:fixed;
-    bottom:0;
-    right: .5rem;
+    bottom: 2rem;
+    right: 2rem;
     z-index: 9;
-    background: ;
 }
 .j-tips-max-box , .j-tips-top-box{
     width: 40px;
@@ -627,7 +626,7 @@ body{
     display: none;
   }
   .j-tips-max-box, .j-tips-top-box {
-    border-radius: 20px;
+    border-radius: 4px;
   }
 }
 
