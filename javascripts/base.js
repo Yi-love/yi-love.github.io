@@ -45,5 +45,5 @@ function fullScreen(){
  */
 function scrollToWindowTop(){
     var bodyDom = document.getElementById('J_body');
-    bodyDom.scrollTo(0,0);
+    bodyDom.scrollTop = 0;
 }
