@@ -345,6 +345,8 @@ body{
   width: 100%;
   overflow: auto;
   height: 100%;
+  -webkit-overflow-scrolling : touch;
+  overflow-scrolling : touch;
 }
 /*****fluid*******/
 .j-fluid .j-container{
@@ -360,7 +362,6 @@ body{
     width: 40px;
     height: 40px;
     background: #000;
-    /*opacity: .5;*/
     margin-bottom: .5rem;
     cursor: pointer;
     transition: all .4s;
