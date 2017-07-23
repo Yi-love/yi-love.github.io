@@ -94,8 +94,8 @@ window 最多的就是gem install jekyll 时的数据源问题。
 假如是数据源问题的话可以通过以下命令测试：
 
 ```sh
- gem sources -a http://rubygems.org   //-a 添加数据源  -r 删除数据源
- gem sources -a http://ruby.taobao.org
+ gem sources -a https://rubygems.org   //-a 添加数据源  -r 删除数据源
+ gem sources -a https://ruby.taobao.org
 ```
 
 
