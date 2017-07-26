@@ -367,7 +367,7 @@ node --inspect server/index.js
 ![debug]({{site.baseurl}}/images/2017/0710_11.jpg)
 
 
-复制上面红框的url链接到chrome里面打开，然后点击`start`后，再访问页面，需要暂停的时候可以点击`暂停`，进行代码分析。
+复制上面红框的url链接到chrome里面打开，然后点击`start`后，再访问页面，需要暂停的时候可以点击`stop`，进行代码分析。
 
 
 ## 总结
