@@ -23,7 +23,7 @@ HTTP/2 服务器推送（Server Push）允许服务器在浏览器请求之前�
 
 查看下面的demo加载过程的图像。 请注意时间表上的独立请求以及这些请求的启动：
 
-![http/1]({{site.baseurl}}/images/2017/0901_1.png)
+![http/1]({{site.baseurl}}/images/2017/0901_01.png)
 
 *HTTP/1资源加载*
 
@@ -36,7 +36,7 @@ HTTP/2 服务器推送（Server Push）允许服务器在浏览器请求之前�
 
 看看下面的图片，通过HTTP/2提供相同服务的网站。查看时间轴和启动器。 你可以看到HTTP/2复用减少了请求数量，并且资源与初始请求一起立即发送。
 
-![http/2]({{site.baseurl}}/images/2017/0901_2.png)
+![http/2]({{site.baseurl}}/images/2017/0901_02.png)
 
 *HTTP/2服务器推送*
 
