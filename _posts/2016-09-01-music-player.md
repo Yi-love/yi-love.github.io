@@ -7,21 +7,19 @@ tags: [Audio]
 
 前几天由于需要在浏览器页面上播放音乐，所以就自己封装了一个音乐播放器。
 
-优势：
+```js
+import Player from 'audio-player-es6';
+ //or
+ let Player = require('audio-player-es6');
+ //or
+ let player = new Player({})
+```
 
-*   接口调用，封装好了
-
-劣势：
-
-*   手机浏览器支持问题。比如（有点浏览器不支持声音调节，有的根本没声音）
-
-
-项目地址
+项目地址:
 
 [https://github.com/Yi-love/audio-player-es6](https://github.com/Yi-love/audio-player-es6)
 
-
-eq:
+使用也是很方便的：
 
 ```js
   var audio = new Player();
