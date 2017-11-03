@@ -420,7 +420,8 @@
 
 .markdown-body .highlight pre {
     margin-bottom: 0;
-    word-break: normal
+    word-break: normal;
+    background: #aaa;
 }
 
 .markdown-body .highlight pre,.markdown-body pre {
