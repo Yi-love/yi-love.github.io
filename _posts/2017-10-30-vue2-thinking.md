@@ -44,7 +44,7 @@ vue，现在火的不要不要的。所以打算在项目中使用vue，但工�
 
 总结：入门前，需要做的就是去了解vue，不用深入，了解即可。然后就是寻找一条可以快速入门的途径。比如vue-cli。
 
-### 入门中
+## 入门中
 vue-cli可以说是一个练手的环境，基本的配置都已经有了。比如webpack配置，整一套的流程都有了。现在只需要关注自己的代码逻辑部分，看看自己需要的东西有没有。对流程熟悉后，再看看配置是如何的，它们的功能是怎样的，看看ok不？比如提取css。多语言呀。等等一系列的问题。带着问题，去寻找答案。
 
 初始的时候，我一点都看不明白vue-cli的webpack配置文件，可能是拆分的太细，一下子整合不到一起。也有自己不熟悉vue的缘故。
@@ -229,7 +229,159 @@ vue + vuex + axios + vue-router
 
 可以解决上面的80%的问题，还有20%需要开发环境解决。
 
+## 配置属于自己独有的一套开发环境
+要想舒服的编码，有时候是需要开发环境的支持，这里webpack正是开发环境配置的核心，所有的配置都围绕这它。
+
+### 样式文件配置
+想在代码中引入`.scss|.sass|.less`文件，想自动添加css前缀。这webpack都可以做到。
+
+页面并不支持预处理语言，所有最终还是得转换为`.css`文件。所有必须有一步转换的过程。如果需要提取为外部文件，添加浏览器前缀，这整个流程，都需要在webpack中完成。
+
+一个简单的loader:
+
+```js
+{
+	test: /\.css$/,
+	loader:'css-loader'
+}
+```
+
+其它的则多需要一个loader来处理对应的文件：
+
+```js
+{
+	test: /\.scss$/,
+	use:[{
+		loader:'css-loader'
+	},{
+		loader:'sass-loader'
+	}]
+}
+```
+
+可以看出针对`.scss`文件，不仅需要给出`scss-loader`，还需要给出`css-loader`。
+
+同理可以得出`.less`文件的配置。
+
+其实这仅仅只是将预编译语言转成`css`，还有前缀的添加和导出为独立文件还没配置。
+
+[postcss](https://github.com/postcss/postcss)是一个专门用来处理css的插件，用它来处理`autoprefixer`再合适不过了。
+
+```js
+{
+	loader: 'postcss-loader',
+	options: {
+		plugins: [
+			require('autoprefixer')('last 2 versions', 'ie 9' , 'ie 10' , 'ios 8', 'android 4.4')
+		]
+	}
+}
+```
+
+只需要在上面的loader里面添加即可。可以看出其实`autoprefixer`是作为一个插件被`postcss`使用的。
+
+提取为外部公共文件这里会牵涉到webpack的插件[ExtractTextPlugin](https://doc.webpack-china.org/plugins/extract-text-webpack-plugin/)。
+
+可能会觉得到这里就结束了，其实不然。对于实际开发中中还存在这很多的问题，比如上面的配置无法处理`.vue`文件，这是弊端。所以`.vue`文件里面如果有通过`<style>`标签编写的样式，是没办法通过上面的loader进行处理。
+
+通过vue本身的loader进行处理：
+
+```js
+{
+	test:/\.vue$/,
+	loader: 'vue-loader',
+	options: {
+		extractCSS: true
+	}
+}
+```
+
+这样同样可以达到提取文件的效果，但`autoprefixer`就没办法添加使用了。
+
+这里的结论就是，会有2个地方分别处理样式文件。文件类型的由对应的loader处理，vue里面通过`<style>`标签引入的由`vue-loader`处理。
+
+这里建议都通过`import 'a.scss`等类似的方式引入文件。首先，个人不喜欢把样式写在`vue`文件里面。
+
+这里原因有2个。第一：样式写在vue文件里，造成vue文件很长；第二：编写页面时，一边写样式时很痛苦，需要上下滑动页面，如果是2个文件的话可以多窗口特方便（现在编辑器都支持）。
+
+### JavaScript文件配置
+针对javascript文件，通过`babel-loader`编译即可，通过配置`.babelrc`文件来指定babel行为。
+
+```js
+{
+	"presets": ["env" , "stage-3"],
+	"plugins": ["transform-runtime"]
+}
+```
+
+### vue配置
+`vue-loader`已经把vue相关的处理都集成在里面了，所有用起来很简单。
+
+```js
+{
+	test:/\.vue$/,
+	loader: 'vue-loader',
+	options: {
+		extractCSS: true
+	}
+}
+```
+
+### i18n
+会有一些场景下需要多语言的支持，在vue中做多语言支持这里使用的是`amdi18n-loader`。需要自己手动翻译所有需要支持多语言的文案。
+
+```js
+{
+	test:/\.js$/,
+	loader:'amdi18n-loader'
+}
+```
+
+## 问题回顾
+很多东西有时候并不是那么顺风顺水，说的简单，做起来还是得花一番功夫的。
+
+### 1.使用vue的构建版本
+这里最开始的时候，构建会出现一个vue模块找不到的错误。开始的时候很纳闷，百思不得其解。最后在[文档](https://cn.vuejs.org/v2/guide/installation.html#运行时-编译器-vs-只包含运行时)中发现，其实vue是分为2个版本：一个运行时版本和一个完整版。
+
+```js
+//webpack
+resolve:{
+	alias: {
+		'vue$': 'vue/dist/vue.esm.js'
+	}
+}
+```
+
+### babel-polyfill
+为什么会出现这个东西，说来也话长。它的作用是做js语法兼容的。这里为什么会用它，起因是什么？
+
+在开始编写vue时，使用的都是es6的比较新的语法。
+
+```js
+<script>
+	import statementI18n  from '../i18n/statement';
+    export default {
+        name: 'proxyorder-statement',
+        data(){
+            return {
+                statementI18n
+            };
+        }
+    };
+```
+
+这里并没有使用热更新模块，只采用`watch`。问题就在这里，首次编译代码会正常执行，当修改某个文件，触发`watch`后，再次刷新页面就会出现错误。很头疼，查看问题原来是修改代码后，并不是所有的代码都会重新编译，有的代码会直接就是es6语法，搞得浏览器一直报错。最终的解决方案就是使用了`babel-polyfill`。
+
+### css压缩问题
+没错通过webpack的插件`extract-text-webpack-plugin`可以做到文件压缩。
+
+```js
+new ExtractTextPlugin({
+	filename:'[name]-[contenthash].css'
+})
+```
+
+但是这个并不能压缩vue文件里面`<style>`里面的抽取出来的样式。这里解决方案是还使用`optimize-css-assets-webpack-plugin`插件。
 
 
-
-............初稿，未完..............
+00000000000000 再想想 ·····················
