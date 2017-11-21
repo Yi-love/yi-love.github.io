@@ -54,7 +54,7 @@ vue-cli可以说是一个练手的环境，基本的配置都已经有了。比�
 ### css , sass , less 样式文件
 对于最基本的布局，样式文件是必须的。那么在vue中应该如何使用样式文件呢。开始学习vue的时候，一般都会把样式文件和模版文件放在一个文件里面，通过`style`标签注明是样式区块。
 
-```
+```html
 <template>
     <div id="app" class="xa-box-vertical">
         <section class="xa-container xa-flex xa-box-vertical">
@@ -89,25 +89,23 @@ vue-cli可以说是一个练手的环境，基本的配置都已经有了。比�
 
 其实也可以通过`import`的方式引入，然后通过webpack的css-loader进行处理。
 
-```
-<script>
-    import '../css/footer.css';
-	export default {
-		data(){
-			return {
-                footerMenu
-			}
-		},
-	  	components:{
-	    	xaFooter
-	    }
+```js
+import '../css/footer.css';
+export default {
+	data(){
+		return {
+			footerMenu
+		}
+	},
+	components:{
+		xaFooter
 	}
-</script>
+}
 ```
 
 同理，当我要引入sass,less文件时，如何处理？通过`<style>`引入时，需要指明`<style lang="sass|less|scss">`，文件语言类型，否则无法进行正常解析。
 
-```
+```html
 <style lang="scss">
     .statement-container{
         padding: 26px 30px;
@@ -123,7 +121,7 @@ vue-cli可以说是一个练手的环境，基本的配置都已经有了。比�
 
 通过`import`方式引入时，因为vue-loader并不会解析less,sass等文件，所以需要自己配置webpack。
 
-```
+```js
 import '../../scss/footer.scss';
 ```
 
@@ -146,7 +144,7 @@ import '../../scss/footer.scss';
 
 那这里如何使用组件呢？
 
-```
+```html
 <template>
 <div id="app" class="xa-box-vertical">
     <section class="xa-container xa-flex xa-box-vertical">
@@ -361,7 +359,7 @@ resolve:{
 <script>
 	import statementI18n  from '../i18n/statement';
     export default {
-        name: 'proxyorder-statement',
+        name: 'statement',
         data(){
             return {
                 statementI18n
