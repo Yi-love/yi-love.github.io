@@ -152,7 +152,7 @@ console.log(price); //输出：200670
 
 结论：使用`toFixed`方法处理之后的数字乘以某个数，计算出来的值有可能还是会存在小数。
 
-### 【方案二】 Number.EPSILON
+### 【方案二】 尝试使用Number.EPSILON
 表示1和大于1的最小值（可表示为 Number）的差值。`Number.EPSILON`实际上是JavaScript能够表示的最小精度。误差如果小于这个值，就可以认为已经没有意义了，即不存在误差了。
 
 
