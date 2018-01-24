@@ -114,12 +114,12 @@ export default {
 
 同理，当我要引入sass,less文件时，如何处理？通过`<style>`引入时，但需要指明`<style lang="sass|less|scss">`，文件语言类型，否则无法进行正常解析。
 
-```html
+```vue
 <style lang="scss">
 .statement-container{
   padding: 26px 30px;
-    box-sizing:border-box;
-    .statement-i{
+  box-sizing:border-box;
+  .statement-i{
     font-size: 14px;
     color: #284058;
     line-height: 28px;
