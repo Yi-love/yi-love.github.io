@@ -78,7 +78,7 @@ export default {
     return {
       footerMenu
     }
-	},
+  },
   components:{
     xaFooter
   }
@@ -420,7 +420,7 @@ entry:{
 
 ```js
 new ExtractTextPlugin({
-	filename:'[name]-[contenthash].css'
+  filename:'[name]-[contenthash].css'
 });
 ```
 
