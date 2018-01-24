@@ -28,7 +28,9 @@ tags: [html,document,javascript]
 从图中可以看出，两个方法返回的顺序都是一样的。
 
 ### 返回值
-那么重点还是在返回值上。动态集合指的就是会随着DOM树元素的增加而增加，减少而减少。静态集合则会被受DOM树元素变化的影响。
+那么重点还是在返回值上。NodeList 和 HTMLCollection 都是DOM树元素集合的操作对象。
+
+动态集合指的就是会随着DOM树元素的增加而增加，减少而减少。静态集合则会被受DOM树元素变化的影响。
 
 NodeList对象是一个节点的集合，是由`Node.childNodes`和`document.querySelectorAll`返回的。NodeList并不是都是静态的，也就是说`Node.childNodes`返回的也是一个动态的元素集合，`querySelectorAll` 返回的是一个静态集合。
 
@@ -88,6 +90,22 @@ console.log(child.length);//8
   console.log(child.length);//8
 </script>
 ```
+
+#### Array VS NodeList
+有时候确实会在想`Array`和`NodeList`到底有什么联系，就好比`Array`和`arguments`的关系一样。
+
+其实`NodeList`并非直接继承`Array.prototype`属性，也没有类数组（例如：`arguments`）的方法。
+
+![different]({{site.baseurl}}/images/2018/0101_03.jpg)
+
+由此可知，
+
+```
+array --> Array.prototype --> Object.prototype --> null
+nodeList --> NodeList.prototype --> Object.prototype --> null
+```
+
+所以不能想当然的把`Array`和`NodeList`混为一谈。
 
 ### 总结
 所以在以后的开发中一定要注意`querySelectorAll` 和 `getElementsByTagName`选择器的用法，因为有可能死循环就会出莫名其妙的出现在某个角落里面。
