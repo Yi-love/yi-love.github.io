@@ -30,7 +30,7 @@ tags: [html,document,javascript]
 ### 返回值
 那么重点还是在返回值上。NodeList 和 HTMLCollection 都是DOM树元素集合的操作对象。
 
-动态集合指的就是会随着DOM树元素的增加而增加，减少而减少。静态集合则会被受DOM树元素变化的影响。
+动态集合指的就是会随着DOM树元素的增加而增加，减少而减少。静态集合则不会受DOM树元素变化的影响。
 
 NodeList对象是一个节点的集合，是由`Node.childNodes`和`document.querySelectorAll`返回的。NodeList并不是都是静态的，也就是说`Node.childNodes`返回的也是一个动态的元素集合，`querySelectorAll` 返回的是一个静态集合。
 
