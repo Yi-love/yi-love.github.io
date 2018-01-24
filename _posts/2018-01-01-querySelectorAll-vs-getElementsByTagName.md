@@ -1,6 +1,6 @@
 ---
 layout: page
-title: querySelectorAll Vs getElementsByTagName 区别
+title: 简单讨论 querySelectorAll Vs getElementsByTagName 区别
 categories: [JavaScript]
 tags: [html,document,javascript]
 ---
@@ -25,12 +25,14 @@ tags: [html,document,javascript]
 
 ![different]({{site.baseurl}}/images/2018/0101_01.jpg)
 
+从图中可以看出，两个方法返回的顺序都是一样的。
+
 ### 返回值
 那么重点还是在返回值上。动态集合指的就是会随着DOM树元素的增加而增加，减少而减少。静态集合则会被受DOM树元素变化的影响。
 
 NodeList对象是一个节点的集合，是由`Node.childNodes`和`document.querySelectorAll`返回的。NodeList并不是都是静态的，也就是说`Node.childNodes`返回的也是一个动态的元素集合，`querySelectorAll` 返回的是一个静态集合。
 
-HTMLCollection 返回一个时时包括所有给定标签名称的元素的HTML集合。
+HTMLCollection 返回一个时时包括所有给定标签名称的元素的HTML集合，也就是动态集合。
 
 对比下来可以发现，NodeList 既可以是静态也可以是动态的，而HTMLCollection则一直是动态的。
 
@@ -44,9 +46,48 @@ one.appendChild(document.createElement('div'));
 console.log(child.length);//8
 ```
 
+上面的代码是往`<div class="one">`这个元素里面插入一个新的`div`元素，会发现插入前和插入后输出的`length`是不一样的。这也就表明NodeList动态集合确实存在。
+
 ![different]({{site.baseurl}}/images/2018/0101_02.jpg)
 
 在需要遍历DOM树元素的时候就需要格外注意了，使用动态集合有可能会出现意想不到的结果。
+
+
+案例HTML代码：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+</head>
+<style>
+  div{
+    padding-left: 20px;
+  }
+</style>
+<body>
+  <div class="one">
+    one
+    <div class="two">
+        two
+        <div class="three">three</div>
+    </div>
+    <div class="four">four</div>
+    <div class="five">five</div>
+  </div>
+  <div class="six">six</div>
+</body>
+</html>
+<script>
+  var one = document.querySelector('.one')
+  var child = one.childNodes;
+  console.log(child.length);//7
+  one.appendChild(document.createElement('div'));
+  console.log(child.length);//8
+</script>
+```
 
 ### 总结
 所以在以后的开发中一定要注意`querySelectorAll` 和 `getElementsByTagName`选择器的用法，因为有可能死循环就会出莫名其妙的出现在某个角落里面。
