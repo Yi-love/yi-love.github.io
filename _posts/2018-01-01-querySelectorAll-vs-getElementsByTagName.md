@@ -23,7 +23,7 @@ tags: [html,document,javascript]
 
 那么在DOM树中使用该算法遍历也是相同的道理，只不过节点就对应着DOM树中的元素。
 
-![different]({{site.baseurl}}/images/2018/0101_01.jpg)
+![different——01]({{site.baseurl}}/images/2018/0101_01.jpg)
 
 从图中可以看出，两个方法返回的顺序都是一样的。
 
@@ -50,7 +50,7 @@ console.log(child.length);//8
 
 上面的代码是往`<div class="one">`这个元素里面插入一个新的`div`元素，会发现插入前和插入后输出的`length`是不一样的。这也就表明NodeList动态集合确实存在。
 
-![different]({{site.baseurl}}/images/2018/0101_02.jpg)
+![different——02]({{site.baseurl}}/images/2018/0101_02.jpg)
 
 在需要遍历DOM树元素的时候就需要格外注意了，使用动态集合有可能会出现意想不到的结果。
 
@@ -96,7 +96,7 @@ console.log(child.length);//8
 
 其实`NodeList`并非直接继承`Array.prototype`属性，也没有类数组（例如：`arguments`）的方法。
 
-![different]({{site.baseurl}}/images/2018/0101_03.jpg)
+![different——03]({{site.baseurl}}/images/2018/0101_03.jpg)
 
 由此可知，
 
