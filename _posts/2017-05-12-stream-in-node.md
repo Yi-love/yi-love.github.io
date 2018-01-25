@@ -11,7 +11,6 @@ Node.js的`Srtream`具有强大的功能：你可以使用异步的方式处理�
 
 当我在写一本名为 [《前端工具之Gulp，Brower和Yeoman》](https://www.manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman/?a_aid=fettblog&a_bid=238ac06a) 的书时，我决定不仅要展示API和使用案例，还需要关注以下的概念。
 
-
 你要知道特别是在JavaScript中，工具和框架的更新换代比你为它们注册域名和创建Github团队的速度还要快。**例如[Gulp.js](http://gulpjs.com/)，最重要的一个概念是流！**
 
 ## 约50年的流

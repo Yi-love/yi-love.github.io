@@ -333,7 +333,6 @@ var question = {};
   };
 ```
 
-
 `qtype`协议类型. [查看详情](https://nodejs.org/dist/latest-v6.x/docs/api/dns.html#dns_dns_resolve_hostname_rrtype_callback)
 
 协议类型对应的列表：
@@ -353,7 +352,6 @@ var question = {};
 | 255 | ANY | 对所有记录的请求 |
 
 `qclass`通常为1，指Internet数据.
-
 
 ### 应用场景--dns请求代理
 将以下代码保存为`.js`文件，然后使用`Node.js`执行，使用相同局域网内的机器配置DNS到这台机器即可。

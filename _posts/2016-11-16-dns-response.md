@@ -7,8 +7,6 @@ tags: [dns,dgram,http/s,响应报文解析]
 
 上一篇我已经解释了DNS请求报文怎么解析,不会的自己坐飞机([飞机入口]({{site.baseurl}}/node.js/javascript/dns/2016/11/11/dns-request.html))。这一篇主要从DNS服务器的角度来解释，如何自己创建响应报文返回给客户端。
 
-<!-- more -->
-
 就这个命题，可以罗列出DNS服务器在创建`response`响应报文时需要解决的问题。
 
 *  dns数据报类型`Buffer`?                               
@@ -161,7 +159,6 @@ tags: [dns,dgram,http/s,响应报文解析]
 
 ### Authority/Additional 数据
 自己处理的请求没有授权应答和附加数据。
-
 
 ## Buffer类型响应报文
 得到了想要的一切响应数据之后，下一步就是将这些数据转换为客户端可以解析的`Buffer`类型。
@@ -316,7 +313,6 @@ tags: [dns,dgram,http/s,响应报文解析]
       return answer;
   };
 ```
-
 
 ## 参考资料
 

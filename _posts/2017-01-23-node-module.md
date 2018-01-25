@@ -14,7 +14,6 @@ tags: [bootstarp_node.js,module.js]
 run(Module.runMain); //执行模块
 ```
 
-<!-- more -->
 `Module.runMain` 方法也很简单，就是把模块加载进来然后放到下一个时间片执行。
 
 ```js

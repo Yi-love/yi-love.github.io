@@ -5,6 +5,8 @@ categories: [Node.js,JavaScript,翻译]
 tags: [api]
 ---
 
+> Node.js最新文档请查看： [http://nodejs.cn/](http://nodejs.cn/)
+
 ## 背景
 最近想提高一下自己的英语阅读能力和加深对Node.js基础的理解。所以就找了Node.js V6+出来翻译一下。
 翻译的不好请大家谅解。
