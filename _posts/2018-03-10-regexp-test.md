@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 正则表达式RegExp.prototype.test方法使用误区笔记
+title: 正则表达式RegExp.prototype.test方法使用不当笔记
 categories: [JavaScript]
 tags: [RegExp,regexp.test,javascript]
 ---
