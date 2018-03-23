@@ -271,8 +271,10 @@
 
 .markdown-body img {
     max-width: 100%;
-    box-sizing: content-box;
-    background-color: #fff
+    border: 1px solid #c0c0c0;
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 2px;
 }
 
 .markdown-body img[align=right] {
@@ -429,7 +431,8 @@
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    border-radius: 3px
+    border-radius: 3px;
+    background: #ddd;
 }
 
 .markdown-body pre code,.markdown-body pre tt {
@@ -441,11 +444,11 @@
     line-height: inherit;
     word-wrap: normal;
     background-color: transparent;
-    border: 0
+    border: 0;
 }
 
 .markdown-body pre code::before,.markdown-body pre code::after,.markdown-body pre tt::before,.markdown-body pre tt::after {
-    content: normal
+    content: normal;
 }
 
 .markdown-body .csv-data td,.markdown-body .csv-data th {
@@ -454,7 +457,7 @@
     font-size: 12px;
     line-height: 1;
     text-align: left;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .markdown-body .csv-data .blob-num {
