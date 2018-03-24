@@ -348,7 +348,7 @@ body{
   -webkit-overflow-scrolling : touch;
   overflow-scrolling : touch;
 }
-.j-body-container.default .j-tips-menu-box{
+.j-body-container .j-tips-menu-box{
   display: none;
 }
 /*****fluid*******/
