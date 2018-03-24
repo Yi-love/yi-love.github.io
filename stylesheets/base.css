@@ -361,13 +361,14 @@ body{
 .j-tips-max-box , .j-tips-top-box{
   width: 40px;
   height: 40px;
-  background: #000;
+  background: #d4d4d4;
   margin-bottom: .5rem;
   cursor: pointer;
   transition: all .4s;
+  border-radius: 4px;
 }
 .j-tips-max-box:hover , .j-tips-top-box:hover{
-  background: #ED2C2C;
+  background: #ff5722;
 }
 .j-tips-max-box span{
   width: 8px;
@@ -426,7 +427,8 @@ body{
 .j-header{
   width: 100%;
   height: 450px;
-  background: #09c3e6;
+  background: url(../images/bk.jpg) top left no-repeat;
+  background-size: 100%;
 }
 .j-logo{
   float: left;
@@ -440,14 +442,17 @@ body{
   color: #FFFFFF;
   padding: 8px 1rem;
   font-size:18px;
+  border-radius: 2px;
+  transition: all .4s;
 }
 .j-nav a:hover{
-  background: #0086B3;
+  background: #23b1ff;
+  box-shadow: 0px 0px 4px #6bc4f9;
 }
 .j-footer{
   height: auto;
   min-height: 100px;
-  background: #000;
+  background: #ccc;
   margin-top: 20px;
 }
 .j-tlgr{
@@ -455,7 +460,7 @@ body{
 }
 /*******index.html**********/
 .j-list-i{
-  border-bottom: 2px dashed #C0C0C0;
+  box-shadow: 0px 2px 4px #ddd;
 }
 .j-list-i:last-child{
   border-bottom: none;
@@ -476,7 +481,7 @@ body{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #0288D1!important;
+  color: #23b1ff!important;
   text-shadow: 0px 0px 1px #6BC4F9;
 }
 .j-i-title a:hover{
@@ -487,12 +492,14 @@ body{
 }
 .j-i-tag{
   padding: 6px;
-  background: #E64A19;
-  color: #fff;
+  background: #d4d4d4;
+  color: #ff5722;
   margin-right: .5rem;
   font-size: 12px;
   display: inline-block;
   margin-bottom: 2px;
+  border-radius: 2px;
+  box-shadow: 0px 0px 2px #f75e2e;
 }
 .j-user ,.j-class-list{
   width: 100%;
@@ -527,13 +534,13 @@ body{
 .j-class-list a{
   display: block;
   line-height: 28px;
-  color: #333;
+  color: #555;
   width: 100%;
   border-bottom: 1px dashed #fff;
 }
 .j-class-list a:hover{
-  color: #0288D1;
-  border-bottom: 1px dashed #0288D1;
+  color: #ff5722;
+  border-bottom: 1px dashed #ff5722;
 }
 .j-class-i-num{
   float: right;
@@ -542,8 +549,9 @@ body{
   font-weight: 500;
   margin: -1rem;
   padding: .5rem 1rem;
-  background: #C0C0C0;
+  background: #23b1ff;
   margin-bottom: 1rem;
+  color: #333;
 }
 .j-artclie-txt{
   word-wrap: break-word;
@@ -560,7 +568,7 @@ body{
   margin: 1rem 0;
 }
 .j-footer-say{
-  color: #FF5722;
+  color: #ff5722;
 }
 /*******list.html**********/
 .j-all{
@@ -589,6 +597,11 @@ body{
 @media  only screen and (min-width: 1024px){
   .j-all-i .j-all-i-time{
     float: right;
+  }
+}
+@media  only screen and (max-width: 1024px){
+  .j-header{
+      height: 240px;
   }
 }
 /********me*********/
