@@ -348,6 +348,9 @@ body{
   -webkit-overflow-scrolling : touch;
   overflow-scrolling : touch;
 }
+.j-body-container.default .j-tips-menu-box{
+  display: none;
+}
 /*****fluid*******/
 .j-fluid .j-container{
   max-width:100%;
@@ -358,7 +361,7 @@ body{
   right: 2rem;
   z-index: 9;
 }
-.j-tips-max-box , .j-tips-top-box{
+.j-tips-max-box , .j-tips-top-box , .j-tips-menu-box{
   width: 40px;
   height: 40px;
   background: #d4d4d4;
@@ -367,8 +370,10 @@ body{
   transition: all .4s;
   border-radius: 4px;
 }
-.j-tips-max-box:hover , .j-tips-top-box:hover{
-  background: #ff5722;
+@media only screen and (min-width: 1024px){
+  .j-tips-max-box:hover , .j-tips-top-box:hover , .j-tips-menu-box:hover{
+    background: #ff5722;
+  }
 }
 .j-tips-max-box span{
   width: 8px;
@@ -422,6 +427,48 @@ body{
   -webkit-transform: rotateZ(-45deg);
   left: 25px;
   top: 12px;
+}
+.j-tips-menu-box span{
+  width: 20px;
+  height: 2px;
+  display: block;
+  padding-top: 13px;
+  border-bottom: 2px solid #fff;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+.j-tips-menu-box.show .m{
+  visibility: hidden;
+}
+.j-tips-menu-box .m,
+.j-tips-menu-box .b{
+  padding-top: 4px;
+}
+.j-tips-menu-box.show .t,
+.j-tips-menu-box.show .b{
+  transition: all .4s;
+}
+.j-tips-menu-box.show .t{
+  width: 28.3px;
+  -webkit-transform-origin: 20px 22px;
+  -moz-transform-origin: 20px 22px;
+  -ms-transform-origin: 20px 22px;
+  -o-transform-origin: 20px 22px;
+  transform-origin: 20px 22px;
+  transform: rotateZ(-45deg);
+    -ms-transform: rotateZ(-45deg);
+    -webkit-transform: rotateZ(-45deg);
+}
+.j-tips-menu-box.show .b{
+  width: 28.3px;
+  -webkit-transform-origin: 18px -1px;
+  -moz-transform-origin: 18px -1px;
+  -ms-transform-origin: 18px -1px;
+  -o-transform-origin: 18px -1px;
+  transform-origin: 18px -1px;
+  transform: rotateZ(45deg);
+    -ms-transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
 }
 /*********header***********/
 .j-header{
@@ -499,7 +546,7 @@ body{
   display: inline-block;
   margin-bottom: 2px;
   border-radius: 2px;
-  box-shadow: 0px 0px 2px #f75e2e;
+  box-shadow: 0px 0px 2px #ddd;
 }
 .j-user ,.j-class-list{
   width: 100%;
@@ -507,6 +554,7 @@ body{
   margin-top: 1rem;
   padding: 1rem;
   box-shadow: 0px 0px 10px #C0C0C0;
+  overflow: auto;
 }
 .j-user {
     text-align: center;
@@ -594,14 +642,36 @@ body{
 .j-all-i a:hover{
   text-decoration: underline;
 }
-@media  only screen and (min-width: 1024px){
+@media only screen and (min-width: 1024px){
   .j-all-i .j-all-i-time{
     float: right;
   }
 }
-@media  only screen and (max-width: 1024px){
+
+@media only screen and (max-width: 1024px){
   .j-header{
       height: 240px;
+  }
+  .j-body-container.default .j-tips-menu-box{
+    display: block;
+  }
+  .j-menu{
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    background:#fff;
+    position: fixed;
+    top: 0;
+    left: 120%;
+    transition: all .3s;
+    z-index: 8;
+    overflow: auto;
+  }
+  .j-menu.show{
+    left: 0;
+  }
+  .j-menu .j-class-list{
+    margin-top: 0;
   }
 }
 /********me*********/
