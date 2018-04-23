@@ -478,6 +478,7 @@
 }
 [class*='language-'] .highlight{
 	background: #444444!important;
+    overflow: auto;
 }
 [class*='language-sh'] code{
     color: #fff;
