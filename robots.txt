@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /article/
+Disallow: /category
+Disallow: /me

@@ -22,7 +22,7 @@ tags: [node_main.cc,node.cc,global,process,env.cc,bootstarp_node.js]
 ## 1. Node.js 结构
 要理解Node.js的启动，就必须了解`Node.js`的层级关系。
 
-![NODE.JS]({{site.baseurl}}/images/2016/1215_02.png)
+![NODE.JS](/images/2016/1215_02.png)
 
 Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`JavaScript`模块(下文统一使用)和`C++`核心模块(下文统一使用)。
 一般我们只会使用`JavaScript`模块，`JavaScript`模块依赖于底层的`C++`核心模块。
@@ -42,7 +42,7 @@ Node的API分为`JavaScript`部分和`C++`部分，也就是我们经常说的`J
 6. 开始`Node.js`旅程
 7. 退出
 
-![NODE_START]({{site.baseurl}}/images/2016/1215_01.png)
+![NODE_START](/images/2016/1215_01.png)
 
 > 第3步图中没有给出，安全通讯在第3步和第4步之间。
 

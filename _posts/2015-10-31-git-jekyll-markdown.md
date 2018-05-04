@@ -14,11 +14,11 @@ tags: [git , jekyll , markdown]
 先来说说*jekyll*吧。整个个人博客都是按照jekyll的格式搭建的，这是必须的。如果你想搭建更好的也可以直接点击[jekyll]。
 先来看看最终的效果图：
 
-![jekyll目录]({{site.baseurl}}/images/2015/1031_01.jpg)
+![jekyll目录](/images/2015/1031_01.jpg)
 
 [jekyll]:http://jekyllrb.com/docs/home/
 
-#### 1.1._includes 目录
+#### 1.1.\_includes 目录
 这个目录下面存放的是一些基本固定不变的html文件，以及一些页面的公共部分。这些页面可以提供给*_layouts*目录下面的html使用。
 
 这个目录下我添加了以下4个文件：
@@ -53,7 +53,7 @@ tags: [git , jekyll , markdown]
   <!-- 没有去空格 -->
   <script src="{ {site.baseurl}}/javascripts/base.js"></script>
   <!-- 去空格 -->
-  <script src="{{site.baseurl}}/javascripts/base.js"></script>
+  <script src="/javascripts/base.js"></script>
   <title>{ {page.title}}</title>
 ```
 
@@ -218,7 +218,7 @@ tags: [git , jekyll , markdown]
 只有知道这几个目录是干什么就可以了。
 其他的简单了吧。
 
-![调用流程图]({{site.baseurl}}/images/2015/1031_02.jpg)
+![调用流程图](/images/2015/1031_02.jpg)
 
 
 

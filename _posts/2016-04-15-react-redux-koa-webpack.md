@@ -42,7 +42,7 @@ redux : Redux 就是用来确保 state 变化的可预测性
 
 这是一张服务器与客户端同构的结构图：
 
-![react-redux-koa]({{site.baseurl}}/images/2016/0415_01.jpg)
+![react-redux-koa](/images/2016/0415_01.jpg)
 
 ### React
 React 是较早使用 JavaScript 构建大型、快速的 Web 应用程序的技术方案。也可以说 在React里面一切都是组件。
@@ -59,16 +59,16 @@ React 是较早使用 JavaScript 构建大型、快速的 Web 应用程序的技
 
 效果图如下：
 
-![react-redux-koa]({{site.baseurl}}/images/2016/0415_02.jpg)
+![react-redux-koa](/images/2016/0415_02.jpg)
 
-React构造购物车demo: [购物车demo]({{site.baseurl}}/examples/koa-react-redux/react/index.html)
+React构造购物车demo: [购物车demo](/demos/koa-react-redux/react/index.html)
 
 #### 2.1 购物车组件划分
 react要求为了避免多余属性的存在。所以第一步的任务就是划分组件，分析每一个组件所需要的数据。
 
 下图是我对购物车组件的划分（不包含没有划分组件的元素）：
 
-![react-redux-koa]({{site.baseurl}}/images/2016/0415_03.jpg)
+![react-redux-koa](/images/2016/0415_03.jpg)
 
 
 每一个绿色的框表示一件商品，所有的绿色框组合起来就是购物车商品列表。如果加上底部的菜单栏，那么一个简单的购物车就完成了。
@@ -85,7 +85,7 @@ react要求为了避免多余属性的存在。所以第一步的任务就是划
 
 数据流图：
 
-![react-redux-koa]({{site.baseurl}}/images/2016/0415_04.jpg)
+![react-redux-koa](/images/2016/0415_04.jpg)
 
 数据从购物车顶层注入，分别根据不同组件的不同数据需要将数据流入到各个组件当中。有的数据可能直接使用，有的可能是通过计算出来的
 衍生数据。

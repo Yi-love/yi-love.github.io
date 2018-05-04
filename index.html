@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Jin-I just do my best
+title: I just do my best
 ---
 <ul class="j-container">
      {% for post in site.posts %}
     <li class="j-row j-list-i">
-        <h2 class="j-i-title"><a href="{{site.baseurl}}{{post.url}}" title="{{post.title}}">{{post.title}}</a></h2>
+        <h2 class="j-i-title"><a href="{{post.url}}" title="{{post.title}}">{{post.title}}</a></h2>
         <p class="j-i-time">{{post.date | date_to_long_string}}</p>
         <p class="j-i-tags">
             {%for tag in post.tags %}

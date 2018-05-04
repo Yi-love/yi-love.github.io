@@ -13,7 +13,7 @@ tags: [number,float,javascript]
 
 来看问题：
 
-![float_error]({{site.baseurl}}/images/2017/1130_07.jpg)
+![float_error](/images/2017/1130_07.jpg)
 
 上面本来融资认购200股股票总金额为11110.85港币，其中使用现金3044.78港币，使用融资8066.07港币。
 
@@ -59,7 +59,7 @@ testAB();
 
 答案很显然，这里会输出`a !== b`。
 
-![float_error]({{site.baseurl}}/images/2017/1130_02.jpg)
+![float_error](/images/2017/1130_02.jpg)
 
 ## 为什么 34.17-0.01 !== 34.16？
 有时候就是这样，所想的和真正看到的完全是不一样的。难道JavaScript的数学是体育老师教的吗？然而并不是。
@@ -110,7 +110,7 @@ testAB();
 
 > 注意：这里发现`toFixed`并不一定都会四舍五入。
 
-![toFixed_error]({{site.baseurl}}/images/2017/1130_03.jpg)
+![toFixed_error](/images/2017/1130_03.jpg)
 
 ```js
 function testAB(){
@@ -148,7 +148,7 @@ console.log(price); //输出：200670
 
 也就是因为这一个数字，导致客户在认购`6000`股的时候，认购失败。
 
-![toFixed]({{site.baseurl}}/images/2017/1130_01.jpg)
+![toFixed](/images/2017/1130_01.jpg)
 
 结论：使用`toFixed`方法处理之后的数字乘以某个数，计算出来的值有可能还是会存在小数。
 
@@ -188,9 +188,9 @@ testAB();
 
 发现输出`a === b`。两种截然不同的结果。
 
-![EPSILON_1]({{site.baseurl}}/images/2017/1130_04.jpg)
-![EPSILON_1]({{site.baseurl}}/images/2017/1130_05.jpg)
-![EPSILON_1]({{site.baseurl}}/images/2017/1130_06.jpg)
+![EPSILON_1](/images/2017/1130_04.jpg)
+![EPSILON_1](/images/2017/1130_05.jpg)
+![EPSILON_1](/images/2017/1130_06.jpg)
 
 结果1：`7.105427357601002e-15` 大于 `2.220446049250313e-16`。输出`a !== b`。
 结果2：`-7.105427357601002e-15` 小于 `2.220446049250313e-16`。输出`a === b`。

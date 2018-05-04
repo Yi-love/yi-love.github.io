@@ -23,7 +23,7 @@ tags: [html,document,javascript]
 
 那么使用`querySelectorAll`或者`getElementsByTagName`方法进行DOM树遍历的思路就是深度优先遍历算法，只不过节点就对应着DOM树中的元素。
 
-![different——01]({{site.baseurl}}/images/2018/0101_01.jpg)
+![different——01](/images/2018/0101_01.jpg)
 
 从图中的浏览器的控制台输出可以看出，两个方法返回的顺序都是一样的。返回的结果都是：
 
@@ -42,7 +42,7 @@ HTMLCollection 返回一个时时包括所有给定标签名称的元素的HTML�
 
 下面来看看静态集合和动态集合的具体表现：
 
-![different——02]({{site.baseurl}}/images/2018/0101_04.jpg)
+![different——02](/images/2018/0101_04.jpg)
 
 从上面的图中可以看出，通过`document.querySelectorAll('div')`选择的DOM元素集合`query`的大小不会随着`document.body.appendChild(seven)`增加的一个新的`div`元素而改变。而`document.getElementsByTagName('div')`选择的DOM元素集合`elemts`的大小之前和`query`的大小同为`6`个，在添加入新的`div`元素“seven”之后就变成了`7`个。这就很好的诠释了动态还让静态集合最大的区别。
 
@@ -58,7 +58,7 @@ one.appendChild(document.createElement('div'));
 console.log(child.length);//8
 ```
 
-![different——02]({{site.baseurl}}/images/2018/0101_02.jpg)
+![different——02](/images/2018/0101_02.jpg)
 
 上面图中`one.childNodes.length`和前面讨论的`document.getElementsByTagName('div')`都会随着DOM树元素的增加或减少而发生变化（集合内）。
 
@@ -106,7 +106,7 @@ console.log(child.length);//8
 
 其实`NodeList`并非直接继承`Array.prototype`属性，也没有类数组（例如：`arguments`）的方法。
 
-![different——03]({{site.baseurl}}/images/2018/0101_03.jpg)
+![different——03](/images/2018/0101_03.jpg)
 
 由此可知，
 

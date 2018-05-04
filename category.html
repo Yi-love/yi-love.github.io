@@ -1,6 +1,6 @@
 ---
 layout: default
-title: category
+title: 文章分类
 ---
 <ul class="j-container" id="j_category">
 </ul>
@@ -11,7 +11,7 @@ title: category
         var str = '',arr = JSON.parse(data)[category];
         for ( var i = 0 ; i < arr.length ; i++ ){
             str +=  ['<li class="j-row j-list-i">',
-                    '<h2 class="j-i-title"><a href="{{site.baseurl}}'+arr[i].url+'" >'+arr[i].title+'</a></h2>',
+                    '<h2 class="j-i-title"><a href="'+arr[i].url+'" >'+arr[i].title+'</a></h2>',
                     '<p class="j-i-time">'+arr[i].date+'</p>',
                     getTags(arr[i].tags),
                     '<div class="j-container">',

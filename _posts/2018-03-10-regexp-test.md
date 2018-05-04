@@ -55,7 +55,7 @@ function testUploadPrefix(folder){
 
 后面通过案例测试了一遍：
 
-![regexp.test]({{site.baseurl}}/images/2018/0310_01.png)
+![regexp.test](/images/2018/0310_01.png)
 
 函数正确执行看不出有问题啊。。。。。 可惜大错特错。
 
@@ -63,7 +63,7 @@ function testUploadPrefix(folder){
 
 当再次执行多次的时候问题就出现了。
 
-![regexp.test]({{site.baseurl}}/images/2018/0310_02.png)
+![regexp.test](/images/2018/0310_02.png)
 
 `testUploadPrefix('upload/test')`应该一直返回`true`才对，可是居然会返回`false`不可思议啊。
 
@@ -94,7 +94,7 @@ new RegExp('^upload/', 'g');
 
 结合自己写的代码，也就是说会改变`FOLDER_REGEXP`的起始匹配位置。来看看是不是真的。
 
-![regexp.test]({{site.baseurl}}/images/2018/0310_03.png)
+![regexp.test](/images/2018/0310_03.png)
 
 果然，会改变下一次匹配的开始的起始位置。
 
@@ -103,7 +103,7 @@ new RegExp('^upload/', 'g');
 
 其实方法很简单，去掉`g`参数即可。
 
-![regexp.test]({{site.baseurl}}/images/2018/0310_04.png)
+![regexp.test](/images/2018/0310_04.png)
 
 大功告成！！！！
 
