@@ -1,0 +1,8 @@
+<div class="j-col-xs-12 j-col-sm-12 j-col-md-3 j-menu" id="J_menu">
+    <div class="j-class-list">
+        <h3 class="j-row">分类</h3>
+        {% for category in site.categories %}
+        <a href="/category?category={{ category|first}}">{{category | first}} <span class="j-class-i-num">({{category | last | size}})</span></a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,36 @@
+---
+layout: default
+title: 文章分类
+---
+<ul class="j-container" id="j_category">
+</ul>
+<script>
+    window.onload = function(){
+        var category = decodeURIComponent(parseURL(document.location.href).params["category"]);
+        var data = '{ {% for categorie in site.categories %}{% if categorie[0] != site.categories.first[0] %},{% endif %}"{{ categorie[0] }}":[{% for post in categorie[1] %}{% if post != categorie[1].first %},{% endif %}{"url":"{{post.url}}", "tags":{{post.tags | jsonify }} , "content":"{{post.excerpt | uri_escape | smartify }}" , "title":"{{post.title | smartify }}","date":"{{post.date | date_to_long_string }}"}{% endfor %}]{% endfor %} }';
+        var str = '',arr = JSON.parse(data)[category];
+        for ( var i = 0 ; i < arr.length ; i++ ){
+            str +=  ['<li class="j-row j-list-i">',
+                    '<h2 class="j-i-title"><a href="'+arr[i].url+'" >'+arr[i].title+'</a></h2>',
+                    '<p class="j-i-time">'+arr[i].date+'</p>',
+                    getTags(arr[i].tags),
+                    '<div class="j-container">',
+                    '   <div class="j-row j-artclie-txt">'+decodeURIComponent(arr[i].content)+'</div>',
+                    '</div>',
+                '</li>'].join('');
+        }
+        function getTags(tgs){
+            var str = '';
+            if ( tgs.length){
+                str = '<p class="j-i-tags">';
+                for ( var i = 0 ; i < tgs.length ; i++ ){
+                    str += '<span class="j-i-tag">'+tgs[i]+'</span>';
+                }
+                str += '</p>';
+            }
+            return str;
+        }
+        var ctgdom = document.getElementById('j_category');
+        ctgdom.innerHTML =str;
+    }
+</script>
