@@ -3,7 +3,7 @@ layout: default
 title: I just do my best
 ---
 <ul class="j-container">
-     {% for post in site.posts %}
+    {% for post in paginator.posts %}
     <li class="j-row j-list-i">
         <h2 class="j-i-title"><a href="{{post.url}}" title="{{post.title}}">{{post.title}}</a></h2>
         <p class="j-i-time">{{post.date | date_to_long_string}}</p>
@@ -18,3 +18,4 @@ title: I just do my best
     </li>
     {% endfor %}
 </ul>
+{% include pagination.html %}

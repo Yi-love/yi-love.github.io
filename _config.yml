@@ -7,3 +7,11 @@ permalink: /articles/:title
 username: Jin
 
 new_post_name: :year-:month-:day-:title.md
+
+exclude: [readme.md]
+encoding: utf-8
+
+plugins: [jekyll-paginate]
+
+paginate: 10
+paginate_path: /pages/:num

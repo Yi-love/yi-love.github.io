@@ -757,3 +757,35 @@ body{
     background:transparent;
   }
 }
+
+/***pagination******/
+.pagination{
+  text-align: center;
+  margin-top: 1rem;
+  padding: 1rem 0.2rem;
+  box-sizing: border-box;
+}
+.pagination .pg-btn{
+  box-sizing: border-box;
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #d4d4d4;
+  border-radius: 2px;
+  display: block;
+  color: #ff5722;
+}
+.pagination .number{
+  line-height: 40px;
+}
+.pagination .number .current{
+  color: #ff5722;
+}
+.pagination .pg-btn.previous{
+  float: left;
+}
+.pagination .pg-btn.next{
+  float: right;
+}
+.pagination .pg-btn.disabled{
+  cursor: not-allowed;
+}
