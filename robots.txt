@@ -4,3 +4,4 @@ Allow: /article/
 Disallow: /category
 Disallow: /me
 Disallow: /list
+Disallow: /404
