@@ -1,7 +1,7 @@
 ---
 layout: page
 title: JavaScript ES6语法初体验
-categories: [笔记,JavaScript]
+categories: [JavaScript]
 tags: [js,es6,前端]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 浏览器版音乐播放器
-categories: [笔记,JavaScript]
+categories: [前端]
 tags: [Audio]
 ---
 

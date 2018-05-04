@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 《Refactoring Improving the Design of Existing Code》笔记
-categories: [重构]
-tags: [读后感,笔记]
+categories: [笔记]
+tags: [读后感,重构]
 ---
 
 任何一个傻瓜都能写出计算机可以理解的语言，唯有写出人类容易理解的代码，才是优秀的程序员。

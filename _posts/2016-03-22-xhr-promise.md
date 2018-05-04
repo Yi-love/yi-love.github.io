@@ -1,7 +1,7 @@
 ---
 layout: page
 title: xhrp--Promise封装的ajax库
-categories: [笔记,JavaScript ,Promise]
+categories: [JavaScript,前端]
 tags: [XMLHttpRequest,Promise,前端,ajax,jsonp]
 ---
 

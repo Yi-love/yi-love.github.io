@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 【译】Node.js之HTTP/2服务器推送
-categories: [翻译,Node.js]
-tags: [HTTP/2,Nodejs,JavaScript,Server Push]
+categories: [Node.js]
+tags: [HTTP/2,翻译,JavaScript,Server Push]
 ---
 
 Node.js v8.4+版本发布带来了体验版的HTTP/2，你可以自己通过设置参数`--expose-http2`启动。

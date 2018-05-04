@@ -1,7 +1,7 @@
 ---
 layout: page
 title: DNS 响应报文详解
-categories: [Node.js,JavaScript,DNS]
+categories: [Node.js]
 tags: [dns,dgram,http/s,响应报文解析]
 ---
 

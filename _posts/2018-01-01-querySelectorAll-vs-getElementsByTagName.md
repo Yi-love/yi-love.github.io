@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 简单讨论 querySelectorAll Vs getElementsByTagName 区别
-categories: [JavaScript]
+categories: [JavaScript,前端]
 tags: [html,document,javascript]
 ---
 

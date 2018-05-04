@@ -1,7 +1,7 @@
 ---
 layout: page
 title: JavaScript Promise对象处理图片预加载
-categories: [笔记,JavaScript,Promise]
+categories: [JavaScript,前端]
 tags: [预处理,图片加载,前端]
 ---
 

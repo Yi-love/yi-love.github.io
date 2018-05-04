@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 【译】你需要知道的有关Node.js Error对象的变化
-categories: [翻译,Node.js]
-tags: [Error,Nodejs,JavaScript]
+categories: [Node.js]
+tags: [Error,翻译,JavaScript]
 ---
 
 ### 概要

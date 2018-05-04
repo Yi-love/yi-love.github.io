@@ -1,7 +1,7 @@
 ---
 layout: page
 title: DNS 请求报文详解
-categories: [Node.js,JavaScript,DNS]
+categories: [Node.js]
 tags: [dns,dgram,http/s,请求报文解析]
 ---
 

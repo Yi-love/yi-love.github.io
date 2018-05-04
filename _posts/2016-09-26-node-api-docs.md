@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Node.js V6+ API 接口中文文档
-categories: [Node.js,JavaScript,翻译]
+categories: [Node.js]
 tags: [api]
 ---
 

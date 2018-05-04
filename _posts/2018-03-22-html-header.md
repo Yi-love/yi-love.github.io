@@ -1,7 +1,7 @@
 ---
 layout: page
 title: HTTP报文首部格式简介
-categories: [HTTP]
+categories: [网络安全]
 tags: [http,网络,WWW,科普,HTTP首部]
 ---
 

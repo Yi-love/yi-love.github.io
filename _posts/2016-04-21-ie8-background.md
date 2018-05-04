@@ -1,7 +1,7 @@
 ---
 layout: page
 title: IE8 兼容背景颜色为：rgba时无法显示问题
-categories: [笔记,IE兼容,CSS]
+categories: [前端]
 tags: [ie8,background,rgba]
 ---
 
@@ -27,7 +27,7 @@ IE8下不支持rgba,对背景设置透明度的时候必须进行透明度兼容
 *   ffffff : 表示颜色
 
 ### 阀值计算
-使用rgba下的透明度 ： alpha*255 取整然后转换为16进制即可。
+使用rgba下的透明度 ： alpha\*255 取整然后转换为16进制即可。
 
 ```
   rgba     ie8filter

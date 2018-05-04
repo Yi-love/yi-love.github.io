@@ -1,7 +1,7 @@
 ---
 layout: page
 title: React-Redux-koa-webpack 全面学习与实践
-categories: [笔记,Node.js,JavaScript]
+categories: [Node.js,前端]
 tags: [react,组件化,redux,koa,同构]
 ---
 

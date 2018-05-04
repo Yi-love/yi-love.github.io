@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Vue2——SPA项目开发环境搭建思考
-categories: [JavaScript]
+categories: [JavaScript,前端]
 tags: [vue,vue2,SPA]
 ---
 

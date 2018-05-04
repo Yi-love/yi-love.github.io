@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 【译】使用async/await玩函数式编程
-categories: [翻译,JavaScript]
+categories: [前端]
 tags: [异步,async/await]
 ---
 
