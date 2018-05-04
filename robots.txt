@@ -3,3 +3,4 @@ Allow: /
 Allow: /article/
 Disallow: /category
 Disallow: /me
+Disallow: /list
