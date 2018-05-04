@@ -45,9 +45,9 @@ tags: [github , gem , jekyll]
 如下图: ![点击设置为个人主页](/images/2015/1028_05.jpg)
 
 2.6.   到这里所有的基本都设置好了，是不是想先体验一下啊。访问路径就是： {用户名}.github.io/{仓库名}/。你如果不想用github提供的空间也可以自己去配置，这里我就不说了
-例如我的：[yi-love.github.io/blog/][yi]
+例如我的：[yi-love.github.io][yi]
 
-[yi]: http://yi-love.github.io/blog/
+[yi]: https://yi-love.github.io
 
 
 ### 3.安装ruby
