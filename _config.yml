@@ -3,5 +3,7 @@ description: Jin/Yi-love/cray的个人博客
 
 url: https://yi-love.github.io
 root: /
-permalink: /article/:title
+permalink: /articles/:title
 username: Jin
+
+new_post_name: :year-:month-:day-:title.md
