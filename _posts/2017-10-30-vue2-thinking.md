@@ -428,3 +428,5 @@ new ExtractTextPlugin({
 
 ## 存在问题
 现在还无法做到支持多入口，因为webpack打包会抽取公共文件，并且把其余部分都统一打包合并。这也造成了统一打包后的文件过大。
+
+文件过大问题解决方案请查看：[webpack4+ 多入口程序构建]({{site.url}}/articles/webpack4)
