@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Allow: /article/
+Allow: /articles/
 Disallow: /category
 Disallow: /me
 Disallow: /list
