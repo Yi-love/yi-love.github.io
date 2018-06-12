@@ -11,8 +11,7 @@
                 <div class="j-col-xs-12 j-col-sm-12 j-col-md-9">
                     <div class="j-container j-content">
                         <h2 class="j-i-title"><a href="javascript:void(0)" title="{{page.title}}">{{page.title}}</a></h2>
-                        <div class="j-i-author">Author: <a href="https://github.com/Yi-love">Jin</a> <span>Date: {{page.date | date_to_long_string}}</span></div>
-                        <div class="j-i-time">文章来源{{site.username}}博客: <a href="{{site.url}}{{page.url}}">{{site.url}}{{page.url}}</a></div>
+                        <div class="j-i-time"><span>{{page.date | date_to_long_string}}</span></div>
                         <p class="j-i-tags">
                             {%for tag in page.tags %}
                             <span class="j-i-tag">{{tag}}</span>
@@ -21,6 +20,7 @@
                         <div class="j-container">
                             <div class="j-row j-artclie-txt markdown-body">{{content}}</div>
                         </div>
+                        <div class="j-i-time">文章来源{{site.username}}博客: <a href="{{site.url}}{{page.url}}">{{site.url}}{{page.url}}</a></div>
                     </div>
                 </div>
                 {% include side.html %}
