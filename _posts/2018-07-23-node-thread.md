@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Node.js 线程介绍
+title: 【译】Node.js工作线程介绍
 categories: [Node.js]
 tags: [thread,翻译]
 ---
